@@ -13,9 +13,12 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        using HttpClient httpClient = new HttpClient();
+        HttpResponseMessage response = await httpClient.GetAsync("http://localhost:5111/api/EmployeesAPI");
+        var result = await response.Content.ReadAsStringAsync();
+        return View((object) result);
     }
 
     public IActionResult Privacy()

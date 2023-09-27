@@ -14,17 +14,16 @@
     <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css">
     <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css">
     <!--end::Global Stylesheets Bundle-->                    
-    <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
+    <div class="app-main flex-column flex-row-fluid m-0" id="kt_app_main">
             <!--begin::Content wrapper-->
             <div class="d-flex flex-column flex-column-fluid">
-                                                
+                         
     <!--begin::Toolbar-->
-    <div id="kt_app_toolbar" class="app-toolbar  pt-5 ">
+    <div id="kt_app_toolbar" class="app-toolbar">
         </div>
     <!--end::Toolbar-->                                                       
     <!--begin::Content-->
-    <div id="kt_app_content" class="app-content  flex-column-fluid ">
-        
+    <div id="kt_app_content" class="app-content ml-10">
            
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container  container-fluid ">
@@ -379,7 +378,6 @@
                                         <!--begin::Input-->
                                         <input class="form-check-input me-3" name="user_role" type="radio" value="3" id="kt_modal_update_role_option_3">
                                         <!--end::Input-->
-
                                         <!--begin::Label-->
                                         <label class="form-check-label" for="kt_modal_update_role_option_3">
                                             <div class="fw-bold text-gray-800">Support</div>
@@ -474,7 +472,7 @@
 
                                     </div>
                 <!--end::Content wrapper-->
-
+ @Html.Partial("_Footer")
 <!--end::Footer-->                            </div>
 
 <script src="/js/user.js"></script>

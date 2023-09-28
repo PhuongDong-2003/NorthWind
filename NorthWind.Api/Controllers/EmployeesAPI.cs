@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using NorthWind.Api.Models;
+using NorthWind.Core.Entity;
 
 namespace NorthWind.Api.Controllers
 {
@@ -27,10 +27,10 @@ namespace NorthWind.Api.Controllers
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        var resultList = new List<Employees>();
+                        var resultList = new List<Employee>();
                         while (reader.Read())
                         {
-                            Employees employee = new Employees
+                            Employee employee = new Employee
                             {
                                 EmployeeId = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
                                 LastName = reader.GetString(reader.GetOrdinal("LastName")),

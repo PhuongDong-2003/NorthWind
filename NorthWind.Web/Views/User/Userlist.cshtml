@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "User List";
 }
-   @model List<Employee> 
+
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -475,7 +475,7 @@
                         <!--end::Avatar-->
                         <!--begin::User details-->
                         <div class="d-flex flex-column">
-                            <a href="#" class="text-gray-800 text-hover-primary mb-1">@employees[i].LastName  <span> @employees[i].FirstName</span></a>
+                            <a href="#" class="text-gray-800 text-hover-primary mb-1">@(employees[i].LastName + employees[i].FirstName)</a>
                             <span>@employees[i].Address</span>
                         </div>
                         <!--begin::User details-->

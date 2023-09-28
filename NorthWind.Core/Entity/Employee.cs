@@ -10,7 +10,7 @@ namespace NorthWind.Core.Entity
     {   [JsonPropertyName("employeeId")]
         public int EmployeeId { get; set; }
 
-        [JsonPropertyName("lastName")]
+        [JsonPropertyName("lastNam")]
         public string LastName { get; set; } = null!;
 
         [JsonPropertyName("firstName")]

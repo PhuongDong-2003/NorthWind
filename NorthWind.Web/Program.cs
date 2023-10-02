@@ -1,8 +1,12 @@
+using NorthWind.Web.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+var configSection = builder.Configuration.GetRequiredSection(ApiUrlsConfiguration.CONFIG_NAME);
+builder.Services.Configure<ApiUrlsConfiguration>(configSection);
+var baseUrlConfig = configSection.Get<ApiUrlsConfiguration>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

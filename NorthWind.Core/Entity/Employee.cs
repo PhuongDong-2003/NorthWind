@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace NorthWind.Core.Entity
 {
     public class Employee
-    {   [JsonPropertyName("employeeId")]
+    {   
         public int EmployeeId { get; set; }
 
-        [JsonPropertyName("lastNam")]
+        [JsonPropertyName("lastName")]
         public string LastName { get; set; } = null!;
 
         [JsonPropertyName("firstName")]

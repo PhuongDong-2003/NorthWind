@@ -6,25 +6,29 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NorthWind.Core.Entity;
+using NorthWind.Web.Models;
 
 namespace NorthWind.Web.Controllers
 {
 
     public class UserController : Controller
     {
-   
-    private readonly ILogger<UserController> _logger;
 
-    public UserController(ILogger<UserController> logger)
+     private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
+
+    public UserController(IOptions<ApiUrlsConfiguration> apiUrlsOptions)
     {
-        _logger = logger;
+        _apiUrlsConfiguration = apiUrlsOptions.Value;
     }
 
         public async Task<IActionResult> Userlist()
+
         {
+            string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
             using HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:5111/api/EmployeesAPI");
+            HttpResponseMessage response = await httpClient.GetAsync(apiBaseUrl);
 
             if (response.IsSuccessStatusCode)
             {

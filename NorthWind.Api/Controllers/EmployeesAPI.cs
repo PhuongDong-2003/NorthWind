@@ -12,11 +12,19 @@ namespace NorthWind.Api.Controllers
     [ApiController]
     public class EmployeesAPI : ControllerBase     
     {
+    private readonly IConfiguration _configuration;
+        private readonly SqlConnection sqlConnection;
+
+    public EmployeesAPI (IConfiguration configuration, SqlConnection sqlConnection)
+    {
+        this.sqlConnection = sqlConnection;
+        _configuration = configuration;
+    }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        string connectionString = "Server=LAPTOP-L2EEIEB9\\SQLEXPRESS;Database=NorthWind;User=sa;Password=123;Trusted_Connection=true; TrustServerCertificate = true; Encrypt=False";
+        string connectionString = _configuration.GetConnectionString("DefaultConnection");
         try
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

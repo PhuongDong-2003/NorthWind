@@ -12,24 +12,24 @@ using NorthWind.Web.Models;
 
 namespace NorthWind.Web.Controllers
 {
-
     public class UserController : Controller
     {
 
      private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
+        private readonly HttpClient httpClient;
 
-    public UserController(IOptions<ApiUrlsConfiguration> apiUrlsOptions)
+    public UserController(IOptions<ApiUrlsConfiguration> apiUrlsOptions, Print print, HttpClient httpClient)
     {
+        this.httpClient = httpClient;
         _apiUrlsConfiguration = apiUrlsOptions.Value;
+        print.WriteLine("asdasd");
     }
 
         public async Task<IActionResult> Userlist()
 
         {
             string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
-            using HttpClient httpClient = new HttpClient();
             HttpResponseMessage response = await httpClient.GetAsync(apiBaseUrl);
-
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
@@ -45,7 +45,7 @@ namespace NorthWind.Web.Controllers
             }
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+  
         public IActionResult Error()
         {
             return View("Error!");

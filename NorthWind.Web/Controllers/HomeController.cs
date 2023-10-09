@@ -7,10 +7,13 @@ namespace NorthWind.Web.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly B b;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, B b, Print print )
     {
         _logger = logger;
+        this.b = b;
+        
     }
 
                 public IActionResult Index()

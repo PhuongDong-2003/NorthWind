@@ -1,12 +1,19 @@
+using NorthWind.Web;
+using NorthWind.Web.Controllers;
 using NorthWind.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 // cách 1 tham khảo trên learn_microsoft
 builder.Services.Configure<ApiUrlsConfiguration>(
 builder.Configuration.GetSection(ApiUrlsConfiguration.CONFIG_NAME));
+
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<UserController>();
+//      
+builder.Services.AddScoped<Print>();
+builder.Services.AddScoped<B>();
 
 // Cách 2 tham khảo project mẫu
 // var configSection = builder.Configuration.GetRequiredSection(ApiUrlsConfiguration.CONFIG_NAME);

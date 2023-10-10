@@ -15,8 +15,8 @@ namespace NorthWind.Web.Controllers
     public class UserController : Controller
     {
 
-     private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
-        private readonly HttpClient httpClient;
+    private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
+    private readonly HttpClient httpClient;
 
     public UserController(IOptions<ApiUrlsConfiguration> apiUrlsOptions, Print print, HttpClient httpClient)
     {

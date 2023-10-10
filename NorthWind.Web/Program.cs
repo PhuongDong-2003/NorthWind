@@ -9,7 +9,6 @@ builder.Services.AddControllersWithViews();
 // cách 1 tham khảo trên learn_microsoft
 builder.Services.Configure<ApiUrlsConfiguration>(
 builder.Configuration.GetSection(ApiUrlsConfiguration.CONFIG_NAME));
-
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<UserController>();
 

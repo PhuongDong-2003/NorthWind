@@ -15,7 +15,7 @@ namespace NorthWind.Api.Controllers
     {
     private readonly IEmployeeRepository _employeeRepository;
 
-    public EmployeeController(EmployeeRepository employeeRepository)
+    public EmployeeController(IEmployeeRepository employeeRepository)
     {
         _employeeRepository = employeeRepository;
     }
@@ -26,8 +26,8 @@ namespace NorthWind.Api.Controllers
     {
         try
         {
-                 _employeeRepository.GetStudents();
-                 return Ok(_employeeRepository);
+                var employee =  _employeeRepository.GetStudents();
+                 return Ok(employee);
         }
         catch(Exception e)
         {
@@ -51,13 +51,14 @@ namespace NorthWind.Api.Controllers
     }
 
     [HttpPost]
-    public IActionResult Create( Employee employee)
+    public IActionResult Create( [FromBody] Employee employee)
     {
 
     try
         {
-                 _employeeRepository.InsertStudent(employee);
-                 return Ok(_employeeRepository);
+             _employeeRepository.InsertStudent(employee);
+                 return Ok("Thêm thành công");
+             
         }
             catch(Exception e)
         {
@@ -67,12 +68,12 @@ namespace NorthWind.Api.Controllers
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(  Employee employee)
+    public IActionResult Update(int id,  [FromBody] Employee employee)
     {
         try
             {
-                    _employeeRepository.UpdateStudent(employee);
-                    return Ok(_employeeRepository);
+                    _employeeRepository.UpdateStudent(id, employee);
+                    return Ok("Employee đã được cập nhật thành công.");
             }
                 catch(Exception e)
             {
@@ -86,7 +87,7 @@ namespace NorthWind.Api.Controllers
                 try
             {
                     _employeeRepository.DeleteStudent(id);
-                    return Ok(_employeeRepository);
+                    return Ok("Employee đã được xóa thành công.");
             }
                 catch(Exception e)
             {

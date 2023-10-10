@@ -10,7 +10,7 @@ using NorthWind.Core.Entity;
 
 namespace NorthWind.Api.Repository
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : IEmployeeRepository, IDisposable
     {
         private readonly IConfiguration _configuration;
         
@@ -23,13 +23,13 @@ namespace NorthWind.Api.Repository
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
     
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
+            SqlConnection connection = new SqlConnection(connectionString);
+            
                 connection.Open();
                 string sqlQuery = "DELETE FROM Employees WHERE EmployeeId = @EmployeeId";
 
-                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
-                {
+                SqlCommand command = new SqlCommand(sqlQuery, connection);
+                
                     command.Parameters.AddWithValue("@EmployeeId", id);
 
                     int rowsAffected = command.ExecuteNonQuery();
@@ -41,8 +41,8 @@ namespace NorthWind.Api.Repository
                     {
                         Console.WriteLine("Không tìm thấy nhân viên có EmployeeId tương ứng.");
                     }
-                }
-            }
+                
+            
 
         }
 
@@ -55,8 +55,8 @@ namespace NorthWind.Api.Repository
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
+            SqlConnection connection = new SqlConnection(connectionString);
+            
                 connection.Open();
                 string sqlQuery = "SELECT * FROM Employees WHERE EmployeeId = @EmployeeId";
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
@@ -96,7 +96,7 @@ namespace NorthWind.Api.Repository
                         }
                     }
                 }
-            }
+            
         }
 
 
@@ -105,8 +105,8 @@ namespace NorthWind.Api.Repository
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
+           SqlConnection connection = new SqlConnection(connectionString);
+            
                 connection.Open();
                 string sqlQuery = "SELECT * FROM Employees";
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
@@ -142,7 +142,7 @@ namespace NorthWind.Api.Repository
                         
                         return resultList;
                     }
-                }
+                
 
             }
         }
@@ -150,8 +150,8 @@ namespace NorthWind.Api.Repository
         public void InsertStudent(Employee employee)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
+            using SqlConnection connection = new SqlConnection(connectionString);
+            
                 connection.Open();
                 string sqlQuery = @"INSERT INTO Employees (LastName, FirstName, Title, TitleOfCourtesy, 
                                BirthDate, HireDate,  Address, City, Region, PostalCode, 
@@ -160,8 +160,8 @@ namespace NorthWind.Api.Repository
                                @HireDate, @Address, @City, @Region, @PostalCode, @Country, @HomePhone, 
                                @Extension, @Photo, @Notes, @ReportsTo, @PhotoPath)";
 
-                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
-                {
+                SqlCommand command = new SqlCommand(sqlQuery, connection);
+                
                     command.Parameters.AddWithValue("@LastName", employee.LastName);
                     command.Parameters.AddWithValue("@FirstName", employee.FirstName);
                     command.Parameters.AddWithValue("@Title", employee.Title ?? (object)DBNull.Value);
@@ -189,18 +189,18 @@ namespace NorthWind.Api.Repository
                     {
                         Console.WriteLine("Không thể thêm Employee.");
                     }
-                }
-            }
+                
+            
 
 
         }
 
-        public void UpdateStudent( Employee employee)
+        public void UpdateStudent( int id,   Employee employee)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+             SqlConnection connection = new SqlConnection(connectionString);
             {
                 connection.Open();
                 string sqlQuery = @"UPDATE Employees
@@ -223,9 +223,9 @@ namespace NorthWind.Api.Repository
                                      PhotoPath = @PhotoPath
                                  WHERE EmployeeId = @EmployeeId";
 
-                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
-                {
-                    command.Parameters.AddWithValue("@EmployeeId", employee.EmployeeId);
+                SqlCommand command = new SqlCommand(sqlQuery, connection);
+                
+                    command.Parameters.AddWithValue("@EmployeeId", id);
                     command.Parameters.AddWithValue("@LastName", employee.LastName);
                     command.Parameters.AddWithValue("@FirstName", employee.FirstName);
                     command.Parameters.AddWithValue("@Title", employee.Title ?? (object)DBNull.Value);
@@ -252,8 +252,9 @@ namespace NorthWind.Api.Repository
                     else
                     {
                         Console.WriteLine("Không tìm thấy nhân viên có EmployeeId tương ứng.");
+                        return;
                     }
-                }
+                
             }
        
         }

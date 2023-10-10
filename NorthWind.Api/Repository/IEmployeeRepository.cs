@@ -12,6 +12,6 @@ namespace NorthWind.Api.Repository
         public Employee GetStudentByID(int  employeeId);
         public void InsertStudent(Employee employee);
         public void DeleteStudent(int id);
-        public void UpdateStudent(  Employee employee);
+        public void UpdateStudent(int id, Employee employee);
     }
 }

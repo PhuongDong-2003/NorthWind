@@ -1,7 +1,7 @@
 using NorthWind.Web;
 using NorthWind.Web.Controllers;
 using NorthWind.Web.Models;
-using NorthWind.Web.Repository;
+
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -12,8 +12,7 @@ builder.Configuration.GetSection(ApiUrlsConfiguration.CONFIG_NAME));
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<UserController>();
-builder.Services.AddScoped<EmployeeRepository>();
-//      
+
 builder.Services.AddScoped<Print>();
 builder.Services.AddScoped<B>();
 

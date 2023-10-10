@@ -1,13 +1,17 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.OpenApi.Models;
+using NorthWind.Api.Controllers;
+using NorthWind.Api.Repository;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddTransient<SqlConnection>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -25,11 +29,10 @@ if (app.Environment.IsDevelopment())
     c.SwaggerEndpoint("/swagger/v2/swagger.json", "Employees");
 });
 }
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseAuthorization(); 
+
 app.MapControllers();
 
 app.Run();

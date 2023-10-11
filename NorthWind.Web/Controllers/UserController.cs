@@ -34,7 +34,7 @@ namespace NorthWind.Web.Controllers
         public async Task<IActionResult> Userlist()
 
         {
-            var result = employeeService.GetStudents();
+            var result = employeeService.GetEmployee();
             if (result!=null)
             {
              

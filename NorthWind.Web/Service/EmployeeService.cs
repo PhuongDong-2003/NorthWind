@@ -22,7 +22,7 @@ namespace NorthWind.Web.Service
             _apiUrlsConfiguration = apiUrlsOptions.Value;
     }
 
-     public async void DeleteStudent(int id)
+     public async void DeleteEmployee(int id)
         {
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{id}";
             var response = await httpClient.DeleteAsync(apiUrl);
@@ -33,7 +33,7 @@ namespace NorthWind.Web.Service
             }
         }
 
-        public Employee GetStudentByID(int employeeId)
+        public Employee GetEmployeeByID(int employeeId)
         {
            
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{employeeId}"; 
@@ -47,7 +47,7 @@ namespace NorthWind.Web.Service
             return response;
         }
 
-        public IEnumerable<Employee> GetStudents()
+        public IEnumerable<Employee> GetEmployee()
         {
 
            string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
@@ -62,7 +62,7 @@ namespace NorthWind.Web.Service
             return response;
         }
 
-        public async  void InsertStudent(Employee employee)
+        public async  void InsertEmployee(Employee employee)
         {
 
             var apiUrl = _apiUrlsConfiguration.EmployeesApiUrl;
@@ -74,7 +74,7 @@ namespace NorthWind.Web.Service
             }
         }
 
-        public async void UpdateStudent(int id, Employee employee)
+        public async void UpdateEmployee(int id, Employee employee)
         {
 
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{id}";

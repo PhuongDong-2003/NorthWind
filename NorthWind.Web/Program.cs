@@ -1,6 +1,7 @@
 using NorthWind.Web;
 using NorthWind.Web.Controllers;
 using NorthWind.Web.Models;
+using NorthWind.Web.Service;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<ApiUrlsConfiguration>(
 builder.Configuration.GetSection(ApiUrlsConfiguration.CONFIG_NAME));
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<UserController>();
+
 
 builder.Services.AddScoped<Print>();
 builder.Services.AddScoped<B>();

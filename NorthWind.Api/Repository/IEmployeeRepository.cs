@@ -8,10 +8,10 @@ namespace NorthWind.Api.Repository
 {
     public interface IEmployeeRepository : IDisposable
     {
-        public IEnumerable<Employee> GetStudents();
-        public Employee GetStudentByID(int  employeeId);
-        public void InsertStudent(Employee employee);
-        public void DeleteStudent(int id);
-        public void UpdateStudent(int id, Employee employee);
+        public IEnumerable<Employee> GetEmployee();
+        public Employee GetEmployeeByID(int  employeeId);
+        public void InsertEmployee(Employee employee);
+        public void DeleteEmployee(int id);
+        public void UpdateEmployee(int id, Employee employee);
     }
 }

@@ -13,13 +13,12 @@ namespace NorthWind.Api.Repository
     public class EmployeeRepository : IEmployeeRepository, IDisposable
     {
         private readonly IConfiguration _configuration;
-        
 
         public EmployeeRepository(IConfiguration configuration)
         {   
             _configuration = configuration;
         }
-        public void DeleteStudent(int id)
+        public void DeleteEmployee(int id)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
     
@@ -51,7 +50,7 @@ namespace NorthWind.Api.Repository
             throw new NotImplementedException();
         }
 
-        public Employee GetStudentByID(int employeeId)
+        public Employee GetEmployeeByID(int employeeId)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
@@ -91,7 +90,6 @@ namespace NorthWind.Api.Repository
                         }
                         else
                         {
-                            // Trả về null hoặc xử lý trường hợp không tìm thấy nhân viên tùy vào yêu cầu của bạn.
                             return null;
                         }
                     }
@@ -101,7 +99,7 @@ namespace NorthWind.Api.Repository
 
 
 
-        public IEnumerable<Employee> GetStudents()
+        public IEnumerable<Employee> GetEmployee()
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
@@ -147,7 +145,7 @@ namespace NorthWind.Api.Repository
             }
         }
 
-        public void InsertStudent(Employee employee)
+        public void InsertEmployee(Employee employee)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             using SqlConnection connection = new SqlConnection(connectionString);
@@ -195,7 +193,7 @@ namespace NorthWind.Api.Repository
 
         }
 
-        public void UpdateStudent( int id,   Employee employee)
+        public void UpdateEmployee( int id,   Employee employee)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
 

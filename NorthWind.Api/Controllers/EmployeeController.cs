@@ -26,7 +26,7 @@ namespace NorthWind.Api.Controllers
     {
         try
         {
-                var employee =  _employeeRepository.GetStudents();
+                 var employee =  _employeeRepository.GetEmployee();
                  return Ok(employee);
         }
         catch(Exception e)
@@ -42,7 +42,7 @@ namespace NorthWind.Api.Controllers
     public IActionResult GetById(int id)
     {
         
-        var employee = _employeeRepository.GetStudentByID(id);
+        var employee = _employeeRepository.GetEmployeeByID(id);
         if (employee == null)
         {
             return NotFound();
@@ -56,7 +56,7 @@ namespace NorthWind.Api.Controllers
 
     try
         {
-             _employeeRepository.InsertStudent(employee);
+             _employeeRepository.InsertEmployee(employee);
                  return Ok("Thêm thành công");
              
         }
@@ -72,8 +72,8 @@ namespace NorthWind.Api.Controllers
     {
         try
             {
-                    _employeeRepository.UpdateStudent(id, employee);
-                    return Ok("Employee đã được cập nhật thành công.");
+                _employeeRepository.UpdateEmployee(id, employee);
+                return Ok("Employee đã được cập nhật thành công.");
             }
                 catch(Exception e)
             {
@@ -86,7 +86,7 @@ namespace NorthWind.Api.Controllers
     {
                 try
             {
-                    _employeeRepository.DeleteStudent(id);
+                    _employeeRepository.DeleteEmployee(id);
                     return Ok("Employee đã được xóa thành công.");
             }
                 catch(Exception e)

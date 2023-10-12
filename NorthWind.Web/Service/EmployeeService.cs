@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using NorthWind.Core.Entity;
@@ -8,21 +9,21 @@ using NorthWind.Web.Models;
 
 namespace NorthWind.Web.Service
 {
-    public class EmployeeService 
+    public class EmployeeService
 
     {
         private readonly HttpClient httpClient;
         private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
 
 
-    public EmployeeService ( IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
-    {
- 
-             this.httpClient = httpClient;
-            _apiUrlsConfiguration = apiUrlsOptions.Value;
-    }
+        public EmployeeService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
+        {
 
-     public async void DeleteEmployee(int id)
+            this.httpClient = httpClient;
+            _apiUrlsConfiguration = apiUrlsOptions.Value;
+        }
+
+        public async void DeleteEmployee(int id)
         {
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{id}";
             var response = await httpClient.DeleteAsync(apiUrl);
@@ -35,13 +36,13 @@ namespace NorthWind.Web.Service
 
         public Employee GetEmployeeByID(int employeeId)
         {
-           
-            var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{employeeId}"; 
-            var response =  httpClient.GetFromJsonAsync<Employee>(apiUrl).Result;
+
+            var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{employeeId}";
+            var response = httpClient.GetFromJsonAsync<Employee>(apiUrl).Result;
 
             if (response == null)
             {
-                throw new Exception($"Không thể tìm nhân viên có ID {employeeId} từ API."); 
+                throw new Exception($"Không thể tìm nhân viên có ID {employeeId} từ API.");
             }
 
             return response;
@@ -50,30 +51,31 @@ namespace NorthWind.Web.Service
         public IEnumerable<Employee> GetEmployee()
         {
 
-           string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
-           var response =  httpClient.GetFromJsonAsync<IEnumerable<Employee>>(apiBaseUrl).Result;
-        if(response ==null)
+            string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
+            var response = httpClient.GetFromJsonAsync<IEnumerable<Employee>>(apiBaseUrl).Result;
+            if (response == null)
             {
 
-                    throw new Exception("Không thử lấy danh sách nhân viên từ api");
-            
+                throw new Exception("Không thử lấy danh sách nhân viên từ api");
+
             }
-              
+
             return response;
         }
 
-        public async  void InsertEmployee(Employee employee)
+        public  async Task InsertEmployee(Employee employee)
         {
 
             var apiUrl = _apiUrlsConfiguration.EmployeesApiUrl;
-            var response = await httpClient.PostAsJsonAsync(apiUrl, employee);
+            var result = JsonSerializer.Serialize(employee);
+            var response = await httpClient.PostAsJsonAsync(apiUrl,result);
 
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"Lỗi khi thêm nhân viên: {response.ReasonPhrase}");
             }
+           
         }
-
         public async void UpdateEmployee(int id, Employee employee)
         {
 
@@ -86,6 +88,6 @@ namespace NorthWind.Web.Service
             }
 
         }
- 
+
     }
 }

@@ -1,4 +1,7 @@
 @using NorthWind.Core.Entity;
+@model Employee;
+
+
 @{
     ViewData["Title"] = "User List";
 }
@@ -233,33 +236,10 @@
             <!--begin::Modal body-->
             <div class="modal-body px-5 my-7">
                 <!--begin::Form-->
-                <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="#">
+                <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" asp-controller="User" asp-action="Create" >
                     <!--begin::Scroll-->
                     <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px" style="max-height: 116px;">
                         <!--begin::Input group-->
-                        <div class="fv-row mb-7">
-                            <!--begin::Label-->
-                            <label class="d-block fw-semibold fs-6 mb-5">Avatar</label>
-                            <!--end::Label-->
-
-                            
-<!--begin::Image placeholder-->
-<style>
-	.image-input-placeholder {
-		background-image: url('/saul-html-free/assets/media/svg/files/blank-image.svg');
-	}
-
-			[data-bs-theme="dark"] .image-input-placeholder {
-			background-image: url('/saul-html-free/assets/media/svg/files/blank-image-dark.svg');
-		}               
-	</style>
-
-                            <!--end::Image input-->
-
-                            <!--begin::Hint-->
-                            <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
-                            <!--end::Hint-->
-                        </div>
                         <!--end::Input group-->
 
                         <!--begin::Input group-->
@@ -269,7 +249,7 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type="text" name="FirstName" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="First Name" value="Emma Smith">
+                            <input type="text" asp-for="FirstName" class="form-control form-control-solid mb-3 mb-lg-0">
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
@@ -281,107 +261,175 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type="email" name="Last Name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="LastName" value="smith@kpmg.com">
+                            <input type="text" asp-for="LastName" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Title</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text"asp-for="Title" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">TitleOfCourtesy</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text"asp-for="TitleOfCourtesy" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">BirthDate</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="BirthDate" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">HireDate</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="HireDate" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Address</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Address" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">City</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="City" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Region</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Region" class="form-control form-control-solid mb-3 mb-lg-0">
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
 
                         <!--begin::Input group-->
-                        <div class="mb-5">
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
                             <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-5">Role</label>
+                            <label class="required fw-semibold fs-6 mb-2">Postal Code</label>
                             <!--end::Label-->
-                            <!--begin::Roles-->
-                            <!--begin::Input row-->
-                                <div class="d-flex fv-row">
-                                    <!--begin::Radio-->
-                                    <div class="form-check form-check-custom form-check-solid">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role" type="radio" value="0" id="kt_modal_update_role_option_0" checked="checked">
-                                        <!--end::Input-->
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="kt_modal_update_role_option_0">
-                                            <div class="fw-bold text-gray-800">Administrator</div>
-                                            <div class="text-gray-600">Best for business owners and company administrators</div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-                                    <!--end::Radio-->
-                                </div>
-                                <!--end::Input row-->
-                                <div class="separator separator-dashed my-5"></div>                                                            <!--begin::Input row-->
-                                <div class="d-flex fv-row">
-                                    <!--begin::Radio-->
-                                    <div class="form-check form-check-custom form-check-solid">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role" type="radio" value="1" id="kt_modal_update_role_option_1">
-                                        <!--end::Input-->
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="kt_modal_update_role_option_1">
-                                            <div class="fw-bold text-gray-800">Developer</div>
-                                            <div class="text-gray-600">Best for developers or people primarily using the API</div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-                                    <!--end::Radio-->
-                                </div>
-                                <!--end::Input row-->
 
-                                <div class="separator separator-dashed my-5"></div>                                                            <!--begin::Input row-->
-                                <div class="d-flex fv-row">
-                                    <!--begin::Radio-->
-                                    <div class="form-check form-check-custom form-check-solid">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role" type="radio" value="2" id="kt_modal_update_role_option_2">
-                                        <!--end::Input-->
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="PostalCode" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Country</label>
+                            <!--end::Label-->
 
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="kt_modal_update_role_option_2">
-                                            <div class="fw-bold text-gray-800">Analyst</div>
-                                            <div class="text-gray-600">Best for people who need full access to analytics data, but don't need to update business settings</div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-                                    <!--end::Radio-->
-                                </div>
-                                <!--end::Input row-->
-                                <div class="separator separator-dashed my-5"></div>                                                            <!--begin::Input row-->
-                                <div class="d-flex fv-row">
-                                    <!--begin::Radio-->
-                                    <div class="form-check form-check-custom form-check-solid">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role" type="radio" value="3" id="kt_modal_update_role_option_3">
-                                        <!--end::Input-->
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="kt_modal_update_role_option_3">
-                                            <div class="fw-bold text-gray-800">Support</div>
-                                            <div class="text-gray-600">Best for employees who regularly refund payments and respond to disputes</div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-                                    <!--end::Radio-->
-                                </div>
-                                <!--end::Input row-->
-                                <div class="separator separator-dashed my-5"></div>                                                            <!--begin::Input row-->
-                                <div class="d-flex fv-row">
-                                    <!--begin::Radio-->
-                                    <div class="form-check form-check-custom form-check-solid">
-                                        <!--begin::Input-->
-                                        <input class="form-check-input me-3" name="user_role" type="radio" value="4" id="kt_modal_update_role_option_4">
-                                        <!--end::Input-->
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Country" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Home Phone</label>
+                            <!--end::Label-->
 
-                                        <!--begin::Label-->
-                                        <label class="form-check-label" for="kt_modal_update_role_option_4">
-                                            <div class="fw-bold text-gray-800">Trial</div>
-                                            <div class="text-gray-600">Best for people who need to preview content data, but don't need to make any updates</div>
-                                        </label>
-                                        <!--end::Label-->
-                                    </div>
-                                    <!--end::Radio-->
-                                </div>
-                                <!--end::Input row-->
-                               <!--end::Roles-->
-                        </div>
+                            <!--begin::Input-->
+                            <input type = "text"asp-for="HomePhone" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Extension</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text"asp-for="Extension" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Photo</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Photo" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Notes</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Notes" class="form-control form-control-solid mb-3 mb-lg-0"   >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">ReportsTo</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="ReportsTo" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">PhotoPath</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="PhotoPath" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
                     </div>
                     <!--end::Scroll-->

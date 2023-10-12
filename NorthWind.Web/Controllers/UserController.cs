@@ -16,29 +16,29 @@ namespace NorthWind.Web.Controllers
     public class UserController : Controller
     {
         // ví dụ về Di và scope, transient,..
-    // private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
-    // private readonly HttpClient httpClient;
+        // private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
+        // private readonly HttpClient httpClient;
 
-    // public UserController(IOptions<ApiUrlsConfiguration> apiUrlsOptions, Print print, HttpClient httpClient)
-    // {
-    //     this.httpClient = httpClient;
-    //     _apiUrlsConfiguration = apiUrlsOptions.Value;
-    //     print.WriteLine("asdasd");
-    // }
-    private readonly EmployeeService employeeService;
-    public UserController(EmployeeService employeeService)
-    {
+        // public UserController(IOptions<ApiUrlsConfiguration> apiUrlsOptions, Print print, HttpClient httpClient)
+        // {
+        //     this.httpClient = httpClient;
+        //     _apiUrlsConfiguration = apiUrlsOptions.Value;
+        //     print.WriteLine("asdasd");
+        // }
+        private readonly EmployeeService employeeService;
+        public UserController(EmployeeService employeeService)
+        {
             this.employeeService = employeeService;
-      
-    }
+
+        }
         public async Task<IActionResult> Userlist()
 
         {
             var result = employeeService.GetEmployee();
-            if (result!=null)
+            if (result != null)
             {
-             
-                ViewData["employee"] =result; 
+
+                ViewData["employee"] = result;
                 return View();
             }
             else
@@ -48,7 +48,27 @@ namespace NorthWind.Web.Controllers
             }
         }
 
-  
+        [HttpPost]
+        public async Task<IActionResult> Create(Employee employee)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                 await employeeService.InsertEmployee(employee);
+                 return RedirectToAction("Userlist");
+                   
+                   
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi: {ex.Message}");
+                }
+            }
+            
+            this.Userlist();
+            return View("Userlist");
+        }
         public IActionResult Error()
         {
             return View("Error!");

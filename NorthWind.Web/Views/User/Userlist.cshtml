@@ -1,5 +1,6 @@
 @using NorthWind.Core.Entity;
 @model Employee;
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers;
 
 
 @{
@@ -236,7 +237,7 @@
             <!--begin::Modal body-->
             <div class="modal-body px-5 my-7">
                 <!--begin::Form-->
-                <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" asp-controller="User" asp-action="Create" >
+                <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" asp-controller="User" asp-action="Create"  method="post" enctype="multipart/form-data" >
                     <!--begin::Scroll-->
                     <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px" style="max-height: 116px;">
                         <!--begin::Input group-->
@@ -272,7 +273,7 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type="text"asp-for="Title" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <input type="text" asp-for="Title" class="form-control form-control-solid mb-3 mb-lg-0" >
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
@@ -284,7 +285,7 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type="text"asp-for="TitleOfCourtesy" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <input type="text" asp-for="TitleOfCourtesy" class="form-control form-control-solid mb-3 mb-lg-0">
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
@@ -296,7 +297,7 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type="text" asp-for="BirthDate" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <input type="date" asp-for="BirthDate" class="form-control form-control-solid mb-3 mb-lg-0" >
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
@@ -308,7 +309,7 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type="text" asp-for="HireDate" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <input type="date" asp-for="HireDate" class="form-control form-control-solid mb-3 mb-lg-0">
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
@@ -356,7 +357,7 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type = "text" asp-for="PostalCode" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <input type ="text" asp-for="PostalCode" class="form-control form-control-solid mb-3 mb-lg-0" >
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
@@ -377,7 +378,7 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type = "text"asp-for="HomePhone" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <input type = "text" asp-for="HomePhone" class="form-control form-control-solid mb-3 mb-lg-0">
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->                        <!--begin::Input group-->
@@ -387,7 +388,7 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type = "text"asp-for="Extension" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <input type = "text" asp-for="Extension" class="form-control form-control-solid mb-3 mb-lg-0" >
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->                        <!--begin::Input group-->
@@ -397,7 +398,7 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type = "text" asp-for="Photo" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <input type="file"  asp-for="Photo"  class="form-control form-control-solid mb-3 mb-lg-0" >
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->                        <!--begin::Input group-->
@@ -427,27 +428,14 @@
                             <!--end::Label-->
 
                             <!--begin::Input-->
-                            <input type = "text" asp-for="PhotoPath" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <input  asp-for="PhotoPath" class="form-control form-control-solid mb-3 mb-lg-0" >
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
                     </div>
                     <!--end::Scroll-->
                     <!--begin::Actions-->
-                    <div class="text-center pt-10">
-                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">
-                            Discard
-                        </button>
-
-                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                            <span class="indicator-label">
-                                Submit
-                            </span>
-                            <span class="indicator-progress">
-                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                            </span>
-                        </button>
-                    </div>
+              
                     <!--end::Actions-->
                 </form>
                 <!--end::Form-->
@@ -512,37 +500,259 @@
                     <td >
                     @employees[i].BirthDate
                                   </td>
-                    <td class="text-end">
-                        <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                            Actions
-                            <i class="ki-duotone ki-down fs-5 ms-1"></i>                    </a>
-                        <!--begin::Menu-->
-            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-            <!--begin::Menu item-->
-            <div class="menu-item px-3">
-            <a href="#" class="menu-link px-3">
-                Edit
-            </a>
-            </div>
-            <!--end::Menu item-->
 
-            <!--begin::Menu item-->
-            <div class="menu-item px-3">
-            <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">
-                Delete
-            </a>
-            </div>
-            <!--end::Menu item-->
-            </div>
-            <!--end::Menu-->
-        
+                                  
+                    <td class="text-end">
+                            <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"  data-toggle="modal"  data-target="#editEmployeeModal_@employees[i].EmployeeId"> Update </button>         
+                    </td>
+                    @* <td class="text-end">
+                            
+                                <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-toggle="modal" data-target="#editEmployeeModal_@employees[i].EmployeeId" > Update</button>
+                                            
+                    </td> *@
+                    <td class="text-end">
+                            <form method="post" asp-controller="User" asp-action="Delete">
+                                <input type="hidden" asp-for="EmployeeId" value="@employees[i].EmployeeId" />
+                                <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" > Delete</button>
+                             </form>                 
                     </td>
  </tr>
+
+ <div class="modal fade" id="editEmployeeModal_@employees[i].EmployeeId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  data-toggle="modal" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Update Employee</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            
+                            <div class="modal-body">
+                                <!-- Form để chỉnh sửa thông tin nhân viên -->
+
+                        <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" asp-controller="User" asp-action="Update"  method="post" enctype="multipart/form-data" >
+
+                        <!--begin::Scroll-->
+   
+                        <!--begin::Input group-->
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <input type="hidden" asp-for="EmployeeId" value="@employees[i].EmployeeId" />
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">First Name</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="FirstName" class="form-control " value = "@employees[i].FirstName"    >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Last Name</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="LastName" class="form-control " value = "@employees[i].LastName">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Title</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Title" class="form-control " value = "@employees[i].Title">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">TitleOfCourtesy</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="TitleOfCourtesy" class="form-control " value = "@employees[i].TitleOfCourtesy">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">                            
+                            <label class="required fw-semibold fs-6 mb-2">BirthDate</label>
+                            <input type="text" asp-for="BirthDate" value="@employees[i].BirthDate.ToString()" class="form-control ">
+                            <br>
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2"> New BirthDate</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="date" asp-for="BirthDate" class="form-control "  >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                        <!--begin::Label-->
+                        <label class="required fw-semibold fs-6 mb-2">HireDate</label>
+                        <!--end::Label-->
+                        <input type="text" asp-for="HireDate" value="@employees[i].HireDate.ToString()" class="form-control ">
+                        <!--begin::Input-->
+                        <br>
+                        <label class="required fw-semibold fs-6 mb-2">New HireDate</label>
+                        <input type="date" asp-for="HireDate" class="form-control ">
+                        <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Address</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Address" class="form-control " value = "@employees[i].Address">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">City</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="City" class="form-control " value = "@employees[i].City" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Region</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Region" class="form-control " value = "@employees[i].Region">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Postal Code</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type ="text" asp-for="PostalCode" class="form-control " value = "@employees[i].PostalCode" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Country</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Country" class="form-control " value = "@employees[i].Country" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Home Phone</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="HomePhone" class="form-control "  value = "@employees[i].HomePhone">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Extension</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Extension" class="form-control "  value = "@employees[i].Extension" >
+                      
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                              <img src="data:image/png;base64,@Convert.ToBase64String(employees[i].Photo)"  class="img-fluid" name="employeeImage" />
+                             
+                            <div class="fv-row mb-7 fv-plugins-icon-container">
+                                <label class="required fw-semibold fs-6 mb-2">New Photo</label>
+                                <input type="file" name="NewPhoto" class="form-control" />
+                            </div>
+                            <!--end::Label-->
+                            <!--begin::Input-->                          
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Notes</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Notes" class="form-control "  value = "@employees[i].Notes"  >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">ReportsTo</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="ReportsTo" class="form-control "  value = "@employees[i].Region" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">PhotoPath</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input  asp-for="PhotoPath" class="form-control "  value = "@employees[i].PhotoPath" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                        <button type="submit" class="btn btn-primary">Update</button>
+                         </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              
             }
+
             
                   
         
         }
+
+       
+                    
+            
+        
         
         
 
@@ -552,6 +762,237 @@
             </tbody>
 </table></div><div class="row"><div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"></div><div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end"><div class="dataTables_paginate paging_simple_numbers" id="kt_table_users_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="kt_table_users_previous"><a href="#" aria-controls="kt_table_users" data-dt-idx="0" tabindex="0" class="page-link"><i class="previous"></i></a></li><li class="paginate_button page-item active"><a href="#" aria-controls="kt_table_users" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="kt_table_users" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="kt_table_users" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item next" id="kt_table_users_next"><a href="#" aria-controls="kt_table_users" data-dt-idx="4" tabindex="0" class="page-link"><i class="next"></i></a></li></ul></div></div></div></div>
 <!--end::Table-->    </div>
+@{
+    var employee = ViewData["employeereq"]as Employee;
+}
+  @if (employee != null)
+        {
+           
+          
+
+                     <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Update Employee</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            
+                            <div class="modal-body">
+                                <!-- Form để chỉnh sửa thông tin nhân viên -->
+
+                        <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" asp-controller="User" asp-action="UpdateSecord"  method="post" enctype="multipart/form-data" >
+
+                        
+                        <!--begin::Scroll-->
+   
+                        <!--begin::Input group-->
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                    <input type="hidden" asp-for="EmployeeId" value="@employee.EmployeeId" />
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">First Name</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="FirstName" class="form-control " value = "@employee.FirstName"    >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Last Name</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="LastName" class="form-control " value = "@employee.LastName">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Title</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Title" class="form-control " value = "@employee.Title">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">TitleOfCourtesy</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="TitleOfCourtesy" class="form-control " value = "@employee.TitleOfCourtesy">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">BirthDate</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="date" asp-for="BirthDate" class="form-control " value = "@employee.BirthDate" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">HireDate</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="date" asp-for="HireDate" class="form-control " value = "@employee.HireDate">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Address</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Address" class="form-control " value = "@employee.Address">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">City</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="City" class="form-control " value = "@employee.City" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Region</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Region" class="form-control " value = "@employee.Region">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Postal Code</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type ="text" asp-for="PostalCode" class="form-control " value = "@employee.PostalCode" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Country</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Country" class="form-control " value = "@employee.Country" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Home Phone</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="HomePhone" class="form-control "  value = "@employee.HomePhone">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Extension</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Extension" class="form-control "  value = "@employee.Extension" >
+                      
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                              <img src="data:image/png;base64,@Convert.ToBase64String(employee.Photo)"  class="img-fluid" />
+                            <div class="fv-row mb-7 fv-plugins-icon-container">
+                                <label class="required fw-semibold fs-6 mb-2">New Photo</label>
+                                <input type="file" name="NewPhoto" class="form-control" />
+                            </div>
+                            <!--end::Label-->
+                            <!--begin::Input-->                          
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Notes</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Notes" class="form-control "  value = "@employee.Notes"  >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">ReportsTo</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="ReportsTo" class="form-control "  value = "@employee.ReportsTo" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">PhotoPath</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input  asp-for="PhotoPath" class="form-control "  value = "@employee.PhotoPath" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                        <button type="submit" class="btn btn-primary">Update</button>
+                         </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
     <!--end::Card body-->
 </div>
 <!--end::Card-->        </div>
@@ -567,6 +1008,8 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="/assets/js/scripts.bundle.js"></script>
 <script src="/assets/js/widgets.bundle.js"></script>                 
             

@@ -51,7 +51,7 @@ namespace NorthWind.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Employee employee)
+        public IActionResult Create( Employee employee)
         {
 
             try
@@ -68,11 +68,11 @@ namespace NorthWind.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Employee employee)
+        public IActionResult Update( Employee employee)
         {
             try
             {
-                _employeeRepository.UpdateEmployee(id, employee);
+                _employeeRepository.UpdateEmployee( employee);
                 return Ok("Employee đã được cập nhật thành công.");
             }
             catch (Exception e)

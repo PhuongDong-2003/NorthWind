@@ -193,7 +193,7 @@ namespace NorthWind.Api.Repository
 
         }
 
-        public void UpdateEmployee(int id, Employee employee)
+        public void UpdateEmployee(Employee employee)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
@@ -223,7 +223,7 @@ namespace NorthWind.Api.Repository
 
                 SqlCommand command = new SqlCommand(sqlQuery, connection);
 
-                command.Parameters.AddWithValue("@EmployeeId", id);
+                command.Parameters.AddWithValue("@EmployeeId", employee.EmployeeId);
                 command.Parameters.AddWithValue("@LastName", employee.LastName);
                 command.Parameters.AddWithValue("@FirstName", employee.FirstName);
                 command.Parameters.AddWithValue("@Title", employee.Title ?? (object)DBNull.Value);

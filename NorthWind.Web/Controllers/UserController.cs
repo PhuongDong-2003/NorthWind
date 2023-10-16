@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -49,26 +50,176 @@ namespace NorthWind.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Employee employee)
+        public async Task<IActionResult> Create(Employee employee, IFormFile photo)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-                try
+                if (photo != null && photo.Length > 0)
                 {
-                 await employeeService.InsertEmployee(employee);
-                 return RedirectToAction("Userlist");
-                   
-                   
+
+                    byte[] photoData;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await photo.CopyToAsync(memoryStream);
+
+                        photoData = memoryStream.ToArray();
+                    }
+                    employee.Photo = photoData;
+
+                    await employeeService.InsertEmployee(employee);
+
+                    return RedirectToAction("Userlist");
                 }
-                catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Lỗi: {ex.Message}");
+            }
+
+
+            return View("Userlist", employee);
+        }
+       
+
+
+        [HttpPost]
+        public async Task<IActionResult> Update(Employee employee)
+        {
+            try
+            {
+                int employeeId = int.Parse(Request.Form["EmployeeId"]);
+                IFormFile newPhoto = Request.Form.Files["NewPhoto"];
+
+                if (newPhoto != null && newPhoto.Length > 0 ) 
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await newPhoto.CopyToAsync(memoryStream);
+
+                       
+                        if (employee != null)
+                        {
+                            employee.Photo = memoryStream.ToArray();
+                           await employeeService.UpdateEmployee(employee);
+                           
+                        }
+                        
+                    }
+                } 
+                else
+                {
+                   
+                    if (employee != null )
+                    {
+                        var existingEmployee = await employeeService.GetEmployeeByID(employeeId);
+                        if (existingEmployee.Photo != null)
+                             {
+                        // Lấy dữ liệu hình ảnh từ nhân viên hiện tại và gán cho nhân viên được chỉnh sửa
+                        employee.Photo = existingEmployee.Photo;
+                             }
+                      await  employeeService.UpdateEmployee(employee);
+                       
+                    }else
+                    {
+                        Console.WriteLine("Lỗi khi cập nhật tin nhân viên");
+                    }
+                   
+
+                }
+           
+           
+            }
+
+
+
+            catch (Exception ex)
                 {
                     ModelState.AddModelError("", $"Lỗi: {ex.Message}");
                 }
+
+                return RedirectToAction("Userlist");
+        
+        }
+
+         [HttpPost]
+        public async Task<IActionResult> UpdateSecord(Employee employee, int EmployeeId, IFormFile newPhoto )
+        {
+
+            var result = await employeeService.GetEmployeeByID(EmployeeId);
+            if (result != null)
+            {
+
+                ViewData["employeereq"] = result;
+                return View("Userlist");
+                
             }
-            
-            this.Userlist();
+            else
+            {
+              
+              Console.WriteLine("Lỗi không lấy được nhân viên");
+            }
+              try
+            {
+               
+        
+                // Kiểm tra xem newPhoto có dữ liệu mới không
+                if (newPhoto != null && newPhoto.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await newPhoto.CopyToAsync(memoryStream);
+
+                        // Chuyển đổi newPhoto thành mảng byte và cập nhật nhân viên tương ứng
+                       
+                        if (employee != null)
+                        {
+                            employee.Photo = memoryStream.ToArray();
+                            employeeService.UpdateEmployee(employee);
+                           
+                        }
+                        
+                    }
+                } 
+                else
+                {
+                   
+                    if (employee != null)
+                    {
+
+                        employeeService.UpdateEmployee(employee);
+                       
+                    }else
+                    {
+                        Console.WriteLine("Không có thông tin nhân viên");
+                    }
+                   
+
+                }
+            }
+            catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Lỗi: {ex.Message}");
+                }
+
+                return RedirectToAction("Userlist");
+        
+          
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int EmployeeId){
+          
+            if(EmployeeId >0){
+             await   employeeService.DeleteEmployee(EmployeeId);
+                return RedirectToAction("Userlist");
+
+            }else{
+                Console.WriteLine("Delete fail");
+            }
             return View("Userlist");
         }
+
         public IActionResult Error()
         {
             return View("Error!");

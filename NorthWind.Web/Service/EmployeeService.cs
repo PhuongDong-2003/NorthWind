@@ -23,7 +23,7 @@ namespace NorthWind.Web.Service
             _apiUrlsConfiguration = apiUrlsOptions.Value;
         }
 
-        public async void DeleteEmployee(int id)
+        public async Task DeleteEmployee(int id)
         {
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{id}";
             var response = await httpClient.DeleteAsync(apiUrl);
@@ -34,11 +34,11 @@ namespace NorthWind.Web.Service
             }
         }
 
-        public Employee GetEmployeeByID(int employeeId)
+        public async Task<Employee> GetEmployeeByID(int employeeId)
         {
 
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{employeeId}";
-            var response = httpClient.GetFromJsonAsync<Employee>(apiUrl).Result;
+            var response =  await httpClient.GetFromJsonAsync<Employee>(apiUrl);
 
             if (response == null)
             {
@@ -67,27 +67,31 @@ namespace NorthWind.Web.Service
         {
 
             var apiUrl = _apiUrlsConfiguration.EmployeesApiUrl;
-            var result = JsonSerializer.Serialize(employee);
-            var response = await httpClient.PostAsJsonAsync(apiUrl,result);
-
+            // var result = JsonSerializer.Serialize(employee);
+            var response = await httpClient.PostAsJsonAsync(apiUrl,employee);
+            var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception($"Lỗi khi thêm nhân viên: {response.ReasonPhrase}");
-            }
-           
+               Console.WriteLine($"Nội dung phản hồi lỗi: {responseContent}");                              
+                
+            }           
         }
-        public async void UpdateEmployee(int id, Employee employee)
+       
+
+        public async Task UpdateEmployee (Employee employee)
         {
 
-            var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{id}";
+            var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{employee.EmployeeId}";
             var response = await httpClient.PutAsJsonAsync(apiUrl, employee);
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception($"Lỗi khi cập nhật thông tin nhân viên có ID {id}: {response.ReasonPhrase}");
+                throw new Exception($"Lỗi khi cập nhật thông tin nhân viên có ID {employee.EmployeeId}: {response.ReasonPhrase}");
             }
 
         }
+         
+ 
 
     }
 }

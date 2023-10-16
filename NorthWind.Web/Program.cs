@@ -14,7 +14,6 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<UserController>();
 
-
 builder.Services.AddScoped<Print>();
 builder.Services.AddScoped<B>();
 

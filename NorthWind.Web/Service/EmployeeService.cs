@@ -47,22 +47,33 @@ namespace NorthWind.Web.Service
 
             return response;
         }
-
-        public IEnumerable<Employee> GetEmployee()
+        public async Task<EmployeeApiResponse> GetEmployeePage(int page, int pageSize)
         {
 
-            string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
-            var response = httpClient.GetFromJsonAsync<IEnumerable<Employee>>(apiBaseUrl).Result;
+            var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{$"p?page={page}&pageSize={pageSize}"}";
+            var response =  await httpClient.GetFromJsonAsync<EmployeeApiResponse>(apiUrl);
+
             if (response == null)
             {
-
-                throw new Exception("Không thử lấy danh sách nhân viên từ api");
-
+                throw new Exception($"Không thể trả về nhân viên có .");
             }
 
             return response;
         }
+                public IEnumerable<Employee> GetEmployee()
+                {
 
+                    string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
+                    var response = httpClient.GetFromJsonAsync<IEnumerable<Employee>>(apiBaseUrl).Result;
+                    if (response == null)
+                    {
+
+                        throw new Exception("Không thử lấy danh sách nhân viên từ api");
+
+                    }
+
+                    return response;
+                }
         public  async Task InsertEmployee(Employee employee)
         {
 

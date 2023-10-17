@@ -20,7 +20,7 @@ namespace NorthWind.Api.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        [HttpGet]
+        [HttpGet()]
         public IActionResult GetAll()
 
         {
@@ -35,6 +35,34 @@ namespace NorthWind.Api.Controllers
             }
 
 
+
+        }
+
+         [HttpGet("p")]
+        public IActionResult GetEmployee(int page = 1, int pageSize = 10)
+
+        {
+           var employee = _employeeRepository.GetEmployee();
+
+            int totalItems = employee.Count();
+
+        var productsOnPage = employee
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+        var result = new
+        {
+            Page = page,
+            PageSize = pageSize,
+            TotalItems = totalItems,
+            TotalPages = totalPages,
+            Data = productsOnPage
+        };
+
+        return Ok(result);
 
         }
 

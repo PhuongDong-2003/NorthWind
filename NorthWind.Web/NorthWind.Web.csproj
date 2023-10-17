@@ -8,5 +8,8 @@
   <ItemGroup>
     <ProjectReference Include="..\NorthWind.Core\NorthWind.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+
 
 </Project>

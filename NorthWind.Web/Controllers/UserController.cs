@@ -11,11 +11,11 @@ using Microsoft.Extensions.Options;
 using NorthWind.Core.Entity;
 using NorthWind.Web.Models;
 using NorthWind.Web.Service;
-
 namespace NorthWind.Web.Controllers
 {
     public class UserController : Controller
     {
+
         // ví dụ về Di và scope, transient,..
         // private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
         // private readonly HttpClient httpClient;
@@ -32,14 +32,14 @@ namespace NorthWind.Web.Controllers
             this.employeeService = employeeService;
 
         }
-        public async Task<IActionResult> Userlist()
+        public async Task<IActionResult> UserAction(int page=1, int pageSize=5)
 
-        {
-            var result = employeeService.GetEmployee();
-            if (result != null)
+         {
+             var employeeResponse = await employeeService.GetEmployeePage(page, pageSize);
+            if (employeeResponse != null)
             {
 
-                ViewData["employee"] = result;
+                ViewData["employee"] = employeeResponse;
                 return View();
             }
             else
@@ -48,6 +48,13 @@ namespace NorthWind.Web.Controllers
                 return View("Error");
             }
         }
+        public async Task<IActionResult> Userlist(int page=1, int pageSize=5)
+        {
+
+            var employeeResponse = await employeeService.GetEmployeePage(page, pageSize);
+            return View(employeeResponse);
+            
+         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Employee employee, IFormFile photo)
@@ -69,7 +76,7 @@ namespace NorthWind.Web.Controllers
 
                     await employeeService.InsertEmployee(employee);
 
-                    return RedirectToAction("Userlist");
+                    return RedirectToAction("UserAction");
                 }
             }
             catch (Exception ex)
@@ -78,7 +85,7 @@ namespace NorthWind.Web.Controllers
             }
 
 
-            return View("Userlist", employee);
+            return View("UserAction", employee);
         }
        
 
@@ -97,11 +104,10 @@ namespace NorthWind.Web.Controllers
                     {
                         await newPhoto.CopyToAsync(memoryStream);
 
-                       
                         if (employee != null)
                         {
                             employee.Photo = memoryStream.ToArray();
-                           await employeeService.UpdateEmployee(employee);
+                        await employeeService.UpdateEmployee(employee);
                            
                         }
                         
@@ -130,15 +136,12 @@ namespace NorthWind.Web.Controllers
            
            
             }
-
-
-
             catch (Exception ex)
                 {
                     ModelState.AddModelError("", $"Lỗi: {ex.Message}");
                 }
 
-                return RedirectToAction("Userlist");
+                return RedirectToAction("UserAction");
         
         }
 
@@ -151,7 +154,7 @@ namespace NorthWind.Web.Controllers
             {
 
                 ViewData["employeereq"] = result;
-                return View("Userlist");
+                return View("UserAction");
                 
             }
             else
@@ -162,16 +165,12 @@ namespace NorthWind.Web.Controllers
               try
             {
                
-        
-                // Kiểm tra xem newPhoto có dữ liệu mới không
                 if (newPhoto != null && newPhoto.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
                         await newPhoto.CopyToAsync(memoryStream);
 
-                        // Chuyển đổi newPhoto thành mảng byte và cập nhật nhân viên tương ứng
-                       
                         if (employee != null)
                         {
                             employee.Photo = memoryStream.ToArray();
@@ -202,7 +201,7 @@ namespace NorthWind.Web.Controllers
                     ModelState.AddModelError("", $"Lỗi: {ex.Message}");
                 }
 
-                return RedirectToAction("Userlist");
+                return RedirectToAction("UserAction");
         
           
         }
@@ -212,12 +211,12 @@ namespace NorthWind.Web.Controllers
           
             if(EmployeeId >0){
              await   employeeService.DeleteEmployee(EmployeeId);
-                return RedirectToAction("Userlist");
+                return RedirectToAction("UserAction");
 
             }else{
                 Console.WriteLine("Delete fail");
             }
-            return View("Userlist");
+            return View("UserAction");
         }
 
         public IActionResult Error()

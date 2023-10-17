@@ -1,0 +1,831 @@
+@using NorthWind.Core.Entity;
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers;
+@model Employee;
+
+@{
+    ViewData["Title"] = "User Action";
+}
+
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Login.styles.css" asp-append-version="true" />
+     <!--begin::Fonts(mandatory for all pages)-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700">        <!--end::Fonts-->
+    <!--begin::Vendor Stylesheets(used for this page only)-->
+    <link href="/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css">
+    <!--end::Vendor Stylesheets-->
+    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+    <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css">
+    <!--end::Global Stylesheets Bundle-->                    
+    <div class="app-main flex-column flex-row-fluid m-0" id="kt_app_main">
+            <!--begin::Content wrapper-->
+            <div class="d-flex flex-column flex-column-fluid">
+                     
+    <!--begin::Toolbar-->
+    <div id="kt_app_toolbar" class="app-toolbar">
+        </div>
+    <!--end::Toolbar-->                                                       
+    <!--begin::Content-->
+    <div id="kt_app_content" class="app-content ml-10">
+           
+        <!--begin::Content container-->
+        <div id="kt_app_content_container" class="app-container  container-fluid ">
+            <!--begin::Card-->
+<div class="card">
+    <!--begin::Card header-->
+    <div class="card-header border-0 pt-6">
+        <!--begin::Card title-->
+        <div class="card-title">
+            <!--begin::Search-->
+            <div class="d-flex align-items-center position-relative my-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i>                <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search user">
+            </div>
+            <!--end::Search-->
+        </div>
+        <!--begin::Card title-->
+
+        <!--begin::Card toolbar-->
+        <div class="card-toolbar">
+            <!--begin::Toolbar-->
+<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+    <!--begin::Filter-->
+    <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+        <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i>        Filter
+    </button>
+    <!--begin::Menu 1-->
+<div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
+    <!--begin::Header-->
+    <div class="px-7 py-5">
+        <div class="fs-5 text-dark fw-bold">Filter Options</div>
+    </div>
+    <!--end::Header-->
+
+    <!--begin::Separator-->
+    <div class="separator border-gray-200"></div>
+    <!--end::Separator-->
+
+    <!--begin::Content-->
+    <div class="px-7 py-5" data-kt-user-table-filter="form">
+        <!--begin::Input group-->
+        <div class="mb-10">
+            <label class="form-label fs-6 fw-semibold">Role:</label>
+            <select class="form-select form-select-solid fw-bold select2-hidden-accessible" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true" data-select2-id="select2-data-7-0yvj" tabindex="-1" aria-hidden="true" data-kt-initialized="1">
+                <option data-select2-id="select2-data-9-8iav"></option>
+                <option value="Administrator">Administrator</option>
+                <option value="Analyst">Analyst</option>
+                <option value="Developer">Developer</option>
+                <option value="Support">Support</option>
+                <option value="Trial">Trial</option>
+            </select><span class="select2 select2-container select2-container--bootstrap5" dir="ltr" data-select2-id="select2-data-8-kqx6" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single form-select form-select-solid fw-bold" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-76ps-container" aria-controls="select2-76ps-container"><span class="select2-selection__rendered" id="select2-76ps-container" role="textbox" aria-readonly="true" title="Select option"><span class="select2-selection__placeholder">Select option</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Input group-->
+        <div class="mb-10">
+            <label class="form-label fs-6 fw-semibold">Two Step Verification:</label>
+            <select class="form-select form-select-solid fw-bold select2-hidden-accessible" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="two-step" data-hide-search="true" data-select2-id="select2-data-10-hwff" tabindex="-1" aria-hidden="true" data-kt-initialized="1">
+                <option data-select2-id="select2-data-12-d1o5"></option>
+                <option value="Enabled">Enabled</option>
+            </select><span class="select2 select2-container select2-container--bootstrap5" dir="ltr" data-select2-id="select2-data-11-fv21" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single form-select form-select-solid fw-bold" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-6qb2-container" aria-controls="select2-6qb2-container"><span class="select2-selection__rendered" id="select2-6qb2-container" role="textbox" aria-readonly="true" title="Select option"><span class="select2-selection__placeholder">Select option</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+        </div>
+        <!--end::Input group-->
+
+        <!--begin::Actions-->
+        <div class="d-flex justify-content-end">
+            <button type="reset" class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">Reset</button>
+            <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">Apply</button>
+        </div>
+        <!--end::Actions-->
+    </div>
+    <!--end::Content-->
+</div>
+<!--end::Menu 1-->    <!--end::Filter-->
+
+    <!--begin::Export-->
+    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
+        <i class="ki-duotone ki-exit-up fs-2"><span class="path1"></span><span class="path2"></span></i>        Export
+    </button>
+ 
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
+        <i class="ki-duotone ki-plus fs-2"></i>        Add User
+    </button>
+    <!--end::Add user-->
+</div>
+<!--end::Toolbar-->
+
+<!--begin::Group actions-->
+<div class="d-flex justify-content-end align-items-center d-none" data-kt-user-table-toolbar="selected">
+    <div class="fw-bold me-5">
+        <span class="me-2" data-kt-user-table-select="selected_count"></span> Selected
+    </div>
+
+    <button type="button" class="btn btn-danger" data-kt-user-table-select="delete_selected">
+        Delete Selected
+    </button>
+</div>
+<!--end::Group actions-->
+
+<!--begin::Modal - Adjust Balance-->
+<div class="modal fade" id="kt_modal_export_users" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2 class="fw-bold">Export Users</h2>
+                <!--end::Modal title-->
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <!--begin::Form-->
+                <form id="kt_modal_export_users_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="#">
+                    <!--begin::Input group-->
+                    <div class="fv-row mb-10">
+                        <!--begin::Label-->
+                        <label class="fs-6 fw-semibold form-label mb-2">Select Roles:</label>
+                        <!--end::Label-->
+
+                        <!--begin::Input-->
+                        <select name="role" data-control="select2" data-placeholder="Select a role" data-hide-search="true" class="form-select form-select-solid fw-bold select2-hidden-accessible" data-select2-id="select2-data-13-ti09" tabindex="-1" aria-hidden="true" data-kt-initialized="1">
+                            <option data-select2-id="select2-data-15-k9if"></option>
+                            <option value="Administrator">Administrator</option>
+                            <option value="Analyst">Analyst</option>
+                            <option value="Developer">Developer</option>
+                            <option value="Support">Support</option>
+                            <option value="Trial">Trial</option>
+                        </select><span class="select2 select2-container select2-container--bootstrap5" dir="ltr" data-select2-id="select2-data-14-x35j" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single form-select form-select-solid fw-bold" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-role-5u-container" aria-controls="select2-role-5u-container"><span class="select2-selection__rendered" id="select2-role-5u-container" role="textbox" aria-readonly="true" title="Select a role"><span class="select2-selection__placeholder">Select a role</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        <!--end::Input-->
+                    </div>
+                    <!--end::Input group-->
+
+                    <!--begin::Input group-->
+                    <div class="fv-row mb-10 fv-plugins-icon-container">
+                        <!--begin::Label-->
+                        <label class="required fs-6 fw-semibold form-label mb-2">Select Export Format:</label>
+                        <!--end::Label-->
+
+                        <!--begin::Input-->
+                        <select name="format" data-control="select2" data-placeholder="Select a format" data-hide-search="true" class="form-select form-select-solid fw-bold select2-hidden-accessible" data-select2-id="select2-data-16-zlkd" tabindex="-1" aria-hidden="true" data-kt-initialized="1">
+                            <option data-select2-id="select2-data-18-c80h"></option>
+                            <option value="excel">Excel</option>
+                            <option value="pdf">PDF</option>
+                            <option value="cvs">CVS</option>
+                            <option value="zip">ZIP</option>
+                        </select><span class="select2 select2-container select2-container--bootstrap5" dir="ltr" data-select2-id="select2-data-17-90oo" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single form-select form-select-solid fw-bold" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-format-xz-container" aria-controls="select2-format-xz-container"><span class="select2-selection__rendered" id="select2-format-xz-container" role="textbox" aria-readonly="true" title="Select a format"><span class="select2-selection__placeholder">Select a format</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                        <!--end::Input-->
+                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                    <!--end::Input group-->
+
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">
+                            Discard
+                        </button>
+
+                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                            <span class="indicator-label">
+                                Submit
+                            </span>
+                            <span class="indicator-progress">
+                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - New Card-->
+
+<!--begin::Modal - Add task-->
+<div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header" id="kt_modal_add_user_header">
+                <!--begin::Modal title-->
+                <h2 class="fw-bold">Add User</h2>
+                <!--end::Modal title-->
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-icon-primary close" data-kt-users-modal-action="close" aria-label="close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+
+            <!--begin::Modal body-->
+            <div class="modal-body px-5 my-7">
+                <!--begin::Form-->
+                <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" asp-controller="User" asp-action="Create"  method="post" enctype="multipart/form-data" >
+                    <!--begin::Scroll-->
+                    <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px" style="max-height: 116px;">
+                        <!--begin::Input group-->
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">First Name</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="FirstName" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Last Name</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="LastName" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Title</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Title" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">TitleOfCourtesy</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="TitleOfCourtesy" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">BirthDate</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="date" asp-for="BirthDate" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">HireDate</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="date" asp-for="HireDate" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Address</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Address" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">City</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="City" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Region</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Region" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Postal Code</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type ="text" asp-for="PostalCode" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Country</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Country" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Home Phone</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="HomePhone" class="form-control form-control-solid mb-3 mb-lg-0">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Extension</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Extension" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Photo</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="file"  asp-for="Photo"  class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Notes</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Notes" class="form-control form-control-solid mb-3 mb-lg-0"   >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">ReportsTo</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="ReportsTo" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">PhotoPath</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input  asp-for="PhotoPath" class="form-control form-control-solid mb-3 mb-lg-0" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                
+                    </div>
+                    
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                        <!--end::Input group-->
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    <!--end::Scroll-->
+                    <!--begin::Actions-->
+              
+                    <!--end::Actions-->
+                </form>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+                <!--end::Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+
+
+<!--end::Modal - Add task-->        </div>
+        <!--end::Card toolbar-->
+    </div>
+    <!--end::Card header-->
+
+    <!--begin::Card body-->
+    <div class="card-body py-4">
+        
+<!--begin::Table-->
+<div id="kt_table_users_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="table-responsive"><table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="kt_table_users">
+    <thead>
+        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0"><th class="w-10px pe-2 sorting_disabled" rowspan="1" colspan="1" aria-label="
+
+            " style="width: 29.9px;">
+                <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                    <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1">
+                </div>
+                       </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" style="width: 229.575px;">User</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: 139.475px;">Title</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Last login: activate to sort column ascending" style="width: 139.475px;">titleOfCourtesy</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Two-step : activate to sort column ascending" style="width: 139.475px;">ountry </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Joined Date: activate to sort column ascending" style="width: 174.375px;">BirthDate</th><th class="text-end min-w-100px sorting_disabled" rowspan="1" colspan="1" aria-label="Actions" style="width: 111.825px;">Actions</th></tr>
+    </thead>
+    </thead>
+    <tbody id="employeeslist" class="text-gray-600 fw-semibold">
+     @if (ViewData["employee"] != null)
+        {
+            var employeerep = ViewData["employee"] as EmployeeApiResponse;
+            foreach (var employees in employeerep.Data)
+            {
+                <tr class="odd">   
+                   <td>
+                        <div class="form-check form-check-sm form-check-custom form-check-solid">
+                            <input class="form-check-input" type="checkbox" value="1">
+                        </div>
+                    </td>
+                    <td class="d-flex align-items-center">
+                        <!--begin:: Avatar -->
+                        <!--end::Avatar-->
+                        <!--begin::User details-->
+                        <div class="d-flex flex-column">
+                            <a href="#" class="text-gray-800 text-hover-primary mb-1">@(employees.LastName + employees.FirstName)</a>
+                            <span>@employees.Address</span>
+                        </div>
+                        <!--begin::User details-->
+                    </td>
+                    <td>
+                       @employees.Title             </td>
+                    <td >
+                        <div class="badge badge-light fw-bold">@employees.TitleOfCourtesy</div>
+                    </td>
+                    <td>
+                              @employees.Country                        </td>
+                    <td >
+                    @employees.BirthDate
+                                  </td>
+
+                                  
+                    <td class="text-end">
+                            <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"  data-toggle="modal"  data-target="#editEmployeeModal_@employees.EmployeeId"> Update </button>         
+                    </td>
+                    @* <td class="text-end">
+                            
+                                <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-toggle="modal" data-target="#editEmployeeModal_@employees[i].EmployeeId" > Update</button>
+                                            
+                    </td> *@
+                    <td class="text-end">
+                            <form method="post" asp-controller="User" asp-action="Delete">
+                                <input type="hidden" asp-for="EmployeeId" value="@employees.EmployeeId" />
+                                <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" > Delete</button>
+                             </form>                 
+                    </td>
+ </tr>
+
+ <div class="modal fade" id="editEmployeeModal_@employees.EmployeeId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  data-toggle="modal" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Update Employee</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            
+                            <div class="modal-body">
+                                <!-- Form để chỉnh sửa thông tin nhân viên -->
+
+                        <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" asp-controller="User" asp-action="Update"  method="post" enctype="multipart/form-data" >
+
+                        <!--begin::Scroll-->
+   
+                        <!--begin::Input group-->
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <input type="hidden" asp-for="EmployeeId" value="@employees.EmployeeId" />
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">First Name</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="FirstName" class="form-control " value = "@employees.FirstName" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Last Name</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="LastName" class="form-control " value = "@employees.LastName">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Title</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Title" class="form-control " value = "@employees.Title">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                                                <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">TitleOfCourtesy</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="TitleOfCourtesy" class="form-control " value = "@employees.TitleOfCourtesy">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">                            
+                            <label class="required fw-semibold fs-6 mb-2">BirthDate</label>
+                            <input type="text" asp-for="BirthDate" value="@employees.BirthDate.ToString()" class="form-control ">
+                            <br>
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2"> New BirthDate</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="date" asp-for="BirthDate" class="form-control "  >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                        <!--begin::Label-->
+                        <label class="required fw-semibold fs-6 mb-2">HireDate</label>
+                        <!--end::Label-->
+                        <input type="text" asp-for="HireDate" value="@employees.HireDate.ToString()" class="form-control ">
+                        <!--begin::Input-->
+                        <br>
+                        <label class="required fw-semibold fs-6 mb-2">New HireDate</label>
+                        <input type="date" asp-for="HireDate" class="form-control ">
+                        <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Address</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Address" class="form-control " value = "@employees.Address">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">City</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type="text" asp-for="City" class="form-control " value = "@employees.City" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                         <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Region</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" asp-for="Region" class="form-control " value = "@employees.Region">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Postal Code</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type ="text" asp-for="PostalCode" class="form-control " value = "@employees.PostalCode" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Country</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Country" class="form-control " value = "@employees.Country" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Home Phone</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="HomePhone" class="form-control "  value = "@employees.HomePhone">
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Extension</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Extension" class="form-control "  value = "@employees.Extension" >
+                      
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                              <img src="data:image/png;base64,@Convert.ToBase64String(employees.Photo)"  class="img-fluid" name="employeeImage" />
+                             
+                            <div class="fv-row mb-7 fv-plugins-icon-container">
+                                <label class="required fw-semibold fs-6 mb-2">New Photo</label>
+                                <input type="file" name="NewPhoto" class="form-control" />
+                            </div>
+                            <!--end::Label-->
+                            <!--begin::Input-->                          
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">Notes</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="Notes" class="form-control "  value = "@employees.Notes"  >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">ReportsTo</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input type = "text" asp-for="ReportsTo" class="form-control "  value = "@employees.Region" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->                        <!--begin::Input group-->
+                        <div class="fv-row mb-7 fv-plugins-icon-container">
+                            <!--begin::Label-->
+                            <label class="required fw-semibold fs-6 mb-2">PhotoPath</label>
+                            <!--end::Label-->
+
+                            <!--begin::Input-->
+                            <input  asp-for="PhotoPath" class="form-control "  value = "@employees.PhotoPath" >
+                            <!--end::Input-->
+                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+                        <!--end::Input group-->
+                        <button type="submit" class="btn btn-primary">Update</button>
+                         </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              
+            }        
+        
+        }     
+
+    <!--end::Menu item-->
+</div>
+<!--end::Menu-->
+            </tbody>
+</table></div><div class="row"><div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"></div><div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end"><div class="dataTables_paginate paging_simple_numbers" id="kt_table_users_paginate">
+@{
+    var employeerepage = ViewData["employee"] as EmployeeApiResponse;
+}
+@if (employeerepage.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (var i = 1; i <= employeerepage.TotalPages; i++)
+            {
+                <li class="page-item @(i == employeerepage.Page ? "active" : "")">
+                    <a class="page-link" href="/User/UserAction?page=@i&pageSize=@employeerepage.PageSize">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+} </div></div></div></div>
+<!--end::Table-->    </div>
+    <!--end::Card body-->
+</div>
+<!--end::Card-->        </div>
+        <!--end::Content container-->
+    </div>
+<!--end::Content-->	
+    </div>
+                <!--end::Content wrapper-->
+ @Html.Partial("_Footer")
+<!--end::Footer-->                            </div>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/assets/js/scripts.bundle.js"></script>
+<script src="/assets/js/widgets.bundle.js"></script>                 
+            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+           
+        
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+           
+        

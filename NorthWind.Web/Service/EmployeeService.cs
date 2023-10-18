@@ -38,7 +38,7 @@ namespace NorthWind.Web.Service
         {
 
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{employeeId}";
-            var response =  await httpClient.GetFromJsonAsync<Employee>(apiUrl);
+            var response = await httpClient.GetFromJsonAsync<Employee>(apiUrl);
 
             if (response == null)
             {
@@ -51,7 +51,7 @@ namespace NorthWind.Web.Service
         {
 
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{$"p?page={page}&pageSize={pageSize}"}";
-            var response =  await httpClient.GetFromJsonAsync<EmployeeApiResponse>(apiUrl);
+            var response = await httpClient.GetFromJsonAsync<EmployeeApiResponse>(apiUrl);
 
             if (response == null)
             {
@@ -60,36 +60,36 @@ namespace NorthWind.Web.Service
 
             return response;
         }
-                public IEnumerable<Employee> GetEmployee()
-                {
+        public IEnumerable<Employee> GetEmployee()
+        {
 
-                    string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
-                    var response = httpClient.GetFromJsonAsync<IEnumerable<Employee>>(apiBaseUrl).Result;
-                    if (response == null)
-                    {
+            string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
+            var response = httpClient.GetFromJsonAsync<IEnumerable<Employee>>(apiBaseUrl).Result;
+            if (response == null)
+            {
 
-                        throw new Exception("Không thử lấy danh sách nhân viên từ api");
+                throw new Exception("Không thử lấy danh sách nhân viên từ api");
 
-                    }
+            }
 
-                    return response;
-                }
-        public  async Task InsertEmployee(Employee employee)
+            return response;
+        }
+        public async Task InsertEmployee(Employee employee)
         {
 
             var apiUrl = _apiUrlsConfiguration.EmployeesApiUrl;
             // var result = JsonSerializer.Serialize(employee);
-            var response = await httpClient.PostAsJsonAsync(apiUrl,employee);
+            var response = await httpClient.PostAsJsonAsync(apiUrl, employee);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-               Console.WriteLine($"Nội dung phản hồi lỗi: {responseContent}");                              
-                
-            }           
-        }
-       
+                Console.WriteLine($"Nội dung phản hồi lỗi: {responseContent}");
 
-        public async Task UpdateEmployee (Employee employee)
+            }
+        }
+
+
+        public async Task UpdateEmployee(Employee employee)
         {
 
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{employee.EmployeeId}";
@@ -101,8 +101,8 @@ namespace NorthWind.Web.Service
             }
 
         }
-         
- 
+
+
 
     }
 }

@@ -510,7 +510,7 @@
 
                                   
                     <td class="text-end">
-                            <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"  data-toggle="modal"  data-target="#editEmployeeModal_@employees.EmployeeId"> Update </button>         
+                            <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"  data-toggle="modal"  data-target="#editEmployeeModal_@employees.EmployeeId"> Edit </button>         
                     </td>
                     @* <td class="text-end">
                             
@@ -602,7 +602,7 @@
                             <label class="required fw-semibold fs-6 mb-2"> New BirthDate</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="date" asp-for="BirthDate" class="form-control "  >
+                            <input type="date" name="newBirthDate" class="form-control "  >
                             <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <div class="fv-row mb-7 fv-plugins-icon-container">
@@ -613,7 +613,7 @@
                         <!--begin::Input-->
                         <br>
                         <label class="required fw-semibold fs-6 mb-2">New HireDate</label>
-                        <input type="date" asp-for="HireDate" class="form-control ">
+                        <input type="date" name="newHireDate" class="form-control ">
                         <!--end::Input-->
                         <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
                         <!--end::Input group-->
@@ -783,8 +783,7 @@
     </div>
                 <!--end::Content wrapper-->
  @Html.Partial("_Footer")
-<!--end::Footer-->                            </div>
-
+<!--end::Footer-->                            
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -26,13 +26,14 @@ namespace NorthWind.Web.Controllers
         //     _apiUrlsConfiguration = apiUrlsOptions.Value;
         //     print.WriteLine("asdasd");
         // }
+
         private readonly EmployeeService employeeService;
         public UserController(EmployeeService employeeService)
         {
             this.employeeService = employeeService;
 
         }
-        public async Task<IActionResult> UserAction(int page = 1, int pageSize = 5)
+        public async Task<IActionResult> UserForm(int page = 1, int pageSize = 5)
 
         {
             var employeeResponse = await employeeService.GetEmployeePage(page, pageSize);
@@ -62,14 +63,13 @@ namespace NorthWind.Web.Controllers
                     using (var memoryStream = new MemoryStream())
                     {
                         await photo.CopyToAsync(memoryStream);
-
                         photoData = memoryStream.ToArray();
                     }
                     employee.Photo = photoData;
 
                     await employeeService.InsertEmployee(employee);
 
-                    return RedirectToAction("UserAction");
+                    return RedirectToAction("UserForm");
                 }
             }
             catch (Exception ex)
@@ -78,7 +78,7 @@ namespace NorthWind.Web.Controllers
             }
 
 
-            return View("UserAction", employee);
+            return View("UserForm", employee);
         }
 
         [HttpPost]
@@ -88,7 +88,7 @@ namespace NorthWind.Web.Controllers
             {
                 int employeeId = int.Parse(Request.Form["EmployeeId"]);
                 IFormFile newPhoto = Request.Form.Files["NewPhoto"];
-                 DateTime date = default;
+                DateTime date = default;
                 if (newPhoto != null && newPhoto.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
@@ -98,7 +98,6 @@ namespace NorthWind.Web.Controllers
                         if (employee != null)
                         {
                             employee.Photo = memoryStream.ToArray();
-                       
 
                         }
 
@@ -112,10 +111,10 @@ namespace NorthWind.Web.Controllers
                         var existingEmployee = await employeeService.GetEmployeeByID(employee.EmployeeId);
                         if (existingEmployee.Photo != null)
                         {
-                            // Lấy dữ liệu hình ảnh từ nhân viên hiện tại và gán cho nhân viên được chỉnh sửa
+
                             employee.Photo = existingEmployee.Photo;
                         }
-                    
+
 
                     }
                     else
@@ -123,32 +122,30 @@ namespace NorthWind.Web.Controllers
                         Console.WriteLine("Lỗi khi cập nhật tin nhân viên");
                     }
 
-
                 }
 
                 if (newBirthDate != date)
                 {
                     employee.BirthDate = newBirthDate;
-                   
 
                 }
 
                 if (newHireDate != date)
                 {
                     employee.HireDate = newHireDate;
-                 
+
                 }
 
-
-                   await employeeService.UpdateEmployee(employee);
+                await employeeService.UpdateEmployee(employee);
 
             }
+
             catch (Exception ex)
             {
                 ModelState.AddModelError("", $"Lỗi: {ex.Message}");
             }
 
-            return RedirectToAction("UserAction");
+            return RedirectToAction("UserForm");
 
         }
 
@@ -159,14 +156,14 @@ namespace NorthWind.Web.Controllers
             if (EmployeeId > 0)
             {
                 await employeeService.DeleteEmployee(EmployeeId);
-                return RedirectToAction("UserAction");
+                return RedirectToAction("UserForm");
 
             }
             else
             {
                 Console.WriteLine("Delete fail");
             }
-            return View("UserAction");
+            return View("UserForm");
         }
 
 
@@ -191,7 +188,6 @@ namespace NorthWind.Web.Controllers
 
         }
 
-
         [HttpPost]
         public async Task<IActionResult> CreateList(Employee employee, DateTime newBirthDate, DateTime newHireDate)
         {
@@ -207,7 +203,7 @@ namespace NorthWind.Web.Controllers
                 {
                     if (existingEmployee.Photo != null)
                     {
-                        // Lấy dữ liệu hình ảnh từ nhân viên hiện tại và gán cho nhân viên được chỉnh sửa
+
                         employee.Photo = existingEmployee.Photo;
                     }
 
@@ -231,7 +227,7 @@ namespace NorthWind.Web.Controllers
                 }
 
 
-                if (newBirthDate !=date)
+                if (newBirthDate != date)
                 {
                     employee.BirthDate = newBirthDate;
 
@@ -242,7 +238,7 @@ namespace NorthWind.Web.Controllers
 
                     if (existingEmployee.BirthDate != null)
                     {
-                        // Lấy dữ liệu hình ảnh từ nhân viên hiện tại và gán cho nhân viên được chỉnh sửa
+
                         employee.BirthDate = existingEmployee.BirthDate;
                     }
                     else
@@ -252,7 +248,7 @@ namespace NorthWind.Web.Controllers
 
                 }
 
-                if (newHireDate !=date)
+                if (newHireDate != date)
                 {
                     employee.HireDate = newHireDate;
 
@@ -294,7 +290,7 @@ namespace NorthWind.Web.Controllers
                 var existingEmployee = await employeeService.GetEmployeeByID(employee.EmployeeId);
                 int employeeId = int.Parse(Request.Form["EmployeeId"]);
                 IFormFile newPhoto = Request.Form.Files["NewPhoto"];
-          
+
                 if (newPhoto != null && newPhoto.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
@@ -332,7 +328,7 @@ namespace NorthWind.Web.Controllers
                 }
 
                 if (newBirthDate != date)
-         
+
                 {
                     employee.BirthDate = newBirthDate;
 
@@ -369,7 +365,6 @@ namespace NorthWind.Web.Controllers
                         Console.WriteLine("Không có thông tin HireDate");
                     }
 
-
                 }
 
                 await employeeService.UpdateEmployee(employee);
@@ -384,7 +379,6 @@ namespace NorthWind.Web.Controllers
             return RedirectToAction("Userlist");
 
         }
-
 
         [HttpPost]
         public async Task<IActionResult> DeleteList(int EmployeeId)

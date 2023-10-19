@@ -20,10 +20,9 @@ namespace NorthWind.Api.Repository
         }
         public void DeleteEmployee(int id)
         {
+        
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
             SqlConnection connection = new SqlConnection(connectionString);
-
             connection.Open();
             string sqlQuery = "DELETE FROM Employees WHERE EmployeeId = @EmployeeId";
 
@@ -40,7 +39,6 @@ namespace NorthWind.Api.Repository
             {
                 Console.WriteLine("Không tìm thấy nhân viên có EmployeeId tương ứng.");
             }
-
 
 
         }
@@ -187,9 +185,6 @@ namespace NorthWind.Api.Repository
             {
                 Console.WriteLine("Không thể thêm Employee.");
             }
-
-
-
 
         }
 

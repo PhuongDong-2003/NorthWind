@@ -9,6 +9,7 @@ using NorthWind.Api.Repository;
 
 namespace NorthWind.Api.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -34,14 +35,13 @@ namespace NorthWind.Api.Controllers
                 return BadRequest(e.Message);
             }
 
-
-
         }
 
         [HttpGet("p")]
         public IActionResult GetEmployee(int page = 1, int pageSize = 10)
 
         {
+            
             var employee = _employeeRepository.GetEmployee();
 
             int totalItems = employee.Count();
@@ -65,7 +65,7 @@ namespace NorthWind.Api.Controllers
             return Ok(result);
 
         }
-
+  
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -122,6 +122,5 @@ namespace NorthWind.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
     }
 }

@@ -478,7 +478,7 @@
     <tbody id="employeeslist" class="text-gray-600 fw-semibold">
      @if (ViewData["employee"] != null)
         {
-            var employeerep = ViewData["employee"] as EmployeeApiResponse;
+            var employeerep = ViewData["employee"] as EmployeeApiResponsePage;
             foreach (var employees in employeerep.Data)
             {
                 <tr class="odd">   
@@ -758,7 +758,7 @@
             </tbody>
 </table></div><div class="row"><div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"></div><div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end"><div class="dataTables_paginate paging_simple_numbers" id="kt_table_users_paginate">
 @{
-    var employeerepage = ViewData["employee"] as EmployeeApiResponse;
+    var employeerepage = ViewData["employee"] as EmployeeApiResponsePage;
 }
 @if (employeerepage.TotalPages > 1)
 {

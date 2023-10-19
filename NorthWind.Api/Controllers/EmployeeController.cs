@@ -9,7 +9,7 @@ using NorthWind.Api.Repository;
 
 namespace NorthWind.Api.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -38,34 +38,31 @@ namespace NorthWind.Api.Controllers
         }
 
         [HttpGet("p")]
-        public IActionResult GetEmployee(int page = 1, int pageSize = 10)
+        public IActionResult GetEmployee(int page,  int pageSize)
 
         {
-            
-            var employee = _employeeRepository.GetEmployee();
 
-            int totalItems = employee.Count();
-
-            var productsOnPage = employee
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-
-            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-
-            var result = new
+            try
             {
-                Page = page,
-                PageSize = pageSize,
-                TotalItems = totalItems,
-                TotalPages = totalPages,
-                Data = productsOnPage
-            };
 
-            return Ok(result);
+                var employees = _employeeRepository.GetEmployeePaged(page, pageSize);
+
+                if (employees != null)
+                {
+
+                    return Ok(employees);
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
 
         }
-  
+
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {

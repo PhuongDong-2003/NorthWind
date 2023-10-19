@@ -41,11 +41,12 @@ namespace NorthWind.Web.Controllers
             {
 
                 ViewData["employee"] = employeeResponse;
+
                 return View();
             }
             else
             {
-                // Xử lý trường hợp lỗi khi gọi API
+
                 return View("Error");
             }
         }
@@ -74,9 +75,12 @@ namespace NorthWind.Web.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Lỗi: {ex.Message}");
-            }
 
+                if (ex is OutOfMemoryException)
+                {
+                    Console.WriteLine($"Erro: {ex.Message} ");
+                }
+            }
 
             return View("UserForm", employee);
         }
@@ -114,7 +118,6 @@ namespace NorthWind.Web.Controllers
 
                             employee.Photo = existingEmployee.Photo;
                         }
-
 
                     }
                     else
@@ -226,11 +229,9 @@ namespace NorthWind.Web.Controllers
 
                 }
 
-
                 if (newBirthDate != date)
                 {
                     employee.BirthDate = newBirthDate;
-
 
                 }
                 else
@@ -300,8 +301,6 @@ namespace NorthWind.Web.Controllers
                         if (employee != null)
                         {
                             employee.Photo = memoryStream.ToArray();
-
-
                         }
 
                     }
@@ -368,7 +367,6 @@ namespace NorthWind.Web.Controllers
                 }
 
                 await employeeService.UpdateEmployee(employee);
-
 
             }
             catch (Exception ex)

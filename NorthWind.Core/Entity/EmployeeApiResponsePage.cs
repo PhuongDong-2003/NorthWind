@@ -6,7 +6,7 @@ using NorthWind.Core.Entity;
 
 namespace NorthWind.Web.Models
 {
-    public class EmployeeApiResponse
+    public class EmployeeApiResponsePage
     {
     public List<Employee> Data { get; set; }
     public int Page { get; set; }

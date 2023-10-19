@@ -78,7 +78,6 @@ namespace NorthWind.Web.Service
         {
 
             var apiUrl = _apiUrlsConfiguration.EmployeesApiUrl;
-            // var result = JsonSerializer.Serialize(employee);
             var response = await httpClient.PostAsJsonAsync(apiUrl, employee);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)

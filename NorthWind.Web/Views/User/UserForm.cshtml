@@ -767,7 +767,7 @@
             @for (var i = 1; i <= employeerepage.TotalPages; i++)
             {
                 <li class="page-item @(i == employeerepage.Page ? "active" : "")">
-                    <a class="page-link" href="/User/UserAction?page=@i&pageSize=@employeerepage.PageSize">@i</a>
+                    <a class="page-link" href="/User/UserForm?page=@i&pageSize=@employeerepage.PageSize">@i</a>
                 </li>
             }
         </ul>

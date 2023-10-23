@@ -9,5 +9,6 @@ namespace NorthWind.Web.Models
     {
         public const string CONFIG_NAME = "ApiUrls";
         public string EmployeesApiUrl {get;set;}
+        public string CustomerApiUrl {get;set;}
     }
 }

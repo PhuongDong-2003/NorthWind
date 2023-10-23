@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NorthWind.Core.Entity;
-using NorthWind.Web.Models;
+
 
 namespace NorthWind.Api.Repository
 {
@@ -14,7 +14,7 @@ namespace NorthWind.Api.Repository
         public void InsertEmployee(Employee employee);
         public void DeleteEmployee(int id);
         public void UpdateEmployee(Employee employee);
-        public EmployeeApiResponsePage GetEmployeePaged(int page, int pageSize);
+        public IEnumerable<Employee> GetEmployeePaged(int page, int pageSize);
     }
 
 }

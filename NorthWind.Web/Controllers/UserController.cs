@@ -169,7 +169,6 @@ namespace NorthWind.Web.Controllers
             return View("UserForm");
         }
 
-
         //Userlist
         public async Task<IActionResult> Userlist(int page = 1, int pageSize = 5)
         {

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 using NorthWind.Core.Entity;
-using NorthWind.Web.Models;
 
 
 namespace NorthWind.Api.Repository
@@ -42,7 +41,6 @@ namespace NorthWind.Api.Repository
                     Console.WriteLine("Không tìm thấy nhân viên có EmployeeId tương ứng.");
                 }
             }
-
         }
 
         public void Dispose()
@@ -135,10 +133,9 @@ namespace NorthWind.Api.Repository
 
                     return resultList;
                 }
-
-
             }
         }
+
 
         public void InsertEmployee(Employee employee)
         {
@@ -248,7 +245,7 @@ namespace NorthWind.Api.Repository
 
         }
 
-        public EmployeeApiResponsePage GetEmployeePaged(int page, int pageSize)
+        public IEnumerable<Employee> GetEmployeePaged(int page, int pageSize)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             var resultList = new List<Employee>();
@@ -258,19 +255,19 @@ namespace NorthWind.Api.Repository
                 connection.Open();
 
                 string sqlQuery = @"
-            SELECT *
-            FROM Employees
-            ORDER BY EmployeeID
-            ;
-        ";
+                            Select *
+                            from (
+                                SELECT *, ROW_NUMBER() OVER ( ORDER BY EmployeeID) row_num,
+                                    Count(1) OVER () AS TotalRow  
+                                FROM Employees
+                            ) s
+                            where s.row_num between (@page-1)*@pageSize+1 and @pageSize*@page;                                          
+                ";
 
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                 {
-                    int skip = (page - 1) * pageSize;
-                    int take = pageSize;
-
-                    command.Parameters.AddWithValue("@Skip", skip);
-                    command.Parameters.AddWithValue("@Take", take);
+                    command.Parameters.AddWithValue("@page", page);
+                    command.Parameters.AddWithValue("@pageSize", pageSize);
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -295,34 +292,26 @@ namespace NorthWind.Api.Repository
                                 Photo = reader.IsDBNull(reader.GetOrdinal("Photo")) ? null : (byte[])reader["Photo"],
                                 Notes = reader.IsDBNull(reader.GetOrdinal("Notes")) ? null : reader.GetString(reader.GetOrdinal("Notes")),
                                 ReportsTo = reader.IsDBNull(reader.GetOrdinal("ReportsTo")) ? null : (int?)reader.GetInt32(reader.GetOrdinal("ReportsTo")),
-                                PhotoPath = reader.IsDBNull(reader.GetOrdinal("PhotoPath")) ? null : reader.GetString(reader.GetOrdinal("PhotoPath"))
+                                PhotoPath = reader.IsDBNull(reader.GetOrdinal("PhotoPath")) ? null : reader.GetString(reader.GetOrdinal("PhotoPath")),
+                                Page = page,
+                                PageSize = pageSize,
+                                RowNum = reader.GetOrdinal("row_num"),
+                                TotalRow = reader.GetOrdinal("TotalRow"),
+                                TotalPages = (int)Math.Ceiling((double)reader.GetOrdinal("TotalRow") / pageSize)
+
                             };
                             resultList.Add(employee);
                         }
                     }
                 }
-               
-                string countQuery = "SELECT COUNT(*) FROM Employees";
-                using (SqlCommand countCommand = new SqlCommand(countQuery, connection))
-                {
-                    int totalItems = (int)countCommand.ExecuteScalar();
-                    int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
-                    var pagedData = new EmployeeApiResponsePage
-                    {
-                        Data = resultList,
-                        Page = page,
-                        PageSize = pageSize,
-                        TotalItems = totalItems,
-                        TotalPages = totalPages
-                    };
+                return resultList;
 
-                    return pagedData;
-                }
             }
         }
-
     }
 
-
 }
+
+
+

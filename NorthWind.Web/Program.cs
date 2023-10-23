@@ -11,6 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<ApiUrlsConfiguration>(
 builder.Configuration.GetSection(ApiUrlsConfiguration.CONFIG_NAME));
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<UserController>();
 

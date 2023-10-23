@@ -47,11 +47,11 @@ namespace NorthWind.Web.Service
 
             return response;
         }
-        public async Task<EmployeeApiResponse> GetEmployeePage(int page, int pageSize)
+        public async Task<IEnumerable<Employee>> GetEmployeePage(int page, int pageSize)
         {
 
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{$"p?page={page}&pageSize={pageSize}"}";
-            var response = await httpClient.GetFromJsonAsync<EmployeeApiResponse>(apiUrl);
+            var response = await httpClient.GetFromJsonAsync<IEnumerable<Employee>>(apiUrl);
 
             if (response == null)
             {

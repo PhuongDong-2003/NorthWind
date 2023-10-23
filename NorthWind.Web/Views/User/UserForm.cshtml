@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = "User Action";
+    var employeerep = ViewData["employee"] as List<Employee>;
 }
 
 
@@ -478,8 +479,8 @@
     <tbody id="employeeslist" class="text-gray-600 fw-semibold">
      @if (ViewData["employee"] != null)
         {
-            var employeerep = ViewData["employee"] as EmployeeApiResponsePage;
-            foreach (var employees in employeerep.Data)
+           
+            foreach (var employees in employeerep)
             {
                 <tr class="odd">   
                    <td>
@@ -757,22 +758,26 @@
 <!--end::Menu-->
             </tbody>
 </table></div><div class="row"><div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"></div><div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end"><div class="dataTables_paginate paging_simple_numbers" id="kt_table_users_paginate">
-@{
-    var employeerepage = ViewData["employee"] as EmployeeApiResponsePage;
-}
-@if (employeerepage.TotalPages > 1)
+@foreach (var employees in employeerep)     
 {
-    <nav>
-        <ul class="pagination">
-            @for (var i = 1; i <= employeerepage.TotalPages; i++)
-            {
-                <li class="page-item @(i == employeerepage.Page ? "active" : "")">
-                    <a class="page-link" href="/User/UserForm?page=@i&pageSize=@employeerepage.PageSize">@i</a>
-                </li>
-            }
-        </ul>
-    </nav>
-} </div></div></div></div>
+        @if ( employees.TotalPages > 1)
+        {
+            <nav>
+                <ul class="pagination">
+                    @for (var i = 1; i <=  employees.TotalPages; i++)
+                    {
+                        <li class="page-item @(i ==  employees.Page ? "active" : "")">
+                            <a class="page-link" href="/User/UserForm?page=@i&pageSize=@employees.PageSize">@i</a>
+                        </li>
+                        
+                    }
+                </ul>
+            </nav>
+        }
+
+        break;
+} 
+</div></div></div></div>
 <!--end::Table-->    </div>
     <!--end::Card body-->
 </div>

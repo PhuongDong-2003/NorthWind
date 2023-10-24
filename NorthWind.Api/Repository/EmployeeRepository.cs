@@ -136,7 +136,6 @@ namespace NorthWind.Api.Repository
             }
         }
 
-
         public void InsertEmployee(Employee employee)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -295,9 +294,9 @@ namespace NorthWind.Api.Repository
                                 PhotoPath = reader.IsDBNull(reader.GetOrdinal("PhotoPath")) ? null : reader.GetString(reader.GetOrdinal("PhotoPath")),
                                 Page = page,
                                 PageSize = pageSize,
-                                RowNum = reader.GetOrdinal("row_num"),
-                                TotalRow = reader.GetOrdinal("TotalRow"),
-                                TotalPages = (int)Math.Ceiling((double)reader.GetOrdinal("TotalRow") / pageSize)
+                                RowNum = reader.GetInt64(reader.GetOrdinal("row_num")),
+                                TotalRow = reader.GetInt32(reader.GetOrdinal("TotalRow")) ,
+                                TotalPages = (int)Math.Ceiling((double) reader.GetInt32(reader.GetOrdinal("TotalRow")) / pageSize)
 
                             };
                             resultList.Add(employee);

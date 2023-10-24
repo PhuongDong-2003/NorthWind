@@ -106,8 +106,8 @@ namespace NorthWind.Web.Controllers
             {
                 Console.WriteLine("Delete fail");
             }
-             return View("CustomerList");
-        }          
+            return View("CustomerList");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -18,9 +18,10 @@ namespace NorthWind.Core.Entity
         public string? Country { set; get; }
         public string? Phone { set; get; }
         public string? Fax { set; get; }
+        public bool Status {set; get;}
         public int Page { get; set; }
         public int PageSize { get; set; }
-        public int RowNum { get; set; }
+        public long RowNum { get; set; }
         public int TotalRow { get; set; }
         public int TotalPages { get; set; }
     }

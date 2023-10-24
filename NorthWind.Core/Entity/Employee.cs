@@ -62,9 +62,9 @@ namespace NorthWind.Core.Entity
         public string? PhotoPath { get; set; }
         public int Page {get; set;} 
         public int PageSize {get; set;} 
-        public int RowNum {get; set;}
-        public int TotalRow{get; set;}
-        public int TotalPages {get; set;}
+        public long RowNum { get; set; }
+        public int TotalRow { get; set; }
+        public int TotalPages { get; set; }
         
     }
 }

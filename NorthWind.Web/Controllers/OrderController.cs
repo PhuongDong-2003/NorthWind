@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NorthWind.Core.Entity;
 using NorthWind.Web.Service;
 
 namespace NorthWind.Web.Controllers
@@ -27,7 +28,7 @@ namespace NorthWind.Web.Controllers
             return View();
 
         }
-    [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Edit(int OrderID)
         {
 
@@ -52,212 +53,210 @@ namespace NorthWind.Web.Controllers
 
         }
 
-        // [HttpPost]
-        // public async Task<IActionResult> Create(Employee employee, DateTime newBirthDate, DateTime newHireDate)
-        // {
+        [HttpPost]
+        public async Task<IActionResult> CreateForm(Order order, DateTime newOrderDate, DateTime newRequiredDate, DateTime newShippedDate)
+        {
 
-        //     try
-        //     {
-        //         DateTime date = default;
-        //         var existingEmployee = await _employeeService.GetEmployeeByID(employee.EmployeeId);
-        //         int employeeId = int.Parse(Request.Form["EmployeeId"]);
-        //         IFormFile newPhoto = Request.Form.Files["NewPhoto"];
+            try
+            {
+                DateTime date = default;
+                var existingOrder = await _orderService.GetOrderByID(order.OrderID);
+                // int employeeId = int.Parse(Request.Form["EmployeeId"]);
 
-        //         if (newPhoto == null)
-        //         {
-        //             if (existingEmployee.Photo != null)
-        //             {
+                if (newOrderDate != date)
+                {
+                    order.OrderDate = newOrderDate;
 
-        //                 employee.Photo = existingEmployee.Photo;
-        //             }
-        //         }
-        //         else
-        //         {
-        //             using (var memoryStream = new MemoryStream())
-        //             {
-        //                 await newPhoto.CopyToAsync(memoryStream);
+                }
+                else
+                {
 
-        //                 if (employee != null)
-        //                 {
-        //                     employee.Photo = memoryStream.ToArray();
+                    if (existingOrder.OrderDate != null)
+                    {
 
-        //                 }
+                        order.OrderDate = existingOrder.OrderDate;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Không có thông tin OrderDate");
+                    }
 
-        //             }
+                }
 
+                if (newRequiredDate != date)
+                {
+                    order.RequiredDate = newRequiredDate;
 
-        //         }
+                }
+                else
+                {
 
-        //         if (newBirthDate != date)
-        //         {
-        //             employee.BirthDate = newBirthDate;
-
-        //         }
-        //         else
-        //         {
-
-        //             if (existingEmployee.BirthDate != null)
-        //             {
-
-        //                 employee.BirthDate = existingEmployee.BirthDate;
-        //             }
-        //             else
-        //             {
-        //                 Console.WriteLine("Không có thông tin BirthDate");
-        //             }
-
-        //         }
-
-        //         if (newHireDate != date)
-        //         {
-        //             employee.HireDate = newHireDate;
-
-        //         }
-        //         else
-        //         {
-
-        //             if (existingEmployee.HireDate != null)
-        //             {
-        //                 employee.HireDate = existingEmployee.HireDate;
-        //             }
-        //             else
-        //             {
-        //                 Console.WriteLine("Không có thông tin HireDate");
-        //             }
+                    if (existingOrder.RequiredDate != null)
+                    {
+                        order.RequiredDate = existingOrder.RequiredDate;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Không có thông tin RequiredDate");
+                    }
 
 
-        //         }
+                }
 
-        //         await _employeeService.InsertEmployee(employee);
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         ModelState.AddModelError("", $"Lỗi: {ex.Message}");
-        //     }
+                if (newShippedDate != date)
+                {
+                    order.ShippedDate = newShippedDate;
 
-        //     int page = 1;
-        //     int pageSize = 5;
-        //     await this.Userlist(page, pageSize);
-        //     return View("Userlist", employee);
-        // }
+                }
+                else
+                {
 
-        // [HttpPost]
-        // public async Task<IActionResult> UpdateList(Employee employee, DateTime newBirthDate, DateTime newHireDate)
-        // {
-        //     try
-        //     {
-        //         DateTime date = default;
-        //         var existingEmployee = await _employeeService.GetEmployeeByID(employee.EmployeeId);
-        //         int employeeId = int.Parse(Request.Form["EmployeeId"]);
-        //         IFormFile newPhoto = Request.Form.Files["NewPhoto"];
+                    if (existingOrder.ShippedDate != null)
+                    {
+                        order.ShippedDate = existingOrder.ShippedDate;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Không có thông tin RequiredDate");
+                    }
 
-        //         if (newPhoto != null && newPhoto.Length > 0)
-        //         {
-        //             using (var memoryStream = new MemoryStream())
-        //             {
-        //                 await newPhoto.CopyToAsync(memoryStream);
 
-        //                 if (employee != null)
-        //                 {
-        //                     employee.Photo = memoryStream.ToArray();
-        //                 }
+                }
 
-        //             }
+                await _orderService.InsertOrder(order);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Lỗi: {ex.Message}");
+            }
 
-        //         }
-        //         else
-        //         {
+            int page = 1;
+            int pageSize = 5;
+            await Order(page, pageSize);
+            return View("Order", order);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Order order)
+        {
 
-        //             if (employee != null)
-        //             {
+            try
+            {
 
-        //                 if (existingEmployee.Photo != null)
-        //                 {
-        //                     // Lấy dữ liệu hình ảnh từ nhân viên hiện tại và gán cho nhân viên được chỉnh sửa
-        //                     employee.Photo = existingEmployee.Photo;
-        //                 }
 
-        //             }
-        //             else
-        //             {
-        //                 Console.WriteLine("Lỗi khi cập nhật tin nhân viên");
-        //             }
+                await _orderService.InsertOrder(order);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Lỗi: {ex.Message}");
+            }
 
-        //         }
+            int page = 1;
+            int pageSize = 5;
+            await Order(page, pageSize);
+            return View("Order", order);
+        }
 
-        //         if (newBirthDate != date)
+        [HttpPost]
+        public async Task<IActionResult> Update(Order order, DateTime newOrderDate, DateTime newRequiredDate, DateTime newShippedDate)
+        {
+            try
+            {
+                DateTime date = default;
+                var existingOrder = await _orderService.GetOrderByID(order.OrderID);
+                // int employeeId = int.Parse(Request.Form["EmployeeId"]);
 
-        //         {
-        //             employee.BirthDate = newBirthDate;
+                if (newOrderDate != date)
+                {
+                    order.OrderDate = newOrderDate;
 
-        //         }
-        //         else
-        //         {
+                }
+                else
+                {
 
-        //             if (existingEmployee.BirthDate != null)
-        //             {
-        //                 // Lấy dữ liệu hình ảnh từ nhân viên hiện tại và gán cho nhân viên được chỉnh sửa
-        //                 employee.BirthDate = existingEmployee.BirthDate;
-        //             }
-        //             else
-        //             {
-        //                 Console.WriteLine("Không có thông tin BirthDate");
-        //             }
+                    if (existingOrder.OrderDate != null)
+                    {
 
-        //         }
+                        order.OrderDate = existingOrder.OrderDate;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Không có thông tin OrderDate");
+                    }
 
-        //         if (newHireDate != date)
-        //         {
-        //             employee.HireDate = newHireDate;
+                }
 
-        //         }
-        //         else
-        //         {
+                if (newRequiredDate != date)
+                {
+                    order.RequiredDate = newRequiredDate;
 
-        //             if (existingEmployee.HireDate != null)
-        //             {
-        //                 employee.HireDate = existingEmployee.HireDate;
-        //             }
-        //             else
-        //             {
-        //                 Console.WriteLine("Không có thông tin HireDate");
-        //             }
+                }
+                else
+                {
 
-        //         }
+                    if (existingOrder.RequiredDate != null)
+                    {
+                        order.RequiredDate = existingOrder.RequiredDate;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Không có thông tin RequiredDate");
+                    }
 
-        //         await _employeeService.UpdateEmployee(employee);
 
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         ModelState.AddModelError("", $"Lỗi: {ex.Message}");
-        //     }
+                }
 
-        //     return RedirectToAction("Userlist");
+                if (newShippedDate != date)
+                {
+                    order.ShippedDate = newShippedDate;
 
-        // }
+                }
+                else
+                {
 
-        // [HttpPost]
-        // public async Task<IActionResult> DeleteList(int EmployeeId)
-        // {
+                    if (existingOrder.ShippedDate != null)
+                    {
+                        order.ShippedDate = existingOrder.ShippedDate;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Không có thông tin RequiredDate");
+                    }
 
-        //     if (EmployeeId > 0)
-        //     {
-        //         await _employeeService.DeleteEmployee(EmployeeId);
-        //         return RedirectToAction("Userlist");
 
-        //     }
-        //     else
-        //     {
-        //         Console.WriteLine("Delete fail");
-        //     }
-        //     return View("Userlist");
-        // }
+                }
 
-        // public IActionResult Error()
-        // {
-        //     return View("Error!");
-        // }
+                await _orderService.UpdateOrder(order);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Lỗi: {ex.Message}");
+            }
+
+            return RedirectToAction("Order");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int OrderID)
+        {
+
+            if (OrderID > 0)
+            {
+                await _orderService.DeleteOrder(OrderID);
+                return RedirectToAction("Order");
+
+            }
+            else
+            {
+                Console.WriteLine("Delete fail");
+            }
+            return View("Order");
+        }
+
+        public IActionResult Error()
+        {
+            return View("Error!");
+        }
 
 
     }

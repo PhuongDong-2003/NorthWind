@@ -92,7 +92,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Update Employee</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Details Product</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -173,17 +173,18 @@
                             <br>                
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="checkbox"   id="discontinuedCheckbox" value="@product.Discontinued">
+                            <input type="checkbox" asp-for="Discontinued"   id="discontinuedCheckbox(@product.ProductID)" value="@product.Discontinued"/>
                             <!--end::Input-->
                         <script>
                                 document.addEventListener("DOMContentLoaded", function() {
-                                var checkbox = document.getElementById("discontinuedCheckbox");
+                                var checkbox = document.getElementById("discontinuedCheckbox(@product.ProductID)");
                                 var modelValue = @Json.Serialize(product.Discontinued); 
                                 checkbox.checked = modelValue;
+                                console.log(checkbox);
                             });
                         </script>
 
-            </div>
+                        </div>
 
                         <!--end::Input group-->
 
@@ -192,7 +193,8 @@
                      </div>
                     
                    
-                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8GxemYOtrGxHrjtI4Yo-ggHcKkBF6uQxLfb23jWCvpoycY2dJiY_KxP0X0YiKSV07YkoahJ9KyIQx7YL496nmELPfthBCffe4_ubbFqrQsPqgMJw8PCFpwf64sa36vqw8QTE5uZw1jUmboGdFGr4CUQ"><input name="Discontinued" type="hidden" value="false"></form> 
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8GxemYOtrGxHrjtI4Yo-ggHcKkBF6uQxLfb23jWCvpoycY2dJiY_KxP0X0YiKSV07YkoahJ9KyIQx7YL496nmELPfthBCffe4_ubbFqrQsPqgMJw8PCFpwf64sa36vqw8QTE5uZw1jUmboGdFGr4CUQ"><input name="Discontinued" type="hidden" value="false">
+                </form> 
                 <!--end::Form-->
             </div>
             <div class="modal-footer">

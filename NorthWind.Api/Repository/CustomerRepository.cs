@@ -146,7 +146,7 @@ namespace NorthWind.Api.Repository
                                 PostalCode = @PostalCode,
                                 Country = @Country, 
                                 Phone = @Phone, 
-                                Fax = @Fax
+                                Fax = @Fax,
                                 Status = @Status
                                 WHERE CustomerID = @CustomerID";
                 SqlCommand command = new SqlCommand(sqlQuery, connection);
@@ -160,7 +160,7 @@ namespace NorthWind.Api.Repository
                 command.Parameters.AddWithValue("@Country", customer.Country ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@Phone", customer.Phone ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@Fax", customer.Fax ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@Status", true);
+                command.Parameters.AddWithValue("@Status", false);
                 int rowsAffected = command.ExecuteNonQuery();
                 if (rowsAffected > 0)
                 {

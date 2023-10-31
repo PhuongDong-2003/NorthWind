@@ -13,6 +13,8 @@ builder.Configuration.GetSection(ApiUrlsConfiguration.CONFIG_NAME));
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<UserController>();
 
 builder.Services.AddScoped<Print>();

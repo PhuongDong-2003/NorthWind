@@ -27,21 +27,19 @@ namespace NorthWind.Web.Controllers
         //     print.WriteLine("asdasd");
         // }
 
-        private readonly EmployeeService employeeService;
+        private readonly EmployeeService _employeeService;
         public UserController(EmployeeService employeeService)
         {
-            this.employeeService = employeeService;
+            _employeeService = employeeService;
 
         }
         public async Task<IActionResult> UserForm(int page = 1, int pageSize = 5)
-
         {
-            var employeeResponse = await employeeService.GetEmployeePage(page, pageSize);
+            var employeeResponse = await _employeeService.GetEmployeePage(page, pageSize);
             if (employeeResponse != null)
             {
 
                 ViewData["employee"] = employeeResponse;
-
                 return View();
             }
             else
@@ -68,7 +66,7 @@ namespace NorthWind.Web.Controllers
                     }
                     employee.Photo = photoData;
 
-                    await employeeService.InsertEmployee(employee);
+                    await _employeeService.InsertEmployee(employee);
 
                     return RedirectToAction("UserForm");
                 }
@@ -112,7 +110,7 @@ namespace NorthWind.Web.Controllers
 
                     if (employee != null)
                     {
-                        var existingEmployee = await employeeService.GetEmployeeByID(employee.EmployeeId);
+                        var existingEmployee = await _employeeService.GetEmployeeByID(employee.EmployeeId);
                         if (existingEmployee.Photo != null)
                         {
 
@@ -139,7 +137,7 @@ namespace NorthWind.Web.Controllers
 
                 }
 
-                await employeeService.UpdateEmployee(employee);
+                await _employeeService.UpdateEmployee(employee);
 
             }
 
@@ -158,7 +156,7 @@ namespace NorthWind.Web.Controllers
 
             if (EmployeeId > 0)
             {
-                await employeeService.DeleteEmployee(EmployeeId);
+                await _employeeService.DeleteEmployee(EmployeeId);
                 return RedirectToAction("UserForm");
 
             }
@@ -173,7 +171,7 @@ namespace NorthWind.Web.Controllers
         public async Task<IActionResult> Userlist(int page = 1, int pageSize = 5)
         {
 
-            var employeeResponse = await employeeService.GetEmployeePage(page, pageSize);
+            var employeeResponse = await _employeeService.GetEmployeePage(page, pageSize);
             ViewData["employeerep"] = employeeResponse;
             return View();
 
@@ -181,7 +179,7 @@ namespace NorthWind.Web.Controllers
         public async Task<IActionResult> Edit(int EmployeeId)
         {
 
-            var employee = await employeeService.GetEmployeeByID(EmployeeId);
+            var employee = await _employeeService.GetEmployeeByID(EmployeeId);
             ViewData["employee"] = employee;
             int page = 1;
             int pageSize = 5;
@@ -197,7 +195,7 @@ namespace NorthWind.Web.Controllers
             try
             {
                 DateTime date = default;
-                var existingEmployee = await employeeService.GetEmployeeByID(employee.EmployeeId);
+                var existingEmployee = await _employeeService.GetEmployeeByID(employee.EmployeeId);
                 int employeeId = int.Parse(Request.Form["EmployeeId"]);
                 IFormFile newPhoto = Request.Form.Files["NewPhoto"];
 
@@ -208,8 +206,6 @@ namespace NorthWind.Web.Controllers
 
                         employee.Photo = existingEmployee.Photo;
                     }
-
-
                 }
                 else
                 {
@@ -268,7 +264,7 @@ namespace NorthWind.Web.Controllers
 
                 }
 
-                await employeeService.InsertEmployee(employee);
+                await _employeeService.InsertEmployee(employee);
             }
             catch (Exception ex)
             {
@@ -287,7 +283,7 @@ namespace NorthWind.Web.Controllers
             try
             {
                 DateTime date = default;
-                var existingEmployee = await employeeService.GetEmployeeByID(employee.EmployeeId);
+                var existingEmployee = await _employeeService.GetEmployeeByID(employee.EmployeeId);
                 int employeeId = int.Parse(Request.Form["EmployeeId"]);
                 IFormFile newPhoto = Request.Form.Files["NewPhoto"];
 
@@ -365,7 +361,7 @@ namespace NorthWind.Web.Controllers
 
                 }
 
-                await employeeService.UpdateEmployee(employee);
+                await _employeeService.UpdateEmployee(employee);
 
             }
             catch (Exception ex)
@@ -383,7 +379,7 @@ namespace NorthWind.Web.Controllers
 
             if (EmployeeId > 0)
             {
-                await employeeService.DeleteEmployee(EmployeeId);
+                await _employeeService.DeleteEmployee(EmployeeId);
                 return RedirectToAction("Userlist");
 
             }

@@ -15,7 +15,6 @@ namespace NorthWind.Web.Service
         private readonly HttpClient httpClient;
         private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
 
-
         public EmployeeService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
         {
 

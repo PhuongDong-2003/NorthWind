@@ -13,16 +13,16 @@ namespace NorthWind.Web.Controllers
 
     public class CustomerController : Controller
     {
-        private readonly CustomerService customerService;
+        private readonly CustomerService _customerService;
         public CustomerController(CustomerService customerService)
         {
-            this.customerService = customerService;
+            _customerService = customerService;
 
         }
 
         public async Task<IActionResult> CustomerList(int page = 1, int pageSize = 5)
         {
-            var customerResponse = await customerService.GetCustomerPage(page, pageSize);
+            var customerResponse = await _customerService.GetCustomerPage(page, pageSize);
             if (customerResponse != null)
             {
 
@@ -40,7 +40,7 @@ namespace NorthWind.Web.Controllers
         public async Task<IActionResult> Edit(string CustomerID)
         {
 
-            var customer = await customerService.GetCustomerByID(CustomerID);
+            var customer = await _customerService.GetCustomerByID(CustomerID);
             ViewData["customer"] = customer;
             int page = 1;
             int pageSize = 5;
@@ -55,7 +55,7 @@ namespace NorthWind.Web.Controllers
 
             try
             {
-                await customerService.InsertCustomer(customer);
+                await _customerService.InsertCustomer(customer);
                 int page = 1;
                 int pageSize = 5;
                 await CustomerList(page, pageSize);
@@ -77,7 +77,7 @@ namespace NorthWind.Web.Controllers
 
             try
             {
-                await customerService.UpdateCustomer(customer);
+                await _customerService.UpdateCustomer(customer);
 
 
             }
@@ -98,7 +98,7 @@ namespace NorthWind.Web.Controllers
 
             if (CustomerID != null)
             {
-                await customerService.DeleteCustomer(CustomerID);
+                await _customerService.DeleteCustomer(CustomerID);
                 return RedirectToAction("CustomerList");
 
             }

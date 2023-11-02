@@ -25,8 +25,8 @@ namespace NorthWind.Api.Controllers
         {
             try
             {
-                var employee = _customerRepository.GetCustomer();
-                return Ok(employee);
+                var customer = _customerRepository.GetCustomer();
+                return Ok(customer);
             }
             catch (Exception e)
             {
@@ -39,12 +39,12 @@ namespace NorthWind.Api.Controllers
         public IActionResult GetById(string  id)
         {
 
-            var employee = _customerRepository.GetCustomerByID(id);
-            if (employee == null)
+            var customer = _customerRepository.GetCustomerByID(id);
+            if (customer == null)
             {
                 return NotFound();
             }
-            return Ok(employee);
+            return Ok(customer);
         }
 
                 [HttpPost]
@@ -93,20 +93,20 @@ namespace NorthWind.Api.Controllers
             }
         }
 
-         [HttpGet("p")]
-        public IActionResult GetEmployee(int page,  int pageSize)
+        [HttpGet("p")]
+        public IActionResult GetCustomer(int page,  int pageSize)
 
         {
 
             try
             {
 
-                var employees = _customerRepository.GetCustomerPaged(page, pageSize);
+                var customer = _customerRepository.GetCustomerPaged(page, pageSize);
 
-                if (employees != null)
+                if (customer != null)
                 {
 
-                    return Ok(employees);
+                    return Ok(customer);
                 }
 
                 return NotFound();

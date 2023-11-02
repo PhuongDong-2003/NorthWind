@@ -1,0 +1,65 @@
+@using NorthWind.Core.Entity;
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers;
+@model Account;
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+<div class="content">
+    <div class="container">
+      <div class="row justify-content-center">
+        <!-- <div class="col-md-6 order-md-2">
+          <img src="images/undraw_file_sync_ot38.svg" alt="Image" class="img-fluid">
+        </div> -->
+        <div class="col-md-6 contents">
+          <div class="row justify-content-center">
+            <div class="col-md-12">
+              <div class="form-block">
+                  <div class="mb-4">
+                  <h3>Sign In 
+                  <br>
+                   <h3>@ViewData["ValidateMessage"]</h3> 
+                </div>
+                <form  asp-asp-controller ="Account" action="CheckLogin" method="post">
+                <div class="form-group">
+                  <label for="exampleInputPassword1" class="mt-5">User Name</label>
+                  <input type="text"   asp-for= "UserName" class="form-control" id="exampleInputPassword1" placeholder="UserName">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1" class="mt-5">Password</label>
+                  <input type="password" asp-for = "PassWord" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                  <div class="d-flex mb-5 align-items-center">
+                 
+                   <label class="control control--checkbox mt-5"><span class="caption">Remember me</span>
+                      <input type="checkbox" checked="checked" name ="staus"/>
+                      <div class="control__indicator"></div>
+                    </label>
+                  </div>
+
+                  <input type="submit" value="Log In" class="btn btn-pill text-white btn-block btn-primary">
+
+                  <span class="d-block text-center my-4 text-muted"> or sign in with</span>
+                  
+                  <div class="social-login text-center">
+                    <a href="#" class="facebook">
+                      <span class="icon-facebook mr-3"></span> 
+                    </a>
+                    <a href="#" class="twitter">
+                      <span class="icon-twitter mr-3"></span> 
+                    </a>
+                    <a href="#" class="google">
+                      <span class="icon-google mr-3"></span> 
+                    </a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>

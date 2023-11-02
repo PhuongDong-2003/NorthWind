@@ -34,6 +34,20 @@ namespace NorthWind.Shop.Service
             return response;
         }
 
+        public async Task<Product> GetByID(int ProductID)
+        {
+
+            var apiUrl = $"{_apiUrlsConfiguration.ProductApiUrl}/{ProductID}";
+            var response = await httpClient.GetFromJsonAsync<Product>(apiUrl);
+
+            if (response == null)
+            {
+                throw new Exception($"Không thể trả về nhân viên.");
+            }
+
+            return response;
+        }
+
        
     }
 }

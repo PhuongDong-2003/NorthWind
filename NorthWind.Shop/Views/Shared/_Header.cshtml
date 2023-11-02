@@ -9,10 +9,14 @@
         <!--end::Sidebar mobile toggle-->
 
         <!--begin::Logo-->
-        <a href="/saul-html-free/index.html" class="app-sidebar-logo">
+        <form  asp-controller="Home" asp-action="Reset" method="post">
+        <button  type="hidden" style="color:#f8f2ec " class="btn">
+ 
             <img alt="Logo" src="/assets/media/logos/default.svg" class="h-30px theme-light-show">
             <img alt="Logo" src="/assets/media/logos/default-dark.svg" class="h-30px theme-dark-show">
-        </a>
+    
+        </button>
+        </form>
         <!--end::Logo-->
 
         <!--begin::Sidebar toggle-->
@@ -1522,10 +1526,20 @@
         <!--begin::User menu-->
         <div class="app-navbar-item ms-3 ms-lg-4 me-lg-2" id="kt_header_user_menu_toggle">
             <!--begin::Menu wrapper-->
-            <div class="cursor-pointer symbol symbol-30px symbol-lg-40px"
-                data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
-                data-kt-menu-placement="bottom-end">
-                <img src="/assets/media/avatars/300-2.jpg" alt="user">
+            <div class="cursor-pointer symbol symbol-30px symbol-lg-40px">
+            
+                @if (!Context.User.Identity.IsAuthenticated)
+                {
+                  
+                    <a asp-controller="Account" asp-action="Login" >
+                        Login
+                    </a>
+                }
+                else 
+                {
+                    <p>@(Context.User.Identity.Name)</p>
+                }
+               
             </div>
 
             <!--begin::User account menu-->

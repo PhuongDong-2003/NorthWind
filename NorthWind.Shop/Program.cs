@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using NorthWind.Shop.Models;
 using NorthWind.Shop.Service;
 
@@ -8,6 +9,13 @@ builder.Services.Configure<ApiUrlsConfiguration>(
 builder.Configuration.GetSection(ApiUrlsConfiguration.CONFIG_NAME));
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<AccountService>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    options.LoginPath = "/Account/CheckLogin";
+  
+});
 var app = builder.Build();
 
 
@@ -24,8 +32,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -75,108 +75,24 @@
                     <td>@product.QuantityPerUnit</td>                        
                     <td>@product.UnitPrice</td>
                     <td >
-                        <form asp-controller="Cart" asp-action="AddCart"><button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"   data-target="#editProductModal_@product.ProductID">Add To Cart </button>
+                        <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"  id= "AddToCart" type="button" >Add To Cart </button>
                         <input type= "hidden" value="@product.ProductID" name = "productId">
-                        </form>
 
                     </td>                                              
                 </tr>
-
+    @if(ViewData["messAddCart"]!=null)
+    {
              <div class="modal fade" id="editProductModal_@product.ProductID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  data-toggle="modal" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <form asp-asp-controller = "Cart" asp-action="Cart">
-                                <h5 class="modal-title" id="exampleModalLabel">Add Cart</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">@ViewData["messAddCart"]</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                                 </form>
-
                             </div>
-                <div class="modal-body px-5 my-7">
-                <!--begin::Form-->
-                 <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" method="post" enctype="multipart/form-data" action="/Product/Create">
-                    <!--begin::Scroll-->
-                    <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px" style="max-height: 415px;">
-                        <!--begin::Input group-->
-                        <!--end::Input group-->
-
-                        <!--begin::Input group-->
-                        <div>
-                        <input type="hidden" data-val="true" data-val-required="The ProductID field is required." id="ProductID" name="ProductID" value="">
-                        <!--begin::Label-->
-                        <label class="required fw-semibold fs-6 mb-2">Product Name</label>
-                        <input type="text" class="form-control " id="ProductName" name="ProductName" value="@product.ProductName">
-                        <!--end::Input-->
-                        </div>
-                       
-                        <div>
-                            <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-2">QuantityPerUnit</label>
-                            <!--end::Label-->
-
-                            <!--begin::Input-->
-                            <input type="text" class="form-control " id="QuantityPerUnit" name="QuantityPerUnit" value="@product.QuantityPerUnit">
-                            <!--end::Input-->
-                        </div>
-                        <div>                                   
-                            <label class="required fw-semibold fs-6 mb-2">UnitPrice</label>
-                            <input type="text" class="form-control" data-val="true" data-val-number="The field UnitPrice must be a number." id="UnitPrice" name="UnitPrice" value="@product.UnitPrice">
-                            <br>       
-                        </div>
-
-                        <div>
-                        <label class="required fw-semibold fs-6 mb-2">UnitsInStock</label>
-                        <input type="text" class="form-control" id="UnitsInStock" name="UnitsInStock" value="@product.UnitsInStock">
-                        </div>
-                        
-                        <div>
-                            <label class="required fw-semibold fs-6 mb-2">UnitsOnOrder</label>
-                            <input type="text" class="form-control" id="UnitsOnOrder" name="UnitsOnOrder" value="@product.UnitsOnOrder">
-                            <!--end::Input-->
-                        </div>
-                        <div>
-                            <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-2">ReorderLevel</label>
-                            <!--end::Label-->
-
-                            <!--begin::Input-->
-                            <input type="text" class="form-control " id="ReorderLevel" name="ReorderLevel" value="@product.ReorderLevel">
-                            <!--end::Input-->
-                        </div>
-                    
-                        <div class="fv-row mb-7 fv-plugins-icon-container">
-
-                            <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-5 mt-5">Discontinued</label>  
-                            <br>                
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <input type="checkbox" asp-for="Discontinued"   id="discontinuedCheckbox(@product.ProductID)" value="@product.Discontinued"/>
-                            <!--end::Input-->
-                        <script>
-                                document.addEventListener("DOMContentLoaded", function() {
-                                var checkbox = document.getElementById("discontinuedCheckbox(@product.ProductID)");
-                                var modelValue = @Json.Serialize(product.Discontinued); 
-                                checkbox.checked = modelValue;
-                                console.log(checkbox);
-                            });
-                        </script>
-
-                        </div>
-
-                        <!--end::Input group-->
-
-
-                        <!--end::Input group-->
-                     </div>
-                    
-                   
-                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8GxemYOtrGxHrjtI4Yo-ggHcKkBF6uQxLfb23jWCvpoycY2dJiY_KxP0X0YiKSV07YkoahJ9KyIQx7YL496nmELPfthBCffe4_ubbFqrQsPqgMJw8PCFpwf64sa36vqw8QTE5uZw1jUmboGdFGr4CUQ"><input name="Discontinued" type="hidden" value="false">
-                </form> 
-                <!--end::Form-->
-            </div>
             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                             </div>
@@ -184,7 +100,7 @@
                     </div>
                 </div>
 
-
+                    }
 
                 }
 

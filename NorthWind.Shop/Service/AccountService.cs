@@ -10,40 +10,40 @@ namespace NorthWind.Shop.Service
 {
     public class AccountService
     {
-        private readonly HttpClient httpClient;
-        private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
-        public AccountService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
-        {
+        // private readonly HttpClient httpClient;
+        // private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
+        // public AccountService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
+        // {
 
-            this.httpClient = httpClient;
-            _apiUrlsConfiguration = apiUrlsOptions.Value;
-        }
-        public async Task<IEnumerable<Account>> GetAccount()
-        {
+        //     this.httpClient = httpClient;
+        //     _apiUrlsConfiguration = apiUrlsOptions.Value;
+        // }
+        // public async Task<IEnumerable<Account>> GetAccount()
+        // {
 
-            var apiUrl = $"{_apiUrlsConfiguration.AccountApiUrl}";
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<Account>>(apiUrl);
+        //     var apiUrl = $"{_apiUrlsConfiguration.AccountApiUrl}";
+        //     var response = await httpClient.GetFromJsonAsync<IEnumerable<Account>>(apiUrl);
 
-            if (response == null)
-            {
-                throw new Exception($"Không thể trả về nhân viên.");
-            }
+        //     if (response == null)
+        //     {
+        //         throw new Exception($"Không thể trả về nhân viên.");
+        //     }
 
-            return response;
-        }
-        public async Task<Account> GetByUserName(string UserName)
-        {
+        //     return response;
+        // }
+        // public async Task<Account> GetByUserName(string UserName)
+        // {
 
-            var apiUrl = $"{_apiUrlsConfiguration.AccountApiUrl}/{UserName}";
-            var response = await httpClient.GetFromJsonAsync<Account>(apiUrl);
+        //     var apiUrl = $"{_apiUrlsConfiguration.AccountApiUrl}/{UserName}";
+        //     var response = await httpClient.GetFromJsonAsync<Account>(apiUrl);
 
-            if (response == null)
-            {
-                throw new Exception($"Không thể trả về nhân viên.");
-            }
+        //     if (response == null)
+        //     {
+        //         throw new Exception($"Không thể trả về nhân viên.");
+        //     }
 
-            return response;
-        }
+        //     return response;
+        // }
 
     }
 }

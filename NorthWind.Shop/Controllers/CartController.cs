@@ -19,15 +19,15 @@ namespace NorthWind.Shop.Controllers
     {
 
         private readonly CartService _cartService;
-        private readonly AccountService _accountService;
+        private readonly CustomerService _customerService;
 
         private readonly OrderService _orderService;
         private readonly OrderDetailsService _orderDetailsService;
 
-        public CartController(CartService cartService, AccountService accountService, OrderService orderService, OrderDetailsService orderDetailsService)
+        public CartController(CartService cartService, CustomerService customerService, OrderService orderService, OrderDetailsService orderDetailsService)
         {
             _cartService = cartService;
-            _accountService = accountService;
+            _customerService = customerService;
             _orderService = orderService;
             _orderDetailsService = orderDetailsService;
 
@@ -46,6 +46,8 @@ namespace NorthWind.Shop.Controllers
             ViewBag.Cart = cart;
             return View();
         }
+
+        [HttpPost]
         public async Task<IActionResult> AddCart(int productId)
         {
 
@@ -69,11 +71,10 @@ namespace NorthWind.Shop.Controllers
                     Quantity = 1,
                 };
             }
-
             SaveCartToCookie(cart);
-            ViewBag.messageaddcart= "Sản phẩm đã được thêm vào giỏ hàng";
+            // TempData["messAddCart"]= "Sản phẩm đã được thêm vào giỏ hàng";
             // Console.WriteLine("Sản phẩm đã được thêm vào giỏ hàng");
-            return RedirectToAction("Index", "Home");
+            return Json(new { success = true });
         }
         private Dictionary<int, CartItem> GetCartFromCookie()
         {
@@ -97,7 +98,7 @@ namespace NorthWind.Shop.Controllers
 
             HttpContext.Response.Cookies.Append("cart", cartJson, cookieOptions);
         }
-
+        [HttpPost]
         public IActionResult UpdateCart(int productId, int quantity)
         {
             Dictionary<int, CartItem> cart = GetCartFromCookie();
@@ -119,6 +120,7 @@ namespace NorthWind.Shop.Controllers
             return Redirect("Cart");
         }
 
+        [HttpPost]
         public IActionResult DeleteCart(int productId)
         {
             Dictionary<int, CartItem> cart = GetCartFromCookie();
@@ -138,7 +140,8 @@ namespace NorthWind.Shop.Controllers
    
         
         }
-
+        
+        [HttpPost]
         public async Task<IActionResult> CheckOut()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
@@ -146,15 +149,15 @@ namespace NorthWind.Shop.Controllers
             {
                 var nameac = HttpContext.User.Identity.Name;
 
-                Account account = await _accountService.GetByUserName(nameac);
+                Customer customer = await _customerService.GetCustomerByID(nameac);
                 Order order = new Order
                 {
-                    CustomerID = account.CustomerID,
-                    EmployeeID = 1,
+                    CustomerID = customer.CustomerID,
+                    EmployeeID = null,
                     OrderDate = DateTime.Now,
                     RequiredDate = DateTime.Now,
                     ShippedDate = DateTime.Now,
-                    ShipVia = 1,
+                    ShipVia = null,
                     Freight = 89,
                     ShipName = "D",
                     ShipCity = "D",
@@ -165,7 +168,7 @@ namespace NorthWind.Shop.Controllers
                 };
                 await _orderService.InsertOrder(order);
                 Dictionary<int, CartItem> cart = GetCartFromCookie();
-                string CustomerID = account.CustomerID;
+                string CustomerID = customer.CustomerID;
                 var resultorder = await _orderService.GetOrderByCustomer(CustomerID);
                 Order od = new Order();
                 foreach (var i in cart)
@@ -174,7 +177,7 @@ namespace NorthWind.Shop.Controllers
                     {
                         od = rs;
                         
-                    }
+                    
                      
                     OrderDetail orderDetail = new OrderDetail
                     {
@@ -185,6 +188,7 @@ namespace NorthWind.Shop.Controllers
                         Discount = 0
                     };
                     await _orderDetailsService.InsertOrderDetail(orderDetail);
+                    }
                 }
 
                 Clear();

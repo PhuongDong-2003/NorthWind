@@ -49,6 +49,7 @@ namespace NorthWind.Api.Repository
                             ShipRegion = reader.IsDBNull(reader.GetOrdinal("ShipRegion")) ? null : reader.GetString(reader.GetOrdinal("ShipRegion")),
                             ShipPostalCode = reader.IsDBNull(reader.GetOrdinal("ShipPostalCode")) ? null : reader.GetString(reader.GetOrdinal("ShipPostalCode")),
                             ShipCountry = reader.IsDBNull(reader.GetOrdinal("ShipCountry")) ? null : reader.GetString(reader.GetOrdinal("ShipCountry")),
+                           
                         };
                         return oder;
                     }
@@ -91,6 +92,7 @@ namespace NorthWind.Api.Repository
                             ShipRegion = reader.IsDBNull(reader.GetOrdinal("ShipRegion")) ? null : reader.GetString(reader.GetOrdinal("ShipRegion")),
                             ShipPostalCode = reader.IsDBNull(reader.GetOrdinal("ShipPostalCode")) ? null : reader.GetString(reader.GetOrdinal("ShipPostalCode")),
                             ShipCountry = reader.IsDBNull(reader.GetOrdinal("ShipCountry")) ? null : reader.GetString(reader.GetOrdinal("ShipCountry")),
+                            
                         };
                         resultList.Add(oder);
                     }
@@ -258,7 +260,7 @@ namespace NorthWind.Api.Repository
                                 ShipCity = reader.IsDBNull(reader.GetOrdinal("ShipCity")) ? null : reader.GetString(reader.GetOrdinal("ShipCity")),
                                 ShipRegion = reader.IsDBNull(reader.GetOrdinal("ShipRegion")) ? null : reader.GetString(reader.GetOrdinal("ShipRegion")),
                                 ShipPostalCode = reader.IsDBNull(reader.GetOrdinal("ShipPostalCode")) ? null : reader.GetString(reader.GetOrdinal("ShipPostalCode")),
-                                ShipCountry = reader.IsDBNull(reader.GetOrdinal("ShipCountry")) ? null : reader.GetString(reader.GetOrdinal("ShipCountry")),
+                                ShipCountry = reader.IsDBNull(reader.GetOrdinal("ShipCountry")) ? null : reader.GetString(reader.GetOrdinal("ShipCountry")),                              
                                 Page = page,
                                 PageSize = pageSize,
                                 RowNum = reader.GetInt64(reader.GetOrdinal("row_num")),
@@ -283,25 +285,26 @@ namespace NorthWind.Api.Repository
             using SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = @"INSERT INTO Orders ( CustomerID, EmployeeID, OrderDate, RequiredDate, 
-                               ShippedDate, ShipVia,  Freight, ShipName,  ShipAddress, ShipCity, ShipRegion, ShipPostalCode, ShipCountry, Status)
+                               ShippedDate, ShipVia,  Freight, ShipName,  ShipAddress, ShipCity, ShipRegion, ShipPostalCode, ShipCountry, Email,  Status)
                                VALUES (@CustomerID, @EmployeeID, @OrderDate, @RequiredDate, @ShippedDate,  @ShipVia, @Freight, 
                               @ShipName, @ShipAddress, @ShipCity, @ShipRegion, @ShipPostalCode, @ShipCountry, @Status)";
 
             SqlCommand command = new SqlCommand(sqlQuery, connection);
-
+            command.Parameters.AddWithValue("@OrderID", order.OrderID);
             command.Parameters.AddWithValue("@CustomerID", order.CustomerID ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("@EmployeeID", 1);
-            command.Parameters.AddWithValue("@OrderDate", currentTime);
-            command.Parameters.AddWithValue("@RequiredDate", currentTime);
-            command.Parameters.AddWithValue("@ShippedDate", currentTime);
-            command.Parameters.AddWithValue("@ShipVia", 3);
-            command.Parameters.AddWithValue("@Freight", 57.6);
-            command.Parameters.AddWithValue("@ShipName", "d");
-            command.Parameters.AddWithValue("@ShipAddress", "d");
-            command.Parameters.AddWithValue("@ShipCity", "d");
-            command.Parameters.AddWithValue("@ShipRegion", "RS");
-            command.Parameters.AddWithValue("@ShipPostalCode", 5003);
-            command.Parameters.AddWithValue("@ShipCountry", "d");
+            command.Parameters.AddWithValue("@CustomerID", order.CustomerID ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@EmployeeID", order.EmployeeID ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@OrderDate", order.OrderDate ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@RequiredDate", order.RequiredDate ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ShippedDate", order.ShippedDate ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ShipVia", order.ShipVia ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Freight", order.Freight ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ShipName", order.ShipName ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ShipAddress", order.ShipAddress ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ShipCity", order.ShipCity ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ShipRegion", order.ShipRegion ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ShipPostalCode", order.ShipCountry ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ShipCountry", order.ShipCountry ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@Status", false);
             int rowsAffected = command.ExecuteNonQuery();
             if (rowsAffected > 0)
@@ -344,14 +347,14 @@ namespace NorthWind.Api.Repository
                             ShipCity = reader.IsDBNull(reader.GetOrdinal("ShipCity")) ? null : reader.GetString(reader.GetOrdinal("ShipCity")),
                             ShipRegion = reader.IsDBNull(reader.GetOrdinal("ShipRegion")) ? null : reader.GetString(reader.GetOrdinal("ShipRegion")),
                             ShipPostalCode = reader.IsDBNull(reader.GetOrdinal("ShipPostalCode")) ? null : reader.GetString(reader.GetOrdinal("ShipPostalCode")),
-                            ShipCountry = reader.IsDBNull(reader.GetOrdinal("ShipCountry")) ? null : reader.GetString(reader.GetOrdinal("ShipCountry"))
+                            ShipCountry = reader.IsDBNull(reader.GetOrdinal("ShipCountry")) ? null : reader.GetString(reader.GetOrdinal("ShipCountry")),
 
                         };
                         resultList.Add(oder);
                     }
                 }
             }
-        return resultList;
+            return resultList;
 
         }
     }

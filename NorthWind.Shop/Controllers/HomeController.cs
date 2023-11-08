@@ -22,7 +22,7 @@ namespace NorthWind.Shop.Controllers
         public static bool status = true;
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            
+
 
             if (HttpContext.User.Identity.IsAuthenticated)
             {
@@ -38,6 +38,11 @@ namespace NorthWind.Shop.Controllers
             {
                 ViewData["productlist"] = productResponse;
                 ViewData["st"] = status;
+                string message = TempData["messAddCart"] as string;
+                if (!string.IsNullOrEmpty(message))
+                {
+                    ViewData["messAddCart"] = message; 
+                }
                 return View();
             }
             else
@@ -53,6 +58,7 @@ namespace NorthWind.Shop.Controllers
         {
             status = true;
             await Index(page, pageSize);
+
             return View("Index");
 
         }
@@ -61,8 +67,8 @@ namespace NorthWind.Shop.Controllers
         {
             status = false;
             ViewData["st"] = status;
-          
-            if (productName !=null)
+
+            if (productName != null)
             {
                 var product = await _productService.GetByName(productName);
                 ViewData["product"] = product;

@@ -10,7 +10,7 @@ builder.Services.Configure<ApiUrlsConfiguration>(
 builder.Configuration.GetSection(ApiUrlsConfiguration.CONFIG_NAME));
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<ProductService>();
-builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<OrderDetailsService>();

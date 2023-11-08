@@ -43,7 +43,9 @@ namespace NorthWind.Api.Repository
                             Country = reader.IsDBNull(reader.GetOrdinal("Country")) ? null : reader.GetString(reader.GetOrdinal("Country")),
                             Phone = reader.IsDBNull(reader.GetOrdinal("Phone")) ? null : reader.GetString(reader.GetOrdinal("Phone")),
                             Fax = reader.IsDBNull(reader.GetOrdinal("Fax")) ? null : reader.GetString(reader.GetOrdinal("Fax")),
-                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status")),
+                            Email = reader.IsDBNull(reader.GetOrdinal("Email")) ? null : reader.GetString(reader.GetOrdinal("Email"))
+
                         };
                         resultList.Add(customer);
                     }
@@ -83,6 +85,8 @@ namespace NorthWind.Api.Repository
                             Phone = reader.IsDBNull(reader.GetOrdinal("Phone")) ? null : reader.GetString(reader.GetOrdinal("Phone")),
                             Fax = reader.IsDBNull(reader.GetOrdinal("Fax")) ? null : reader.GetString(reader.GetOrdinal("Fax")),
                             Status = reader.GetBoolean(reader.GetOrdinal("Status")),
+                            Email = reader.IsDBNull(reader.GetOrdinal("Email")) ? null : reader.GetString(reader.GetOrdinal("Email"))
+
                         };
                         return customer;
                     }
@@ -100,9 +104,9 @@ namespace NorthWind.Api.Repository
             using SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = @"INSERT INTO Customers (CustomerID, CompanyName, ContactName, ContactTitle, Address, 
-                               City, Region,  PostalCode, Country,  Phone, Fax, Status)
+                               City, Region,  PostalCode, Country,  Phone, Fax, Status, Email)
                                VALUES (@CustomerID, @CompanyName, @ContactName, @ContactTitle, @Address, @City, 
-                               @Region, @PostalCode, @Country, @Phone, @Fax, @Status)";
+                               @Region, @PostalCode, @Country, @Phone, @Fax, @Status, @Email)";
 
             SqlCommand command = new SqlCommand(sqlQuery, connection);
             command.Parameters.AddWithValue("@CustomerID", customer.CustomerID);
@@ -117,6 +121,7 @@ namespace NorthWind.Api.Repository
             command.Parameters.AddWithValue("@Phone", customer.Phone ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@Fax", customer.Fax ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@Status", false);
+            command.Parameters.AddWithValue("@Email", customer.Email ?? (object)DBNull.Value);
             int rowsAffected = command.ExecuteNonQuery();
             if (rowsAffected > 0)
             {
@@ -147,7 +152,8 @@ namespace NorthWind.Api.Repository
                                 Country = @Country, 
                                 Phone = @Phone, 
                                 Fax = @Fax,
-                                Status = @Status
+                                Status = @Status,
+                                Email = @Email
                                 WHERE CustomerID = @CustomerID";
                 SqlCommand command = new SqlCommand(sqlQuery, connection);
                 command.Parameters.AddWithValue("@CustomerID", customer.CustomerID);
@@ -161,6 +167,7 @@ namespace NorthWind.Api.Repository
                 command.Parameters.AddWithValue("@Phone", customer.Phone ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@Fax", customer.Fax ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@Status", false);
+                command.Parameters.AddWithValue("@Email", customer.Email ?? (object)DBNull.Value);
                 int rowsAffected = command.ExecuteNonQuery();
                 if (rowsAffected > 0)
                 {
@@ -240,6 +247,7 @@ namespace NorthWind.Api.Repository
                                 Country = reader.IsDBNull(reader.GetOrdinal("Country")) ? null : reader.GetString(reader.GetOrdinal("Country")),
                                 Phone = reader.IsDBNull(reader.GetOrdinal("Phone")) ? null : reader.GetString(reader.GetOrdinal("Phone")),
                                 Fax = reader.IsDBNull(reader.GetOrdinal("Fax")) ? null : reader.GetString(reader.GetOrdinal("Fax")),
+                                Email = reader.IsDBNull(reader.GetOrdinal("Email")) ? null : reader.GetString(reader.GetOrdinal("Email")),
                                 Page = page,
                                 PageSize = pageSize,
                                 RowNum = reader.GetInt64(reader.GetOrdinal("row_num")),

@@ -21,6 +21,7 @@ namespace NorthWind.Core.Entity
         public string? ShipRegion { set; get; }
         public string? ShipPostalCode { set; get; }
         public string? ShipCountry { set; get; }
+       
         public int Page { get; set; }
         public int PageSize { get; set; }
         public long RowNum { get; set; }

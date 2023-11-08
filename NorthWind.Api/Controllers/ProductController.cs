@@ -27,8 +27,8 @@ namespace NorthWind.Api.Controllers
         {
             try
             {
-                var employee = _productRepository.GetProduct();
-                return Ok(employee);
+                var products = _productRepository.GetProduct();
+                return Ok(products);
             }
             catch (Exception e)
             {
@@ -48,6 +48,18 @@ namespace NorthWind.Api.Controllers
             }
             return Ok(product);
         }
+
+         [HttpGet("Name")]
+        public IActionResult GetByName(string ProductName)
+        {
+
+            var product = _productRepository.GetProductByName(ProductName);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
+        } 
 
         [HttpPost]
         public IActionResult Create(Product product)

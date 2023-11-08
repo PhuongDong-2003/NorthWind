@@ -11,10 +11,13 @@ namespace NorthWind.Api.Repository
 
         public IEnumerable<Order> GetOrder();
         public Order GetOrderByID(int orderID);
+        public IEnumerable<Order> GetOrderByCustomerID(string CustomerID);
         public void InsertOrder(Order order);
         public void DeleteOrder(int id);
         public void UpdateOrder(Order order);
         public IEnumerable<Order> GetOrderPaged(int page, int pageSize);
+
+        public void InsertOrderAccount(Order order);
         // public Order Find (int OrderID);
 
     }

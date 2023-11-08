@@ -31,6 +31,19 @@ namespace NorthWind.Shop.Service
 
             return response;
         }
+        public async Task<Account> GetByUserName(string UserName)
+        {
+
+            var apiUrl = $"{_apiUrlsConfiguration.AccountApiUrl}/{UserName}";
+            var response = await httpClient.GetFromJsonAsync<Account>(apiUrl);
+
+            if (response == null)
+            {
+                throw new Exception($"Không thể trả về nhân viên.");
+            }
+
+            return response;
+        }
 
     }
 }

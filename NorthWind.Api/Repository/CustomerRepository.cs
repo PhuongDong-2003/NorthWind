@@ -124,7 +124,7 @@ namespace NorthWind.Api.Repository
             }
             else
             {
-                Console.WriteLine("Không thể thêm Employee.");
+                Console.WriteLine("Không thể thêm Customer.");
             }
         }
 
@@ -168,7 +168,7 @@ namespace NorthWind.Api.Repository
                 }
                 else
                 {
-                    Console.WriteLine("Không tìm thấy nhân viên có Customer tương ứng.");
+                    Console.WriteLine("Không tìm thấy Customer tương ứng.");
                     return;
                 }
 

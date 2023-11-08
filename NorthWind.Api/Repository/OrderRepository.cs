@@ -78,7 +78,7 @@ namespace NorthWind.Api.Repository
 
                         {
                             OrderID = reader.GetInt32(reader.GetOrdinal("OrderID")),
-                            CustomerID = reader.IsDBNull(reader.GetOrdinal("OrderDate")) ? null : reader.GetString(reader.GetOrdinal("CustomerID")),
+                            CustomerID = reader.IsDBNull(reader.GetOrdinal("CustomerID")) ? null : reader.GetString(reader.GetOrdinal("CustomerID")),
                             EmployeeID = reader.IsDBNull(reader.GetOrdinal("EmployeeID")) ? null : reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                             OrderDate = reader.IsDBNull(reader.GetOrdinal("OrderDate")) ? null : reader.GetDateTime(reader.GetOrdinal("OrderDate")),
                             RequiredDate = reader.IsDBNull(reader.GetOrdinal("RequiredDate")) ? null : reader.GetDateTime(reader.GetOrdinal("RequiredDate")),
@@ -183,7 +183,7 @@ namespace NorthWind.Api.Repository
                 }
                 else
                 {
-                    Console.WriteLine("Không tìm thấy nhân viên có Customer tương ứng.");
+                    Console.WriteLine("Không tìm thấy Customer tương ứng.");
                     return;
                 }
 
@@ -209,7 +209,7 @@ namespace NorthWind.Api.Repository
                 }
                 else
                 {
-                    Console.WriteLine("Không tìm thấy nhân viên có OrderID tương ứng.");
+                    Console.WriteLine("Không tìm thấy  có OrderID tương ứng.");
                 }
             }
         }
@@ -246,7 +246,7 @@ namespace NorthWind.Api.Repository
 
                             {
                                 OrderID = reader.GetInt32(reader.GetOrdinal("OrderID")),
-                                CustomerID = reader.IsDBNull(reader.GetOrdinal("OrderDate")) ? null : reader.GetString(reader.GetOrdinal("CustomerID")),
+                                CustomerID = reader.IsDBNull(reader.GetOrdinal("CustomerID")) ? null : reader.GetString(reader.GetOrdinal("CustomerID")),
                                 EmployeeID = reader.IsDBNull(reader.GetOrdinal("EmployeeID")) ? null : reader.GetInt32(reader.GetOrdinal("EmployeeID")),
                                 OrderDate = reader.IsDBNull(reader.GetOrdinal("OrderDate")) ? null : reader.GetDateTime(reader.GetOrdinal("OrderDate")),
                                 RequiredDate = reader.IsDBNull(reader.GetOrdinal("RequiredDate")) ? null : reader.GetDateTime(reader.GetOrdinal("RequiredDate")),
@@ -274,12 +274,86 @@ namespace NorthWind.Api.Repository
 
             }
         }
-        // public Order Find (int OrderID)
-        // {
-        //         var order = GetOrderByID( OrderID);
-        //         return order;
-        // }
 
-  
+        public void InsertOrderAccount(Order order)
+        {
+
+            DateTime currentTime = DateTime.Now;
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlQuery = @"INSERT INTO Orders ( CustomerID, EmployeeID, OrderDate, RequiredDate, 
+                               ShippedDate, ShipVia,  Freight, ShipName,  ShipAddress, ShipCity, ShipRegion, ShipPostalCode, ShipCountry, Status)
+                               VALUES (@CustomerID, @EmployeeID, @OrderDate, @RequiredDate, @ShippedDate,  @ShipVia, @Freight, 
+                              @ShipName, @ShipAddress, @ShipCity, @ShipRegion, @ShipPostalCode, @ShipCountry, @Status)";
+
+            SqlCommand command = new SqlCommand(sqlQuery, connection);
+
+            command.Parameters.AddWithValue("@CustomerID", order.CustomerID ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@EmployeeID", 1);
+            command.Parameters.AddWithValue("@OrderDate", currentTime);
+            command.Parameters.AddWithValue("@RequiredDate", currentTime);
+            command.Parameters.AddWithValue("@ShippedDate", currentTime);
+            command.Parameters.AddWithValue("@ShipVia", 3);
+            command.Parameters.AddWithValue("@Freight", 57.6);
+            command.Parameters.AddWithValue("@ShipName", "d");
+            command.Parameters.AddWithValue("@ShipAddress", "d");
+            command.Parameters.AddWithValue("@ShipCity", "d");
+            command.Parameters.AddWithValue("@ShipRegion", "RS");
+            command.Parameters.AddWithValue("@ShipPostalCode", 5003);
+            command.Parameters.AddWithValue("@ShipCountry", "d");
+            command.Parameters.AddWithValue("@Status", false);
+            int rowsAffected = command.ExecuteNonQuery();
+            if (rowsAffected > 0)
+            {
+                Console.WriteLine("Order đã được thêm thành công.");
+            }
+            else
+            {
+                Console.WriteLine("Không thể thêm Order.");
+            }
+        }
+
+        public IEnumerable<Order> GetOrderByCustomerID(string CustomerID)
+        {
+            var resultList = new List<Order>();
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlQuery = "SELECT * FROM Orders WHERE CustomerID like @CustomerID and Status = 0";
+
+            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+            {
+                command.Parameters.AddWithValue("@CustomerID", CustomerID);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Order oder = new Order
+                        {
+                            OrderID = reader.GetInt32(reader.GetOrdinal("OrderID")),
+                            CustomerID = reader.IsDBNull(reader.GetOrdinal("CustomerID")) ? null : reader.GetString(reader.GetOrdinal("CustomerID")),
+                            EmployeeID = reader.IsDBNull(reader.GetOrdinal("EmployeeID")) ? null : reader.GetInt32(reader.GetOrdinal("EmployeeID")),
+                            OrderDate = reader.IsDBNull(reader.GetOrdinal("OrderDate")) ? null : reader.GetDateTime(reader.GetOrdinal("OrderDate")),
+                            RequiredDate = reader.IsDBNull(reader.GetOrdinal("RequiredDate")) ? null : reader.GetDateTime(reader.GetOrdinal("RequiredDate")),
+                            ShippedDate = reader.IsDBNull(reader.GetOrdinal("ShippedDate")) ? null : reader.GetDateTime(reader.GetOrdinal("ShippedDate")),
+                            ShipVia = reader.IsDBNull(reader.GetOrdinal("ShipVia")) ? null : reader.GetInt32(reader.GetOrdinal("ShipVia")),
+                            Freight = reader.IsDBNull(reader.GetOrdinal("Freight")) ? null : reader.GetDecimal(reader.GetOrdinal("Freight")),
+                            ShipName = reader.IsDBNull(reader.GetOrdinal("ShipName")) ? null : reader.GetString(reader.GetOrdinal("ShipName")),
+                            ShipAddress = reader.IsDBNull(reader.GetOrdinal("ShipAddress")) ? null : reader.GetString(reader.GetOrdinal("ShipAddress")),
+                            ShipCity = reader.IsDBNull(reader.GetOrdinal("ShipCity")) ? null : reader.GetString(reader.GetOrdinal("ShipCity")),
+                            ShipRegion = reader.IsDBNull(reader.GetOrdinal("ShipRegion")) ? null : reader.GetString(reader.GetOrdinal("ShipRegion")),
+                            ShipPostalCode = reader.IsDBNull(reader.GetOrdinal("ShipPostalCode")) ? null : reader.GetString(reader.GetOrdinal("ShipPostalCode")),
+                            ShipCountry = reader.IsDBNull(reader.GetOrdinal("ShipCountry")) ? null : reader.GetString(reader.GetOrdinal("ShipCountry"))
+
+                        };
+                        resultList.Add(oder);
+                    }
+                }
+            }
+        return resultList;
+
+        }
     }
 }
+

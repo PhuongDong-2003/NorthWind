@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO.Pipelines;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
@@ -36,7 +37,9 @@ namespace NorthWind.Api.Repository
                         {
                             
                             UserName =  reader.IsDBNull(reader.GetOrdinal("UserName")) ? null : reader.GetString(reader.GetOrdinal("UserName")),
-                            PassWord = reader.GetInt32(reader.GetOrdinal("Password"))
+                            PassWord = reader.GetInt32(reader.GetOrdinal("Password")),
+                            CustomerID = reader.GetString(reader.GetOrdinal("CustomerID")),
+                         
                             
                         };
                         resultList.Add(account);
@@ -46,6 +49,39 @@ namespace NorthWind.Api.Repository
                 }
 
 
+            }
+
+        }
+
+        public Account GetByUsername(string Username)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlQuery = "SELECT * FROM Accounts WHERE UserName = @UserName ";
+
+            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+            {
+                command.Parameters.AddWithValue("@Username", Username);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                       Account account = new Account()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            UserName =  reader.GetString(reader.GetOrdinal("UserName")),
+                            PassWord = reader.GetInt32(reader.GetOrdinal("Password")),
+                            CustomerID = reader.GetString(reader.GetOrdinal("CustomerID"))
+
+                        };
+                        return account;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
             }
 
         }

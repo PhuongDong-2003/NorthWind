@@ -28,16 +28,16 @@ namespace NorthWind.Shop.Service
 
             if (response == null)
             {
-                throw new Exception($"Không thể trả về nhân viên.");
+                throw new Exception($"Không thể trả về sản phẩm.");
             }
 
             return response;
         }
 
-        public async Task<Product> GetByID(int ProductID)
+        public async Task<Product> GetByName(string ProductName)
         {
 
-            var apiUrl = $"{_apiUrlsConfiguration.ProductApiUrl}/{ProductID}";
+            var apiUrl = $"{_apiUrlsConfiguration.ProductApiUrl}/{$"Name?ProductName={ProductName}"}";
             var response = await httpClient.GetFromJsonAsync<Product>(apiUrl);
 
             if (response == null)

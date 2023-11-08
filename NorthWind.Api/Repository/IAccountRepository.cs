@@ -10,6 +10,6 @@ namespace NorthWind.Api.Repository
     {
         public IEnumerable<Account> GetAll();
        
-
+        public Account GetByUsername(string Username);
     }
 }

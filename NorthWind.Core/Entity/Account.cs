@@ -10,5 +10,7 @@ namespace NorthWind.Core.Entity
         public int Id {get; set;}
         public string UserName {get; set;}
         public int PassWord {get; set;}
+        public string  CustomerID {get; set;}
+     
     }
 }

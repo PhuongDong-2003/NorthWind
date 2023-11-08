@@ -17,7 +17,7 @@
             <!--begin::Search-->
             <div class="d-flex align-items-center position-relative my-1">
                  <form asp-controller="Home" asp-action="Find" method="post">
-                <input type="text" data-kt-ecommerce-product-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Product"  name="productID" /> <br>
+                <input type="text" data-kt-ecommerce-product-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Product"  name="productName" /> <br>
                 <button type="submit" class="btn btn-primary">Tìm</button>
                 </form>        
             </div>
@@ -46,7 +46,7 @@
     <thead>
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0"><th class="w-10px pe-2 sorting_disabled" rowspan="1" colspan="1" aria-label="style="width: 29.9px;"></th>              
         
-             </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" style="width: 229.575px;">ProductName</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: 139.475px;">SupplierID</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Last login: activate to sort column ascending" style="width: 139.475px;">CategoryID</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Two-step : activate to sort column ascending" style="width: 200.475px;">QuantityPerUnit </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Joined Date: activate to sort column ascending" style="width: 200.375px;">UnitPrice</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" style="width: 30px;">Action</th></tr>
+             </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" style="width: 229.575px;">ProductName</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Two-step : activate to sort column ascending" style="width: 200.475px;">QuantityPerUnit </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Joined Date: activate to sort column ascending" style="width: 200.375px;">UnitPrice</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" style="width: 30px;">Action</th></tr>
     </thead>
     <tbody class="fw-semibold text-gray-600">                  
                     
@@ -71,13 +71,14 @@
                             <a href="#" class="text-gray-800 text-hover-primary mb-1">@(product.ProductName)</a>
                         </div>
                     </td>
-                    <td>@product.SupplierID </td>
-                    <td>@product.CategoryID</td>
+                    
                     <td>@product.QuantityPerUnit</td>                        
                     <td>@product.UnitPrice</td>
-                  
                     <td >
-                    <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"  data-toggle="modal"  data-target="#editProductModal_@product.ProductID"> Details </button>         
+                        <form asp-controller="Cart" asp-action="AddCart"><button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"   data-target="#editProductModal_@product.ProductID">Add To Cart </button>
+                        <input type= "hidden" value="@product.ProductID" name = "productId">
+                        </form>
+
                     </td>                                              
                 </tr>
 
@@ -85,10 +86,13 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Details Product</h5>
+                                <form asp-asp-controller = "Cart" asp-action="Cart">
+                                <h5 class="modal-title" id="exampleModalLabel">Add Cart</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
+                                </form>
+
                             </div>
                 <div class="modal-body px-5 my-7">
                 <!--begin::Form-->
@@ -106,24 +110,7 @@
                         <input type="text" class="form-control " id="ProductName" name="ProductName" value="@product.ProductName">
                         <!--end::Input-->
                         </div>
-
-                        <div class="">
-                            <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-2">SupplierID</label>
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <input type="text" class="form-control " id="SupplierID" name="SupplierID" value="@product.SupplierID">
-                            <!--end::Input-->
-                        </div>
-                        <div>
-                            <!--begin::Label-->
-                            <label class="required fw-semibold fs-6 mb-2">CategoryID</label>
-                            <!--end::Label-->
-
-                            <!--begin::Input-->
-                            <input type="text" class="form-control" id="CategoryID" name="CategoryID" value="@product.CategoryID">
-                            <!--end::Input-->
-                        </div>
+                       
                         <div>
                             <!--begin::Label-->
                             <label class="required fw-semibold fs-6 mb-2">QuantityPerUnit</label>
@@ -390,6 +377,7 @@
     <!--end::Card body-->
 </div>
 <!--end::Products-->        </div>
+
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

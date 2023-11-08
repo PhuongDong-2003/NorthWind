@@ -10,6 +10,8 @@ namespace NorthWind.Shop.Models
         public const string CONFIG_NAME = "ApiUrls";
         public string ProductApiUrl { get; set; }
         public string AccountApiUrl { get; set; }
+        public string OrderApiUrl { get; set; }
+        public string OrderDetailApiUrl { get; set; }
        
 
     }

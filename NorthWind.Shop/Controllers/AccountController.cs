@@ -23,24 +23,32 @@ namespace NorthWind.Shop.Controllers
             _accountService = accountService;
         }
 
-        public IActionResult Login()
+        public IActionResult Index()
         {
-            return View();
+            return View("Login");
         }
 
         [HttpPost]
-        public async Task<IActionResult> CheckLogin(Account account, bool status)
+        public async Task<IActionResult> Login(Account account, bool status)
         {
+            //check if user is login
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
             var result = await _accountService.GetAccount();
             Console.WriteLine(status);
             var validAccount = result.Where(x => x.UserName == account.UserName && x.PassWord == account.PassWord).FirstOrDefault();
             if (validAccount != null)
             {   
-
-             
+            
                     var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, validAccount.UserName),
+                    new Claim(ClaimTypes.Role, "Administrator"),
+                    new Claim("TypeCustomer", "Vip")
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -60,8 +68,13 @@ namespace NorthWind.Shop.Controllers
             {
                 ViewData["ValidateMessage"] = "Tên đăng nhập hoặc mật khẩu không đúng.";
             }
+            
 
+            }
+            
 
+            
+           
 
             return View("Login");
         }

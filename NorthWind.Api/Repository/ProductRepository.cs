@@ -15,7 +15,11 @@ namespace NorthWind.Api.Repository
         {
             _configuration = configuration;
         }
-        
+
+        public ProductRepository()
+        {
+        }
+
         public IEnumerable<Product> GetProduct()
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -208,7 +212,7 @@ namespace NorthWind.Api.Repository
                 }
                 else
                 {
-                    Console.WriteLine("Không tìm thấy nhân viên có Product tương ứng.");
+                    Console.WriteLine("Không tìm thấy Product tương ứng.");
                     return;
                 }
             }
@@ -227,6 +231,48 @@ namespace NorthWind.Api.Repository
                 command.ExecuteNonQuery();
             }
 
+        }
+
+        public Product GetProductByName(string ProductName)
+        {
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlQuery = "SELECT * FROM Products WHERE ProductName = @ProductName and Status = 0";
+
+            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+            {
+                command.Parameters.AddWithValue("@ProductName", ProductName);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+
+                    if (reader.Read())
+                    {
+                        Product product = new Product
+                        {
+                            ProductID = reader.GetInt32(reader.GetOrdinal("ProductID")),
+                            ProductName = reader.GetString(reader.GetOrdinal("ProductName")),
+                            SupplierID = reader.IsDBNull(reader.GetOrdinal("SupplierID")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("SupplierID")),
+                            CategoryID = reader.IsDBNull(reader.GetOrdinal("CategoryID")) ? null : reader.GetInt32(reader.GetOrdinal("CategoryID")),
+                            QuantityPerUnit = reader.IsDBNull(reader.GetOrdinal("QuantityPerUnit")) ? null : reader.GetString(reader.GetOrdinal("QuantityPerUnit")),
+                            UnitPrice = reader.IsDBNull(reader.GetOrdinal("UnitPrice")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("UnitPrice")),
+                            UnitsInStock = reader.IsDBNull(reader.GetOrdinal("UnitsInStock")) ? (short?)null : reader.GetInt16(reader.GetOrdinal("UnitsInStock")),
+                            UnitsOnOrder = reader.IsDBNull(reader.GetOrdinal("UnitsOnOrder")) ? (short?)null : reader.GetInt16(reader.GetOrdinal("UnitsOnOrder")),
+                            ReorderLevel = reader.IsDBNull(reader.GetOrdinal("ReorderLevel")) ? (short?)null : reader.GetInt16(reader.GetOrdinal("ReorderLevel")),
+                            Discontinued = reader.GetBoolean(reader.GetOrdinal("Discontinued")),
+                            Status = reader.GetBoolean(reader.GetOrdinal("Status"))
+                        };
+                        return product;
+
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+
+                }
+            }
         }
     }
 }

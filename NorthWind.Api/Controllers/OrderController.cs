@@ -26,8 +26,8 @@ namespace NorthWind.Api.Controllers
         {
             try
             {
-                var employee = _orderRepository.GetOrder();
-                return Ok(employee);
+                var orders = _orderRepository.GetOrder();
+                return Ok(orders);
             }
             catch (Exception e)
             {
@@ -40,12 +40,24 @@ namespace NorthWind.Api.Controllers
         public IActionResult GetById(int id)
         {
 
-            var product = _orderRepository.GetOrderByID(id);
-            if (product == null)
+            var order = _orderRepository.GetOrderByID(id);
+            if (order == null)
             {
                 return NotFound();
             }
-            return Ok(product);
+            return Ok(order);
+        }
+
+        [HttpGet("CustomerID")]
+        public IActionResult GetByCusomer(string CustomerID)
+        {
+
+            var orderDetail = _orderRepository.GetOrderByCustomerID(CustomerID);
+            if (orderDetail == null)
+            {
+                return NotFound();
+            }
+            return Ok(orderDetail);
         }
 
         [HttpPost]
@@ -55,6 +67,22 @@ namespace NorthWind.Api.Controllers
             try
             {
                 _orderRepository.InsertOrder(order);
+                return Ok("Thêm thành công");
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
+        [HttpPost("OdAccount")]
+        public IActionResult CreateOdACount(Order order)
+        {
+
+            try
+            {
+                _orderRepository.InsertOrderAccount(order);
                 return Ok("Thêm thành công");
 
             }
@@ -102,12 +130,12 @@ namespace NorthWind.Api.Controllers
             try
             {
 
-                var products = _orderRepository.GetOrderPaged(page, pageSize);
+                var orders = _orderRepository.GetOrderPaged(page, pageSize);
 
-                if (products != null)
+                if (orders != null)
                 {
 
-                    return Ok(products);
+                    return Ok(orders);
                 }
 
                 return NotFound();

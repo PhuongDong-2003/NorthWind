@@ -34,6 +34,21 @@ namespace NorthWind.Api.Controllers
             }
 
         }
+        [HttpGet("{UserName}")]
+        public IActionResult GetAll( string UserName)
+
+        {
+            try
+            {
+                var accounts = _accountRepository.GetByUsername(UserName);
+                return Ok(accounts);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
     
 
     }

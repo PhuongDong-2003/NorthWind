@@ -46,7 +46,7 @@
     <thead>
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0"><th class="w-10px pe-2 sorting_disabled" rowspan="1" colspan="1" aria-label="style="width: 29.9px;"></th>              
         
-             </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" style="width: 229.575px;">ProductName</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Two-step : activate to sort column ascending" style="width: 200.475px;">QuantityPerUnit </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Joined Date: activate to sort column ascending" style="width: 200.375px;">UnitPrice</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" style="width: 30px;">Action</th></tr>
+            </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" style="width: 229.575px;">ProductName</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Two-step : activate to sort column ascending" style="width: 200.475px;">QuantityPerUnit </th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="Joined Date: activate to sort column ascending" style="width: 200.375px;">UnitPrice</th><th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" style="width: 30px;">Action</th></tr>
     </thead>
     <tbody class="fw-semibold text-gray-600">                  
                     
@@ -68,16 +68,15 @@
                     </td>
                     <td class="d-flex align-items-center">
                         <div class="d-flex flex-column">
-                            <a href="#" class="text-gray-800 text-hover-primary mb-1">@(product.ProductName)</a>
+                            <a href="#" class="text-gray-800 text-hover-primary mb-1">@product.ProductName</a>
                         </div>
                     </td>
                     
                     <td>@product.QuantityPerUnit</td>                        
                     <td>@product.UnitPrice</td>
-                    <td >
-                        <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"  id= "AddToCart" type="button" >Add To Cart </button>
-                        <input type= "hidden" value="@product.ProductID" name = "productId">
-
+                    <td>
+                        <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-productid="@product.ProductID" name= "AddToCart" type="submit" >Add To Cart </button>
+                        <input type= "hidden" value="@product.ProductID" name = "productId" >
                     </td>                                              
                 </tr>
     @if(ViewData["messAddCart"]!=null)
@@ -128,15 +127,14 @@
                     <td>@pd.SupplierID </td>
                     <td>@pd.CategoryID</td>
                     <td>@pd.QuantityPerUnit</td>                        
-                    <td>@pd.UnitPrice</td>
-                
+                    <td>@pd.UnitPrice</td>              
                     <td >
                     <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"  data-toggle="modal"  data-target="#editProductModal_@pd.ProductID"> Details </button>         
                     </td>  
                                                             
                 </tr>
 
-                             <div class="modal fade" id="editProductModal_@pd.ProductID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  data-toggle="modal" aria-hidden="true">
+                <div class="modal fade" id="editProductModal_@pd.ProductID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  data-toggle="modal" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">

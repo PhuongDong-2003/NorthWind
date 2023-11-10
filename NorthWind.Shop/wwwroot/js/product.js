@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
-document.getElementById("searchInput").addEventListener("keyup", function (event) {
-    if (event.key === "Enter") {
-        var searchTerm = document.getElementById("searchInput").value;
+    document.getElementById("searchInput").addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            var searchTerm = document.getElementById("searchInput").value;
 
-        $.ajax({
-            url: "/Home/Find",
-            type: "POST",
-            error: function (error) {
-              
-            }
-        });
-    }
-});
+            $.ajax({
+                url: "/Home/Find",
+                type: "POST",
+                error: function (error) {
+
+                }
+            });
+        }
+    });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 data: { productId: productId },
                 success: function (data) {
                     if (data.success) {
-                        // Hiển thị thông báo khi thêm vào giỏ hàng thành công
                         alert("Add Cart Success");
                     } else {
                         alert("Add Cart failed");
@@ -38,6 +37,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
-
-

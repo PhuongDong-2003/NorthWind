@@ -17,19 +17,17 @@
             <!--begin::Search-->
             <div class="d-flex align-items-center position-relative my-1">
                  <form asp-controller="Home" asp-action="Find" method="post">
-                <input type="text" data-kt-ecommerce-product-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Product"  name="productName" /> <br>
+                <input type="text"  class="form-control form-control-solid w-250px ps-12" placeholder="Search Product"  name="productName" onkeyup="Find()" id = "searchInput" /> <br>
                 <button type="submit" class="btn btn-primary">Tìm</button>
                 </form>        
             </div>
             <!--end::Search-->
         </div>
         <!--end::Card title-->
-
         <!--begin::Card toolbar-->
         <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
             <div class="w-100 mw-150px">
-                <!--begin::Select2-->
-           
+                <!--begin::Select2-->  
                 <!--end::Select2-->
             </div>
             <!--begin::Add product-->          
@@ -39,8 +37,7 @@
     </div>
     <!--end::Card header-->
     <!--begin::Card body-->
-    <div class="card-body pt-0">
-        
+    <div class="card-body pt-0">       
 <!--begin::Table-->
 <div id="kt_ecommerce_products_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="table-responsive"><table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="kt_ecommerce_products_table">
     <thead>
@@ -71,11 +68,11 @@
                             <a href="#" class="text-gray-800 text-hover-primary mb-1">@product.ProductName</a>
                         </div>
                     </td>
-                    
                     <td>@product.QuantityPerUnit</td>                        
                     <td>@product.UnitPrice</td>
                     <td>
-                        <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-productid="@product.ProductID" name= "AddToCart" type="submit" >Add To Cart </button>
+                        <button class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" 
+                            data-productid="@product.ProductID" name= "AddToCart" type="button" onclick="AddToCart(@product.ProductID)">Add To Cart </button>
                         <input type= "hidden" value="@product.ProductID" name = "productId" >
                     </td>                                              
                 </tr>
@@ -100,11 +97,8 @@
                 </div>
 
                     }
-
                 }
-
-            }   
-        
+            }      
         }
     else
        {  
@@ -145,7 +139,7 @@
                             </div>
                 <div class="modal-body px-5 my-7">
                 <!--begin::Form-->
-                 <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" method="post" enctype="multipart/form-data" action="/Product/Create">
+                 @* <form id="kt_modal_add_user_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" method="post" enctype="multipart/form-data" action="/Product/Create">
                     <!--begin::Scroll-->
                     <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px" style="max-height: 415px;">
                         <!--begin::Input group-->
@@ -237,7 +231,7 @@
                      </div>
                    
                     <input name="__RequestVerificationToken" type="hidden" value="CfDJ8GxemYOtrGxHrjtI4Yo-ggHcKkBF6uQxLfb23jWCvpoycY2dJiY_KxP0X0YiKSV07YkoahJ9KyIQx7YL496nmELPfthBCffe4_ubbFqrQsPqgMJw8PCFpwf64sa36vqw8QTE5uZw1jUmboGdFGr4CUQ"><input name="Discontinued" type="hidden" value="false">
-                </form> 
+                </form>  *@
                 <!--end::Form-->
             </div>
             <div class="modal-footer">
@@ -271,9 +265,7 @@
                 @for (var i = 1; i <= products.TotalPages; i++)
                 {
                     
-                    <li class="page-item @(i == products.Page ? "active" : "")">
-                    
-                  
+                    <li class="page-item @(i == products.Page ? "active" : "")">                 
                         <a class="page-link" href="/Home/Index?page=@i&pageSize=@products.PageSize">
                          @i </a>
                     </li> 
@@ -284,13 +276,13 @@
 
     } 
      break;       
-}
+    }
 }
 
-<!--end::Table-->    </div>
-    <!--end::Card body-->
 </div>
-<!--end::Products-->        </div>
+ 
+</div>
+      </div>
 
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -299,4 +291,5 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="/assets/js/scripts.bundle.js"></script>
 <script src="/assets/js/widgets.bundle.js"></script>        
-<script src="/assets/js/product.js"></script>      
+<script src="/js/product.js"></script>  
+

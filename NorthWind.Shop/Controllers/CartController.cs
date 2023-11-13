@@ -30,7 +30,6 @@ namespace NorthWind.Shop.Controllers
             _customerService = customerService;
             _orderService = orderService;
             _orderDetailsService = orderDetailsService;
-
         }
 
         public IActionResult Cart()
@@ -53,10 +52,8 @@ namespace NorthWind.Shop.Controllers
 
             var response = await _cartService.GetByID(productId);
 
-
             Dictionary<int, CartItem> cart = GetCartFromCookie();
 
-            // Thêm sản phẩm vào giỏ hàng hoặc cập nhật số lượng nếu sản phẩm đã tồn tại
             if (cart.ContainsKey(productId))
             {
                 cart[productId].Quantity++;
@@ -72,8 +69,6 @@ namespace NorthWind.Shop.Controllers
                 };
             }
             SaveCartToCookie(cart);
-            // TempData["messAddCart"]= "Sản phẩm đã được thêm vào giỏ hàng";
-            // Console.WriteLine("Sản phẩm đã được thêm vào giỏ hàng");
             return Json(new { success = true });
         }
         private Dictionary<int, CartItem> GetCartFromCookie()
@@ -98,6 +93,7 @@ namespace NorthWind.Shop.Controllers
 
             HttpContext.Response.Cookies.Append("cart", cartJson, cookieOptions);
         }
+
         [HttpPost]
         public IActionResult UpdateCart(int productId, int quantity)
         {
@@ -135,10 +131,8 @@ namespace NorthWind.Shop.Controllers
         }
         public void Clear()
         {      
-          
                 Response.Cookies.Delete("cart");
-   
-        
+                
         }
         
         [HttpPost]
@@ -176,9 +170,6 @@ namespace NorthWind.Shop.Controllers
                     foreach(var rs in resultorder)
                     {
                         od = rs;
-                        
-                    
-                     
                     OrderDetail orderDetail = new OrderDetail
                     {
                         OrderID = od.OrderID,
@@ -192,7 +183,9 @@ namespace NorthWind.Shop.Controllers
                 }
 
                 Clear();
-                return Redirect("Cart");
+                Redirect("Cart");
+                 return Json(new { success = true });
+               // return Redirect("Cart");
             }
             else
             {

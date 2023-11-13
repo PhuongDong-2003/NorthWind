@@ -7,6 +7,7 @@
     var productlist = ViewData["productlist"] as List<Product>;
    var respone =  Context.Session.GetString("CMND");
 }
+
 <p> @respone</p>
 <div id="kt_app_content_container" class="app-container  container-fluid ">
             <!--begin::Products-->
@@ -25,12 +26,10 @@
             <!--end::Search-->
         </div>
         <!--end::Card title-->
-
         <!--begin::Card toolbar-->
         <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
             <div class="w-100 mw-150px">
                 <!--begin::Select2-->
-           
                 <!--end::Select2-->
             </div>
             <!--begin::Add product-->          
@@ -52,10 +51,6 @@
     <tbody class="fw-semibold text-gray-600">                  
                     
       <tbody id="product" class="text-gray-600 fw-semibold">
- 
-
- 
-    
     </tbody>
 </table></div><div class="row"><div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start"></div><div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
 <div class="dataTables_paginate paging_simple_numbers" id="kt_table_users_paginate">

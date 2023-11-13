@@ -183,8 +183,7 @@ namespace NorthWind.Shop.Controllers
                 }
 
                 Clear();
-                Redirect("Cart");
-                 return Json(new { success = true });
+                return Json(new { success = true });
                // return Redirect("Cart");
             }
             else

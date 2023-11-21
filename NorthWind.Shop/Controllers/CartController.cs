@@ -31,7 +31,7 @@ namespace NorthWind.Shop.Controllers
             _orderService = orderService;
             _orderDetailsService = orderDetailsService;
         }
-
+        [HttpGet]
         public IActionResult Cart()
         {
             decimal ToTal = 0;
@@ -183,8 +183,8 @@ namespace NorthWind.Shop.Controllers
                 }
 
                 Clear();
-                return Json(new { success = true });
-               // return Redirect("Cart");
+                //return Json(new { success = true });
+               return Redirect("Cart");
             }
             else
             {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using JWTAuthentication.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using NorthWind.Api.Authentication;
 
 namespace NorthWind.Api.Controllers
 {
@@ -15,53 +16,56 @@ namespace NorthWind.Api.Controllers
     [Route("api/[controller]")]
     public class AuthenticationController : ControllerBase
     {
- 
-    
-     private readonly IConfiguration _configuration;
 
-    public AuthenticationController(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
 
-    [HttpPost("login")]
-    public IActionResult Login([FromBody] Users  users)
-    {
-        // Thực hiện xác thực người dùng (điều này có thể thay đổi tùy thuộc vào nhu cầu của bạn)
-        if (users == null)
-    {
-        return BadRequest("Invalid user data");
-    }
-        if (IsValidUser(users))
+        private readonly IConfiguration _configuration;
+
+        public AuthenticationController(IConfiguration configuration)
         {
-            var token = GenerateToken("admin");
-            return Ok(new { token });
+            _configuration = configuration;
         }
 
-        return Unauthorized();
-    }
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] Users users)
+        {
+            // Thực hiện xác thực người dùng (điều này có thể thay đổi tùy thuộc vào nhu cầu của bạn)
+            if (users == null)
+            {
+                return BadRequest("Invalid user data");
+            }
+            var user = GetUserRole(users);
 
-    private bool IsValidUser(Users users)
-    {
-        var validUser = _configuration.GetSection("Users")
-                                    .Get<List<Users>>()
-                                    .Any(u => u.Username == users.Username && u.Password == users.Password );
-        return validUser;
-    }
+            if (user != null)
+            {
+                var token = GenerateToken(user.Role);
+                return Ok(new { token });
+            }
 
-    private string GenerateToken(string role)
-    {   
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:ValidIssuer"],
-            audience: _configuration["Jwt:ValidAudience"],
-            claims: new List<Claim> { new Claim(ClaimTypes.Role, role) },
-            expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpiresInMinutes"])),
-            signingCredentials: creds
-        );
+            return Unauthorized();
+        }
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
+        private UserRole GetUserRole(Users users)
+        {
+            return _configuration.GetSection("Users")
+                                 .Get<List<UserRole>>()
+                                 .FirstOrDefault(u => u.Username == users.Username && u.Password == users.Password);
+
+
+        }
+
+        private string GenerateToken(string role)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:ValidIssuer"],
+                audience: _configuration["Jwt:ValidAudience"],
+                claims: new List<Claim> { new Claim(ClaimTypes.Role, role) },
+                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpiresInMinutes"])),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }

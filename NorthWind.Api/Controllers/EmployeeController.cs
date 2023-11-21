@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using NorthWind.Core.Entity;
 using NorthWind.Api.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NorthWind.Api.Controllers
 {
-
+    [Authorize(Roles = "web")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase

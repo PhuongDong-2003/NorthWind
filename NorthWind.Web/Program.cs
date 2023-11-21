@@ -16,7 +16,7 @@ builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<UserController>();
-
+builder.Services.AddScoped<ITokenProvider, TokenProvieder>();
 builder.Services.AddScoped<Print>();
 builder.Services.AddScoped<B>();
 

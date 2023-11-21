@@ -8,7 +8,7 @@ using NorthWind.Api.Repository;
 using NorthWind.Core.Entity;
 
 namespace NorthWind.Api.Controllers
-{   [Authorize(Roles = "admin")]
+{   [Authorize(Roles = "web")]
     [ApiController]
     [Route("api/[controller]")]
     public class CustomerController : ControllerBase

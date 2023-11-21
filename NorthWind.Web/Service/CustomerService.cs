@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic;
 using NorthWind.Core.Entity;
 using NorthWind.Web.Models;
 
@@ -14,19 +17,36 @@ namespace NorthWind.Web.Service
         private readonly HttpClient httpClient;
         private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
 
+        private readonly ITokenProvider _tokenProvider;
 
-        public CustomerService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
+        public CustomerService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient, ITokenProvider tokenProvider)
         {
 
             this.httpClient = httpClient;
             _apiUrlsConfiguration = apiUrlsOptions.Value;
+            _tokenProvider = tokenProvider;
+        }
+              private async Task<string> GetTokenAsync()
+        {
+            return await _tokenProvider.LoginAsync();
         }
 
-        public IEnumerable<Customer> GetCustomer()
+        private async Task<HttpClient> GetAuthorizedHttpClientAsync()
         {
+            var token = await GetTokenAsync();
+
+            var authorizedHttpClient = new HttpClient();
+            authorizedHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            return authorizedHttpClient;
+        }
+
+        public async Task<IEnumerable<Customer>> GetCustomer() 
+        {
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
 
             string apiBaseUrl = _apiUrlsConfiguration.CustomerApiUrl;
-            var response = httpClient.GetFromJsonAsync<IEnumerable<Customer>>(apiBaseUrl).Result;
+            var response = httpClientToken.GetFromJsonAsync<IEnumerable<Customer>>(apiBaseUrl).Result;
             if (response == null)
             {
 
@@ -53,7 +73,6 @@ namespace NorthWind.Web.Service
 
         public async Task InsertCustomer(Customer customer)
         {
-
             var apiUrl = _apiUrlsConfiguration.CustomerApiUrl;
             var response = await httpClient.PostAsJsonAsync(apiUrl, customer);
             var responseContent = await response.Content.ReadAsStringAsync();
@@ -90,9 +109,9 @@ namespace NorthWind.Web.Service
 
         public async Task<IEnumerable<Customer>> GetCustomerPage(int page, int pageSize)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.CustomerApiUrl}/{$"p?page={page}&pageSize={pageSize}"}";
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<Customer>>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<IEnumerable<Customer>>(apiUrl);
 
             if (response == null)
             {
@@ -101,6 +120,9 @@ namespace NorthWind.Web.Service
 
             return response;
         }
+
+
+
 
 
 

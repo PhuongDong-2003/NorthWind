@@ -28,7 +28,7 @@ namespace NorthWind.Api.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] Users users)
         {
-            // Thực hiện xác thực người dùng (điều này có thể thay đổi tùy thuộc vào nhu cầu của bạn)
+           
             if (users == null)
             {
                 return BadRequest("Invalid user data");

@@ -1,70 +1,99 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace NorthWind.Core.Entity
 {
+    [Table("Employees")]
     public class Employee
     {   
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("EmployeeID")]
         public int EmployeeId { get; set; }
-
-        [JsonPropertyName("lastName")]
+        
+        [StringLength(20)]
         public string LastName { get; set; } = null!;
 
-        [JsonPropertyName("firstName")]
+        [StringLength(10)]
         public string FirstName { get; set; } = null!;
 
-        [JsonPropertyName("title")]
+        [StringLength(30)]
         public string? Title { get; set; }
 
-        [JsonPropertyName("titleOfCourtesy")]
+        [StringLength(25)]
         public string? TitleOfCourtesy { get; set; }
 
-        [JsonPropertyName("birthDate")]
         public DateTime? BirthDate { get; set; }
 
-        [JsonPropertyName("hireDate")]
         public DateTime? HireDate { get; set; }
 
-        [JsonPropertyName("address")]
+        [StringLength(60)]
         public string? Address { get; set; }
 
-        [JsonPropertyName("city")]
+        [StringLength(15)]
         public string? City { get; set; }
 
-        [JsonPropertyName("region")]
+        [StringLength(15)]
         public string? Region { get; set; }
 
-        [JsonPropertyName("postalCode")]
+        [StringLength(10)]
         public string? PostalCode { get; set; }
 
-        [JsonPropertyName("country")]
+         [StringLength(15)]
         public string? Country { get; set; }
 
-        [JsonPropertyName("homePhone")]
+        [StringLength(24)]
         public string? HomePhone { get; set; }
 
-        [JsonPropertyName("extension")]
+        [StringLength(4)]
         public string? Extension { get; set; }
 
-        [JsonPropertyName("photo")]
         public byte[]? Photo { get; set; }
 
-        [JsonPropertyName("notes")]
+        [StringLength(225)] 
         public string? Notes { get; set; }
 
-        [JsonPropertyName("reportsTo")]
+        [ForeignKey("EmployeeId")]
         public int? ReportsTo { get; set; }
 
-        [JsonPropertyName("photoPath")]
+        [StringLength(225)]
         public string? PhotoPath { get; set; }
-        public int Page {get; set;} 
-        public int PageSize {get; set;} 
+
+        
+        public  List<Order> Orders { get; set;}
+
+          public Employee()
+        {
+            Orders = new List<Order>();
+        }
+
+        [ForeignKey("ReportsTo")]
+        public virtual Employee? ReportsToNavigation { get; set; }
+
+        [NotMapped]
+        public int Page { get; set; }
+
+        [NotMapped]
+        public int PageSize { get; set; }
+
+        [NotMapped]
         public long RowNum { get; set; }
+
+        [NotMapped]
         public int TotalRow { get; set; }
+
+        [NotMapped]
         public int TotalPages { get; set; }
         
+
+      
+
+       
+
     }
 }

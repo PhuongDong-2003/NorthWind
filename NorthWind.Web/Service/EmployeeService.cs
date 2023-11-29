@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -14,18 +15,33 @@ namespace NorthWind.Web.Service
     {
         private readonly HttpClient httpClient;
         private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
+        private readonly ITokenProvider _tokenProvider;
 
-        public EmployeeService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
+        public EmployeeService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient, ITokenProvider tokenProvider)
         {
 
             this.httpClient = httpClient;
             _apiUrlsConfiguration = apiUrlsOptions.Value;
+            _tokenProvider = tokenProvider;
         }
 
-        public async Task DeleteEmployee(int id)
+         private async Task<string> GetTokenAsync()
         {
+            return await _tokenProvider.LoginAsync();
+        }
+
+        private async Task<HttpClient> GetAuthorizedHttpClientAsync()
+        {
+            var token = await GetTokenAsync();
+            var authorizedHttpClient = new HttpClient();
+            authorizedHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return authorizedHttpClient;
+        }
+        public async Task DeleteEmployee(int id)
+        {  
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{id}";
-            var response = await httpClient.DeleteAsync(apiUrl);
+            var response = await httpClientToken.DeleteAsync(apiUrl);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -35,9 +51,9 @@ namespace NorthWind.Web.Service
 
         public async Task<Employee> GetEmployeeByID(int employeeId)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{employeeId}";
-            var response = await httpClient.GetFromJsonAsync<Employee>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<Employee>(apiUrl);
 
             if (response == null)
             {
@@ -48,9 +64,9 @@ namespace NorthWind.Web.Service
         }
         public async Task<IEnumerable<Employee>> GetEmployeePage(int page, int pageSize)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{$"p?page={page}&pageSize={pageSize}"}";
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<Employee>>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<IEnumerable<Employee>>(apiUrl);
 
             if (response == null)
             {
@@ -59,11 +75,11 @@ namespace NorthWind.Web.Service
 
             return response;
         }
-        public IEnumerable<Employee> GetEmployee()
+        public async Task<IEnumerable<Employee>> GetEmployeePage(int page, int pageSize, string search) 
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             string apiBaseUrl = _apiUrlsConfiguration.EmployeesApiUrl;
-            var response = httpClient.GetFromJsonAsync<IEnumerable<Employee>>(apiBaseUrl).Result;
+            var response = httpClientToken.GetFromJsonAsync<IEnumerable<Employee>>(apiBaseUrl).Result;
             if (response == null)
             {
 
@@ -75,9 +91,9 @@ namespace NorthWind.Web.Service
         }
         public async Task InsertEmployee(Employee employee)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = _apiUrlsConfiguration.EmployeesApiUrl;
-            var response = await httpClient.PostAsJsonAsync(apiUrl, employee);
+            var response = await httpClientToken.PostAsJsonAsync(apiUrl, employee);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -89,9 +105,9 @@ namespace NorthWind.Web.Service
 
         public async Task UpdateEmployee(Employee employee)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{employee.EmployeeId}";
-            var response = await httpClient.PutAsJsonAsync(apiUrl, employee);
+            var response = await httpClientToken.PutAsJsonAsync(apiUrl, employee);
 
             if (!response.IsSuccessStatusCode)
             {

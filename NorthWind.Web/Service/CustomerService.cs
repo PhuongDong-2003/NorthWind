@@ -13,38 +13,33 @@ namespace NorthWind.Web.Service
 {
     public class CustomerService
     {
-
         private readonly HttpClient httpClient;
         private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
-
         private readonly ITokenProvider _tokenProvider;
 
+        
         public CustomerService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient, ITokenProvider tokenProvider)
         {
-
             this.httpClient = httpClient;
             _apiUrlsConfiguration = apiUrlsOptions.Value;
             _tokenProvider = tokenProvider;
         }
-              private async Task<string> GetTokenAsync()
+        private  Task<string> GetTokenAsync()
         {
-            return await _tokenProvider.LoginAsync();
+            return  _tokenProvider.LoginAsync();
         }
 
         private async Task<HttpClient> GetAuthorizedHttpClientAsync()
         {
             var token = await GetTokenAsync();
-
             var authorizedHttpClient = new HttpClient();
             authorizedHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
             return authorizedHttpClient;
         }
 
-        public async Task<IEnumerable<Customer>> GetCustomer() 
+        public async Task<IEnumerable<Customer>> GetCustomer()
         {
             var httpClientToken = await GetAuthorizedHttpClientAsync();
-
             string apiBaseUrl = _apiUrlsConfiguration.CustomerApiUrl;
             var response = httpClientToken.GetFromJsonAsync<IEnumerable<Customer>>(apiBaseUrl).Result;
             if (response == null)
@@ -59,9 +54,9 @@ namespace NorthWind.Web.Service
 
         public async Task<Customer> GetCustomerByID(string CustomerID)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.CustomerApiUrl}/{CustomerID}";
-            var response = await httpClient.GetFromJsonAsync<Customer>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<Customer>(apiUrl);
 
             if (response == null)
             {
@@ -73,8 +68,9 @@ namespace NorthWind.Web.Service
 
         public async Task InsertCustomer(Customer customer)
         {
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = _apiUrlsConfiguration.CustomerApiUrl;
-            var response = await httpClient.PostAsJsonAsync(apiUrl, customer);
+            var response = await httpClientToken.PostAsJsonAsync(apiUrl, customer);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -85,9 +81,9 @@ namespace NorthWind.Web.Service
 
         public async Task UpdateCustomer(Customer customer)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.CustomerApiUrl}";
-            var response = await httpClient.PutAsJsonAsync(apiUrl, customer);
+            var response = await httpClientToken.PutAsJsonAsync(apiUrl, customer);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -98,8 +94,9 @@ namespace NorthWind.Web.Service
 
         public async Task DeleteCustomer(string id)
         {
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.CustomerApiUrl}/{id}";
-            var response = await httpClient.DeleteAsync(apiUrl);
+            var response = await httpClientToken.DeleteAsync(apiUrl);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -120,11 +117,6 @@ namespace NorthWind.Web.Service
 
             return response;
         }
-
-
-
-
-
 
     }
 }

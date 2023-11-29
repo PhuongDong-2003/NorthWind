@@ -16,9 +16,11 @@ builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<UserController>();
-builder.Services.AddScoped<ITokenProvider, TokenProvieder>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<Print>();
 builder.Services.AddScoped<B>();
+builder.Services.AddMemoryCache();
+builder.Services.AddDistributedMemoryCache();
 
 // Cách 2 tham khảo project mẫu
 // var configSection = builder.Configuration.GetRequiredSection(ApiUrlsConfiguration.CONFIG_NAME);

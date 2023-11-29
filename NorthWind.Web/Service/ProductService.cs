@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using NorthWind.Core.Entity;
@@ -12,18 +13,34 @@ namespace NorthWind.Web.Service
     {
         private readonly HttpClient httpClient;
         private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
-        public ProductService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
+
+        private readonly ITokenProvider _tokenProvider;
+        public ProductService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient, ITokenProvider tokenProvider)
         {
 
             this.httpClient = httpClient;
             _apiUrlsConfiguration = apiUrlsOptions.Value;
+            _tokenProvider = tokenProvider;
+        }
+        
+          private async Task<string> GetTokenAsync()
+        {
+            return await _tokenProvider.LoginAsync();
         }
 
-        public IEnumerable<Product> GetProduct()
+        private async Task<HttpClient> GetAuthorizedHttpClientAsync()
         {
+            var token = await GetTokenAsync();
+            var authorizedHttpClient = new HttpClient();
+            authorizedHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return authorizedHttpClient;
+        }
 
+        public async Task<IEnumerable<Product>> GetProduct() 
+        {
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             string apiBaseUrl = _apiUrlsConfiguration.ProductApiUrl;
-            var response = httpClient.GetFromJsonAsync<IEnumerable<Product>>(apiBaseUrl).Result;
+            var response = httpClientToken.GetFromJsonAsync<IEnumerable<Product>>(apiBaseUrl).Result;
             if (response == null)
             {
                 throw new Exception("Không thử lấy danh sách nhân viên từ api");
@@ -34,9 +51,9 @@ namespace NorthWind.Web.Service
 
         public async Task<Product> GetProductByID(int ProductID)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.ProductApiUrl}/{ProductID}";
-            var response = await httpClient.GetFromJsonAsync<Product>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<Product>(apiUrl);
 
             if (response == null)
             {
@@ -48,9 +65,9 @@ namespace NorthWind.Web.Service
 
         public async Task InsertProduct(Product product)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = _apiUrlsConfiguration.ProductApiUrl;
-            var response = await httpClient.PostAsJsonAsync(apiUrl, product);
+            var response = await httpClientToken.PostAsJsonAsync(apiUrl, product);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -61,9 +78,9 @@ namespace NorthWind.Web.Service
 
         public async Task UpdateProduct(Product product)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.ProductApiUrl}";
-            var response = await httpClient.PutAsJsonAsync(apiUrl, product);
+            var response = await httpClientToken.PutAsJsonAsync(apiUrl, product);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -74,8 +91,9 @@ namespace NorthWind.Web.Service
 
         public async Task DeleteProduct(int id)
         {
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.ProductApiUrl}/{id}";
-            var response = await httpClient.DeleteAsync(apiUrl);
+            var response = await httpClientToken.DeleteAsync(apiUrl);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -85,9 +103,9 @@ namespace NorthWind.Web.Service
 
         public async Task<IEnumerable<Product>> GetProductPage(int page, int pageSize)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.ProductApiUrl}/{$"p?page={page}&pageSize={pageSize}"}";
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<Product>>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<IEnumerable<Product>>(apiUrl);
 
             if (response == null)
             {

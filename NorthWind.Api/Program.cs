@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NorthWind.Api.Controllers;
@@ -12,6 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+ConnectionStrings databaseSetting = new ConnectionStrings();
+builder.Configuration.GetSection("ConnectionStrings").Bind(databaseSetting);
+builder.Services.AddSingleton(databaseSetting);
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(databaseSetting.Connection));
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();

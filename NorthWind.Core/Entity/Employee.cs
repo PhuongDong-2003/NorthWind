@@ -16,64 +16,61 @@ namespace NorthWind.Core.Entity
         [Column("EmployeeID")]
         public int EmployeeId { get; set; }
         
-        [StringLength(20)]
+        [Column(TypeName = "nvarchar(20)")]
         public string LastName { get; set; } = null!;
 
-        [StringLength(10)]
+        [Column(TypeName = "nvarchar(10)")]
         public string FirstName { get; set; } = null!;
 
-        [StringLength(30)]
+        [Column(TypeName = "nvarchar(30)")]
         public string? Title { get; set; }
 
-        [StringLength(25)]
+        [Column(TypeName = "nvarchar(25)")]
         public string? TitleOfCourtesy { get; set; }
 
         public DateTime? BirthDate { get; set; }
 
         public DateTime? HireDate { get; set; }
 
-        [StringLength(60)]
+        [Column(TypeName = "nvarchar(60)")]
         public string? Address { get; set; }
 
-        [StringLength(15)]
+        [Column(TypeName = "nvarchar(15)")]
         public string? City { get; set; }
 
-        [StringLength(15)]
+        [Column(TypeName = "nvarchar(15)")]
         public string? Region { get; set; }
 
-        [StringLength(10)]
+        [Column(TypeName = "nvarchar(15)")]
         public string? PostalCode { get; set; }
 
-         [StringLength(15)]
+        [Column(TypeName = "nvarchar(15)")]
         public string? Country { get; set; }
 
-        [StringLength(24)]
+        [Column(TypeName = "nvarchar(24)")]
         public string? HomePhone { get; set; }
 
-        [StringLength(4)]
+        [Column(TypeName = "nvarchar(4)")]
         public string? Extension { get; set; }
 
         public byte[]? Photo { get; set; }
 
-        [StringLength(225)] 
+       
         public string? Notes { get; set; }
 
-        [ForeignKey("EmployeeId")]
         public int? ReportsTo { get; set; }
 
-        [StringLength(225)]
+        [Column(TypeName = "nvarchar(255)")]
         public string? PhotoPath { get; set; }
 
-        
+        public bool Status { set; get; }
+    
         public  List<Order> Orders { get; set;}
 
           public Employee()
         {
             Orders = new List<Order>();
         }
-
-        [ForeignKey("ReportsTo")]
-        public virtual Employee? ReportsToNavigation { get; set; }
 
         [NotMapped]
         public int Page { get; set; }
@@ -91,7 +88,26 @@ namespace NorthWind.Core.Entity
         public int TotalPages { get; set; }
         
 
-      
+             public void CalculatePagination(int pageSize)
+        {
+        
+            if (pageSize <= 0)
+            {
+                return;
+            }
+
+
+            TotalPages = (int)Math.Ceiling((double)TotalRow / pageSize);
+
+            
+            Page = Math.Min(Page, TotalPages);
+
+        
+            Page = Math.Max(Page, 1);
+
+        
+            RowNum = (Page - 1) * pageSize + 1;
+        }
 
        
 

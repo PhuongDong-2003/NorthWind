@@ -28,7 +28,7 @@ namespace NorthWind.Api.Repository
         public void DeleteEmployee(int id)
         {
 
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "DELETE FROM Employees WHERE EmployeeId = @EmployeeId";
@@ -58,67 +58,62 @@ namespace NorthWind.Api.Repository
 
         public Employee GetEmployeeByID(int employeeId)
         {
-            // string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            // SqlConnection connection = new SqlConnection(connectionString);
-            // connection.Open();
-            // string sqlQuery = "SELECT * FROM Employees WHERE EmployeeId = @EmployeeId";
+            string connectionString = _configuration.GetConnectionString("Connection");
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlQuery = "SELECT * FROM Employees WHERE EmployeeId = @EmployeeId";
 
-            // using (SqlCommand command = new SqlCommand(sqlQuery, connection))
-            // {
-            //     command.Parameters.AddWithValue("@EmployeeId", employeeId);
-            //     using (SqlDataReader reader = command.ExecuteReader())
-            //     {
-            //         if (reader.Read())
-            //         {
-            //             Employee employee = new Employee
-            //             {
-            //                 EmployeeId = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
-            //                 LastName = reader.GetString(reader.GetOrdinal("LastName")),
-            //                 FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-            //                 Title = reader.IsDBNull(reader.GetOrdinal("Title")) ? null : reader.GetString(reader.GetOrdinal("Title")),
-            //                 TitleOfCourtesy = reader.IsDBNull(reader.GetOrdinal("TitleOfCourtesy")) ? null : reader.GetString(reader.GetOrdinal("TitleOfCourtesy")),
-            //                 BirthDate = reader.IsDBNull(reader.GetOrdinal("BirthDate")) ? null : reader.GetDateTime(reader.GetOrdinal("BirthDate")),
-            //                 HireDate = reader.IsDBNull(reader.GetOrdinal("HireDate")) ? null : reader.GetDateTime(reader.GetOrdinal("HireDate")),
-            //                 Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? null : reader.GetString(reader.GetOrdinal("Address")),
-            //                 City = reader.IsDBNull(reader.GetOrdinal("City")) ? null : reader.GetString(reader.GetOrdinal("City")),
-            //                 Region = reader.IsDBNull(reader.GetOrdinal("Region")) ? null : reader.GetString(reader.GetOrdinal("Region")),
-            //                 PostalCode = reader.IsDBNull(reader.GetOrdinal("PostalCode")) ? null : reader.GetString(reader.GetOrdinal("PostalCode")),
-            //                 Country = reader.IsDBNull(reader.GetOrdinal("Country")) ? null : reader.GetString(reader.GetOrdinal("Country")),
-            //                 HomePhone = reader.IsDBNull(reader.GetOrdinal("HomePhone")) ? null : reader.GetString(reader.GetOrdinal("HomePhone")),
-            //                 Extension = reader.IsDBNull(reader.GetOrdinal("Extension")) ? null : reader.GetString(reader.GetOrdinal("Extension")),
-            //                 Photo = reader.IsDBNull(reader.GetOrdinal("Photo")) ? null : (byte[])reader["Photo"],
-            //                 Notes = reader.IsDBNull(reader.GetOrdinal("Notes")) ? null : reader.GetString(reader.GetOrdinal("Notes")),
-            //                 ReportsTo = reader.IsDBNull(reader.GetOrdinal("ReportsTo")) ? null : (int?)reader.GetInt32(reader.GetOrdinal("ReportsTo")),
-            //                 PhotoPath = reader.IsDBNull(reader.GetOrdinal("PhotoPath")) ? null : reader.GetString(reader.GetOrdinal("PhotoPath"))
-            //             };
-            //             return employee;
-            //         }
-            //         else
-            //         {
-            //             return null;
-            //         }
-            //     }
-            // }
-
-             var employees = _context.Employees.Where(x => x.EmployeeId == employeeId).Include(x => x.Orders).FirstOrDefault();
-                           
-            if (employees is not null)
+            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
             {
-                // foreach (var employee in employees)
-                // {
-                //     var order = _context.Orders.Where(x => x.EmployeeID == employeeId && x.OrderID % 3== 0).ToList();  
-                //    employee.Orders = order;
-                // }
-
-                return employees;
+                command.Parameters.AddWithValue("@EmployeeId", employeeId);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        Employee employee = new Employee
+                        {
+                            EmployeeId = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            Title = reader.IsDBNull(reader.GetOrdinal("Title")) ? null : reader.GetString(reader.GetOrdinal("Title")),
+                            TitleOfCourtesy = reader.IsDBNull(reader.GetOrdinal("TitleOfCourtesy")) ? null : reader.GetString(reader.GetOrdinal("TitleOfCourtesy")),
+                            BirthDate = reader.IsDBNull(reader.GetOrdinal("BirthDate")) ? null : reader.GetDateTime(reader.GetOrdinal("BirthDate")),
+                            HireDate = reader.IsDBNull(reader.GetOrdinal("HireDate")) ? null : reader.GetDateTime(reader.GetOrdinal("HireDate")),
+                            Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? null : reader.GetString(reader.GetOrdinal("Address")),
+                            City = reader.IsDBNull(reader.GetOrdinal("City")) ? null : reader.GetString(reader.GetOrdinal("City")),
+                            Region = reader.IsDBNull(reader.GetOrdinal("Region")) ? null : reader.GetString(reader.GetOrdinal("Region")),
+                            PostalCode = reader.IsDBNull(reader.GetOrdinal("PostalCode")) ? null : reader.GetString(reader.GetOrdinal("PostalCode")),
+                            Country = reader.IsDBNull(reader.GetOrdinal("Country")) ? null : reader.GetString(reader.GetOrdinal("Country")),
+                            HomePhone = reader.IsDBNull(reader.GetOrdinal("HomePhone")) ? null : reader.GetString(reader.GetOrdinal("HomePhone")),
+                            Extension = reader.IsDBNull(reader.GetOrdinal("Extension")) ? null : reader.GetString(reader.GetOrdinal("Extension")),
+                            Photo = reader.IsDBNull(reader.GetOrdinal("Photo")) ? null : (byte[])reader["Photo"],
+                            Notes = reader.IsDBNull(reader.GetOrdinal("Notes")) ? null : reader.GetString(reader.GetOrdinal("Notes")),
+                            ReportsTo = reader.IsDBNull(reader.GetOrdinal("ReportsTo")) ? null : (int?)reader.GetInt32(reader.GetOrdinal("ReportsTo")),
+                            PhotoPath = reader.IsDBNull(reader.GetOrdinal("PhotoPath")) ? null : reader.GetString(reader.GetOrdinal("PhotoPath"))
+                        };
+                        return employee;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
             }
 
-            return null;
+            //  var employees = _context.Employees.Where(x => x.EmployeeId == employeeId).Include(x => x.Orders).FirstOrDefault();
+                           
+            // if (employees is not null)
+            // {
+
+            //     return employees;
+            // }
+
+            // return null;
         }
 
         public IEnumerable<Employee> GetEmployee()
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "SELECT * FROM Employees";
@@ -161,54 +156,54 @@ namespace NorthWind.Api.Repository
 
         public void InsertEmployee(Employee employee)
         {
-            // string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            // using SqlConnection connection = new SqlConnection(connectionString);
-            // connection.Open();
-            // string sqlQuery = @"INSERT INTO Employees (LastName, FirstName, Title, TitleOfCourtesy, 
-            //                    BirthDate, HireDate,  Address, City, Region, PostalCode, 
-            //                    Country, HomePhone, Extension, Photo, Notes, ReportsTo, PhotoPath)
-            //                    VALUES (@LastName, @FirstName, @Title, @TitleOfCourtesy, @BirthDate, 
-            //                    @HireDate, @Address, @City, @Region, @PostalCode, @Country, @HomePhone, 
-            //                    @Extension, @Photo, @Notes, @ReportsTo, @PhotoPath)";
-            // SqlCommand command = new SqlCommand(sqlQuery, connection);
-            // command.Parameters.AddWithValue("@LastName", employee.LastName);
-            // command.Parameters.AddWithValue("@FirstName", employee.FirstName);
-            // command.Parameters.AddWithValue("@Title", employee.Title ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@TitleOfCourtesy", employee.TitleOfCourtesy ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@BirthDate", employee.BirthDate ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@HireDate", employee.HireDate ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@Address", employee.Address ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@City", employee.City ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@Region", employee.Region ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@PostalCode", employee.PostalCode ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@Country", employee.Country ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@HomePhone", employee.HomePhone ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@Extension", employee.Extension ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@Photo", employee.Photo ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@Notes", employee.Notes ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@ReportsTo", employee.ReportsTo ?? (object)DBNull.Value);
-            // command.Parameters.AddWithValue("@PhotoPath", employee.PhotoPath ?? (object)DBNull.Value);
-            if (employee is not null)
-            {
-                _context.Employees.Add(employee);
-                int result = _context.SaveChanges();
+            string connectionString = _configuration.GetConnectionString("Connection");
+            using SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlQuery = @"INSERT INTO Employees (LastName, FirstName, Title, TitleOfCourtesy, 
+                               BirthDate, HireDate,  Address, City, Region, PostalCode, 
+                               Country, HomePhone, Extension, Photo, Notes, ReportsTo, PhotoPath)
+                               VALUES (@LastName, @FirstName, @Title, @TitleOfCourtesy, @BirthDate, 
+                               @HireDate, @Address, @City, @Region, @PostalCode, @Country, @HomePhone, 
+                               @Extension, @Photo, @Notes, @ReportsTo, @PhotoPath)";
+            SqlCommand command = new SqlCommand(sqlQuery, connection);
+            command.Parameters.AddWithValue("@LastName", employee.LastName);
+            command.Parameters.AddWithValue("@FirstName", employee.FirstName);
+            command.Parameters.AddWithValue("@Title", employee.Title ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@TitleOfCourtesy", employee.TitleOfCourtesy ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@BirthDate", employee.BirthDate ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@HireDate", employee.HireDate ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Address", employee.Address ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@City", employee.City ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Region", employee.Region ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@PostalCode", employee.PostalCode ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Country", employee.Country ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@HomePhone", employee.HomePhone ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Extension", employee.Extension ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Photo", employee.Photo ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Notes", employee.Notes ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@ReportsTo", employee.ReportsTo ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@PhotoPath", employee.PhotoPath ?? (object)DBNull.Value);
+            // if (employee is not null)
+            // {
+            //     _context.Employees.Add(employee);
+            //     int result = _context.SaveChanges();
 
-                if (result > 0)
-                {
-                    Console.WriteLine("Employee đã được thêm thành công.");
-                }
-                else
-                {
-                    Console.WriteLine("Không thể thêm Employee.");
-                }
+            //     if (result > 0)
+            //     {
+            //         Console.WriteLine("Employee đã được thêm thành công.");
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Không thể thêm Employee.");
+            //     }
 
-            }
+            // }
 
         }
 
         public void UpdateEmployee(Employee employee)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
 
             SqlConnection connection = new SqlConnection(connectionString);
             {
@@ -271,7 +266,7 @@ namespace NorthWind.Api.Repository
 
         public IEnumerable<Employee> GetEmployeePaged(int page, int pageSize)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             var resultList = new List<Employee>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -332,6 +327,23 @@ namespace NorthWind.Api.Repository
                 return resultList;
 
             }
+
+            //  var totalRow = _context.Employees.Count(); 
+            // var employees = _context.Employees
+            //     .Skip((page - 1) * pageSize)
+            //     .Take(pageSize)
+            //     .ToList();
+
+            // foreach (var employee in employees)
+            // {
+            //     employee.TotalRow = totalRow;
+            //     employee.Page = page;
+            //     employee.PageSize = pageSize;
+            //     employee.CalculatePagination(pageSize);
+            // }
+
+            // return employees;
+
         }
     }
 

@@ -12,7 +12,5 @@ namespace NorthWind.Shop.Models
     public decimal UnitPrice { get; set; }
     public int Quantity {get; set;}
   
-  
-
     }
 }

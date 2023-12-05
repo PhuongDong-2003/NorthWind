@@ -22,7 +22,7 @@ namespace NorthWind.Api.Repository
 
         public IEnumerable<Product> GetProduct()
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "SELECT * FROM Products";
@@ -58,7 +58,7 @@ namespace NorthWind.Api.Repository
 
         public Product GetProductByID(int ProductID)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "SELECT * FROM Products WHERE ProductID = @ProductID and Status = 0";
@@ -100,7 +100,7 @@ namespace NorthWind.Api.Repository
 
         public IEnumerable<Product> GetProductPaged(int page, int pageSize)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             var resultList = new List<Product>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -157,7 +157,7 @@ namespace NorthWind.Api.Repository
 
         public void InsertProduct(Product product)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "INSERT INTO Products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued, Status) " +
@@ -182,7 +182,7 @@ namespace NorthWind.Api.Repository
 
         public void UpdateProduct(Product product)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "UPDATE Products " +
@@ -220,7 +220,7 @@ namespace NorthWind.Api.Repository
 
         public void DeleteProduct(int id)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "UPDATE Products SET Status = 1 WHERE ProductID = @ProductID";
@@ -235,7 +235,7 @@ namespace NorthWind.Api.Repository
 
         public Product GetProductByName(string ProductName)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "SELECT * FROM Products WHERE ProductName = @ProductName and Status = 0";

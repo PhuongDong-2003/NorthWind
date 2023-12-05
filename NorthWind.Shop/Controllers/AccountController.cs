@@ -70,7 +70,6 @@ namespace NorthWind.Shop.Controllers
                     ViewData["ValidateMessage"] = "Tên đăng nhập hoặc mật khẩu không đúng.";
                 }
 
-
             }
 
             return View("Login");

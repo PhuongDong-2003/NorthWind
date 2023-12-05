@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using NorthWind.Core.Entity;
 using NorthWind.Shop.Models;
+using NorthWind.Shop.Service;
 
 
 namespace NorthWind.Web.Service
@@ -14,20 +16,35 @@ namespace NorthWind.Web.Service
 
         private readonly HttpClient httpClient;
         private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
+        private readonly ITokenProvider _tokenProvider;
 
-
-        public CustomerService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
+        
+        public CustomerService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient, ITokenProvider tokenProvider)
         {
-
             this.httpClient = httpClient;
             _apiUrlsConfiguration = apiUrlsOptions.Value;
+            _tokenProvider = tokenProvider;
+        }
+
+        private  Task<string> GetTokenAsync()
+        {
+            return  _tokenProvider.LoginAsync();
+        }
+
+        private async Task<HttpClient> GetAuthorizedHttpClientAsync()
+        {
+            var token = await GetTokenAsync();
+            var authorizedHttpClient = new HttpClient();
+            authorizedHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return authorizedHttpClient;
         }
 
         public async Task<IEnumerable<Customer>> GetCustomer() 
         {
 
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             string apiBaseUrl = _apiUrlsConfiguration.CustomerApiUrl;
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<Customer>>(apiBaseUrl);
+            var response = await httpClientToken.GetFromJsonAsync<IEnumerable<Customer>>(apiBaseUrl);
             if (response == null)
             {
 
@@ -40,9 +57,9 @@ namespace NorthWind.Web.Service
 
         public async Task<Customer> GetCustomerByID(string CustomerID)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.CustomerApiUrl}/{CustomerID}";
-            var response = await httpClient.GetFromJsonAsync<Customer>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<Customer>(apiUrl);
 
             if (response == null)
             {
@@ -54,9 +71,9 @@ namespace NorthWind.Web.Service
 
         public async Task InsertCustomer(Customer customer)
         {
-
+             var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = _apiUrlsConfiguration.CustomerApiUrl;
-            var response = await httpClient.PostAsJsonAsync(apiUrl, customer);
+            var response = await httpClientToken.PostAsJsonAsync(apiUrl, customer);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -67,9 +84,9 @@ namespace NorthWind.Web.Service
 
         public async Task UpdateCustomer(Customer customer)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.CustomerApiUrl}";
-            var response = await httpClient.PutAsJsonAsync(apiUrl, customer);
+            var response = await httpClientToken.PutAsJsonAsync(apiUrl, customer);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -80,8 +97,9 @@ namespace NorthWind.Web.Service
 
         public async Task DeleteCustomer(string id)
         {
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.CustomerApiUrl}/{id}";
-            var response = await httpClient.DeleteAsync(apiUrl);
+            var response = await httpClientToken.DeleteAsync(apiUrl);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -91,9 +109,9 @@ namespace NorthWind.Web.Service
 
         public async Task<IEnumerable<Customer>> GetCustomerPage(int page, int pageSize)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.CustomerApiUrl}/{$"p?page={page}&pageSize={pageSize}"}";
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<Customer>>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<IEnumerable<Customer>>(apiUrl);
 
             if (response == null)
             {

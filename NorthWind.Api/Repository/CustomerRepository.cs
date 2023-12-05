@@ -18,7 +18,7 @@ namespace NorthWind.Api.Repository
 
         public IEnumerable<Customer> GetCustomer()
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "SELECT * FROM Customers where Status=0";
@@ -59,7 +59,7 @@ namespace NorthWind.Api.Repository
 
         public Customer GetCustomerByID(string customerId)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "SELECT * FROM Customers WHERE CustomerID = @CustomerID and Status = 0";
@@ -100,7 +100,7 @@ namespace NorthWind.Api.Repository
 
         public void InsertCustomer(Customer customer)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             using SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = @"INSERT INTO Customers (CustomerID, CompanyName, ContactName, ContactTitle, Address, 
@@ -135,7 +135,7 @@ namespace NorthWind.Api.Repository
 
         public void UpdateCustomer(Customer customer)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
 
             SqlConnection connection = new SqlConnection(connectionString);
             {
@@ -184,7 +184,7 @@ namespace NorthWind.Api.Repository
 
         public void DeleteCustomer(string id)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlQuery = "UPDATE Customers SET Status = 1 WHERE CustomerID = @CustomerID";
@@ -208,7 +208,7 @@ namespace NorthWind.Api.Repository
 
         public IEnumerable<Customer> GetCustomerPaged(int page, int pageSize)
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("Connection");
             var resultList = new List<Customer>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))

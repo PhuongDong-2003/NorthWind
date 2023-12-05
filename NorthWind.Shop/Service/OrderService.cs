@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using NorthWind.Core.Entity;
 using NorthWind.Shop.Models;
+using NorthWind.Shop.Service;
 using NorthWind.Web.Models;
 
 namespace NorthWind.Web.Service
@@ -13,18 +15,34 @@ namespace NorthWind.Web.Service
     {
         private readonly HttpClient httpClient;
         private readonly ApiUrlsConfiguration _apiUrlsConfiguration;
-        public OrderService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient)
-        {
+        private readonly ITokenProvider _tokenProvider;
 
+        
+        public OrderService(IOptions<ApiUrlsConfiguration> apiUrlsOptions, HttpClient httpClient, ITokenProvider tokenProvider)
+        {
             this.httpClient = httpClient;
             _apiUrlsConfiguration = apiUrlsOptions.Value;
+            _tokenProvider = tokenProvider;
         }
 
-        public IEnumerable<Order> GetOrder()
+        private  Task<string> GetTokenAsync()
         {
+            return  _tokenProvider.LoginAsync();
+        }
 
+        private async Task<HttpClient> GetAuthorizedHttpClientAsync()
+        {
+            var token = await GetTokenAsync();
+            var authorizedHttpClient = new HttpClient();
+            authorizedHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return authorizedHttpClient;
+        }
+
+        public async Task<IEnumerable<Order>> GetOrder()
+        {
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             string apiBaseUrl = _apiUrlsConfiguration.OrderApiUrl;
-            var response = httpClient.GetFromJsonAsync<IEnumerable<Order>>(apiBaseUrl).Result;
+            var response = httpClientToken.GetFromJsonAsync<IEnumerable<Order>>(apiBaseUrl).Result;
             if (response == null)
             {
                 throw new Exception("Không thử lấy danh sách nhân viên từ api");
@@ -35,9 +53,9 @@ namespace NorthWind.Web.Service
 
         public async Task<Order> GetOrderByID(int OrderID)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.OrderApiUrl}/{OrderID}";
-            var response = await httpClient.GetFromJsonAsync<Order>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<Order>(apiUrl);
 
             if (response == null)
             {
@@ -49,9 +67,9 @@ namespace NorthWind.Web.Service
 
         public async Task<IEnumerable<Order>> GetOrderByCustomer(string CustomerID)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.OrderApiUrl}/{$"CustomerID?CustomerID={CustomerID}"}";
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<Order>>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<IEnumerable<Order>>(apiUrl);
 
             if (response == null)
             {
@@ -63,9 +81,9 @@ namespace NorthWind.Web.Service
 
         public async Task InsertOrder(Order order)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = _apiUrlsConfiguration.OrderApiUrl;
-            var response = await httpClient.PostAsJsonAsync(apiUrl, order);
+            var response = await httpClientToken.PostAsJsonAsync(apiUrl, order);
             var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -76,9 +94,9 @@ namespace NorthWind.Web.Service
 
         public async Task UpdateOrder(Order order)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.OrderApiUrl}";
-            var response = await httpClient.PutAsJsonAsync(apiUrl, order);
+            var response = await httpClientToken.PutAsJsonAsync(apiUrl, order);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -89,8 +107,9 @@ namespace NorthWind.Web.Service
 
         public async Task DeleteOrder(int id)
         {
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.OrderApiUrl}/{id}";
-            var response = await httpClient.DeleteAsync(apiUrl);
+            var response = await httpClientToken.DeleteAsync(apiUrl);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -100,9 +119,9 @@ namespace NorthWind.Web.Service
 
         public async Task<IEnumerable<Order>> GetOrderPage(int page, int pageSize)
         {
-
+            var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.OrderApiUrl}/{$"p?page={page}&pageSize={pageSize}"}";
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<Order>>(apiUrl);
+            var response = await httpClientToken.GetFromJsonAsync<IEnumerable<Order>>(apiUrl);
 
             if (response == null)
             {

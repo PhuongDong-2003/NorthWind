@@ -22,14 +22,14 @@ namespace NorthWind.Shop.Controllers
         private readonly CustomerService _customerService;
 
         private readonly OrderService _orderService;
-        private readonly OrderDetailsService _orderDetailsService;
+     
 
-        public CartController(CartService cartService, CustomerService customerService, OrderService orderService, OrderDetailsService orderDetailsService)
+        public CartController(CartService cartService, CustomerService customerService, OrderService orderService)
         {
             _cartService = cartService;
             _customerService = customerService;
             _orderService = orderService;
-            _orderDetailsService = orderDetailsService;
+         
         }
         [HttpGet]
         public IActionResult Cart()
@@ -139,11 +139,12 @@ namespace NorthWind.Shop.Controllers
         public async Task<IActionResult> CheckOut()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
-
             {
                 var nameac = HttpContext.User.Identity.Name;
-
                 Customer customer = await _customerService.GetCustomerByID(nameac);
+
+                Dictionary<int, CartItem> cart = GetCartFromCookie();
+
                 Order order = new Order
                 {
                     CustomerID = customer.CustomerID,
@@ -157,41 +158,34 @@ namespace NorthWind.Shop.Controllers
                     ShipCity = "D",
                     ShipRegion = "D",
                     ShipPostalCode = "5008",
-                    ShipCountry = "D"
-
+                    ShipCountry = "D",
+                    OrderDetails = new List<OrderDetail>() 
                 };
-                await _orderService.InsertOrder(order);
-                Dictionary<int, CartItem> cart = GetCartFromCookie();
-                string CustomerID = customer.CustomerID;
-                var resultorder = await _orderService.GetOrderByCustomer(CustomerID);
-                Order od = new Order();
+
                 foreach (var i in cart)
                 {
-                    foreach(var rs in resultorder)
-                    {
-                        od = rs;
                     OrderDetail orderDetail = new OrderDetail
                     {
-                        OrderID = od.OrderID,
                         ProductID = i.Value.ProductID,
                         UnitPrice = i.Value.UnitPrice,
                         Quantity = (short)i.Value.Quantity,
                         Discount = 0
                     };
-                    await _orderDetailsService.InsertOrderDetail(orderDetail);
-                    }
+
+                    order.OrderDetails.Add(orderDetail);  
                 }
 
+                await _orderService.InsertOrder(order);
                 Clear();
-                //return Json(new { success = true });
-               return Redirect("Cart");
+
+                return Redirect("Cart");
             }
             else
             {
                 return RedirectToAction("Index", "Account");
             }
-          
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

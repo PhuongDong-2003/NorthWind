@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using NorthWind.Core.Entity;
 using NorthWind.Web.Models;
@@ -42,7 +43,6 @@ namespace NorthWind.Web.Service
             var httpClientToken = await GetAuthorizedHttpClientAsync();
             var apiUrl = $"{_apiUrlsConfiguration.EmployeesApiUrl}/{id}";
             var response = await httpClientToken.DeleteAsync(apiUrl);
-
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"Lỗi khi xóa nhân viên có ID {id}: {response.ReasonPhrase}");
@@ -62,6 +62,7 @@ namespace NorthWind.Web.Service
 
             return response;
         }
+        [AllowAnonymous]
         public async Task<IEnumerable<Employee>> GetEmployeePage(int page, int pageSize)
         {
             var httpClientToken = await GetAuthorizedHttpClientAsync();

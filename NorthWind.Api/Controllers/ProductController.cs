@@ -9,12 +9,12 @@ using NorthWind.Core.Entity;
 
 namespace NorthWind.Api.Controllers
 {
+
     [Authorize(Roles = "web")]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-
 
         private readonly IProductRepository _productRepository;
 

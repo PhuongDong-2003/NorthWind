@@ -25,7 +25,7 @@ namespace NorthWind.Api.Repository
             string connectionString = _configuration.GetConnectionString("Connection");
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string sqlQuery = "SELECT * FROM Products";
+            string sqlQuery = "SELECT * FROM Products where status = 0";
 
             using (SqlCommand command = new SqlCommand(sqlQuery, connection))
             {
@@ -48,7 +48,9 @@ namespace NorthWind.Api.Repository
                             Discontinued = reader.GetBoolean(reader.GetOrdinal("Discontinued")),
                             Status = reader.GetBoolean(reader.GetOrdinal("Status"))
                         };
+
                         resultList.Add(product);
+                    
                     }
 
                     return resultList;

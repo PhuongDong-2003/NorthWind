@@ -62,6 +62,7 @@ namespace NorthWind.Api.Controllers
             return Ok(orderDetail);
         }
 
+
         [HttpPost]
         public IActionResult Create(Order order)
         {
@@ -78,6 +79,7 @@ namespace NorthWind.Api.Controllers
             }
 
         }
+
         [HttpPost("OdAccount")]
         public IActionResult CreateOdACount(Order order)
         {

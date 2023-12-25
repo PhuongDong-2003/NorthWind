@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/NorthWind.Shop.styles.css" asp-append-version="true" />
+
     <meta charset="utf-8">
     <meta name="description" content="Saul HTML Pro - Bootstrap 5 HTML Multipurpose Admin Dashboard Theme">
     <meta name="keywords"
@@ -17,9 +18,11 @@
     <meta property="og:type" content="article">
     <meta property="og:title" content="Saul Theme - Saul HTML Free by KeenThemes">
     <meta property="og:url" content="https://keenthemes.com/products/saul-html-pro">
-    <meta property="og:site_name" content="Saul HTML Free by Keenthemes">
+    <meta property="og:site_name" content="Saul HTML Free by Keenthemes"> 
     <link rel="canonical" href="https://preview.keenthemes.com/saul-html-pro">
     <link rel="shortcut icon" href="/saul-html-free/assets/media/logos/favicon.ico">
+    <link href="/lib/kendo/css/kendo.default.min.css" rel="stylesheet" />
+	<link href="/lib/kendo/css/kendo.default-v2.min.css" rel="stylesheet" />
 
     <!--begin::Fonts(mandatory for all pages)-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"> <!--end::Fonts-->
@@ -162,7 +165,9 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="/assets/js/scripts.bundle.js"></script>
     <script src="/assets/js/widgets.bundle.js"></script>
-
+    <script src="/lib/kendo/js/kendo.all.min.js"></script>
+    
+              
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

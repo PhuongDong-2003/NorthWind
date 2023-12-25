@@ -19,7 +19,7 @@ namespace NorthWind.Core.Entity
 
     [Key, ForeignKey("Product")]
     public int ProductID { get; set; }
-
+    
     [JsonIgnore]
     public Product Product { get; set; } = null!;
     public decimal UnitPrice { get; set; }

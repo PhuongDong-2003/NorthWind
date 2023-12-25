@@ -20,7 +20,7 @@ namespace NorthWind.Web.Controllers
             _orderService = orderService;
         }
 
-        public async Task<IActionResult> Order(int page = 1, int pageSize = 5)
+        public async Task<IActionResult> Order(int page = 1, int pageSize = 10)
         {
 
             var orderResponse = await _orderService.GetOrderPage(page, pageSize);

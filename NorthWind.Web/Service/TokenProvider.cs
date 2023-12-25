@@ -15,7 +15,6 @@ namespace NorthWind.Web.Service
         private readonly HttpClient httpClient;
         private readonly IDistributedCache _distributedCache;
 
-
         public TokenProvider(HttpClient httpClient, IDistributedCache distributedCache)
         {
             this.httpClient = httpClient;

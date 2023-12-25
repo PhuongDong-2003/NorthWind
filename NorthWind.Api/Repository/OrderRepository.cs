@@ -67,7 +67,7 @@ namespace NorthWind.Api.Repository
             //     }
             // }
 
-            var result = _context.Orders.Where(x => x.OrderID == orderID && x.Status == false).FirstOrDefault();
+            var result = _context.Orders.Where(x => x.OrderID == orderID ).FirstOrDefault();
             return result;
         
         }
@@ -114,6 +114,7 @@ namespace NorthWind.Api.Repository
 
             var results = _context.Orders.Include(x => x.OrderDetails).ToList();
             return results;
+            
         }
 
         public void InsertOrder(Order order)
@@ -157,10 +158,9 @@ namespace NorthWind.Api.Repository
             {
                 try
                 {
-                    order.Status = false;
+                    order.Status = true;
                     _context.Orders.Add(order);
                     _context.SaveChanges();
-
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -326,12 +326,11 @@ namespace NorthWind.Api.Repository
             //             }
             //         }
             //     }
-
             //     return resultList;
-           // }
+            // }
 
-            var totalRow = _context.Orders.Count(); // Điều này có thể thay đổi dựa vào yêu cầu thực tế
-            var orders = _context.Orders.Include(x => x.OrderDetails)
+            var totalRow = _context.Orders.Count(); 
+            var orders = _context.Orders
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();

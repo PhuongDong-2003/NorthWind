@@ -23,16 +23,16 @@ namespace NorthWind.Shop.Controllers
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
 
+            // if (HttpContext.User.Identity.IsAuthenticated)
+            // {
+            //     HttpContext.Session.SetString("CMND", "123456");
 
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                HttpContext.Session.SetString("CMND", "123456");
-
-                if (HttpContext.User.Claims.First(x => x.Type == "TypeCustomer").Value == "Vip")
-                {
-                    HttpContext.Response.Cookies.Append("IsVip", "1");
-                }
-            }
+            //     if (HttpContext.User.Claims.First(x => x.Type == "TypeCustomer").Value == "Vip")
+            //     {
+            //         HttpContext.Response.Cookies.Append("IsVip", "1");
+            //     }
+            // }
+            
             var productResponse = await _productService.GetProductPage(page, pageSize);
             if (productResponse != null)
             {
@@ -62,6 +62,7 @@ namespace NorthWind.Shop.Controllers
             return View("Index");
 
         }
+
         [HttpPost]
         public async Task<IActionResult> Find(string productName)
         {

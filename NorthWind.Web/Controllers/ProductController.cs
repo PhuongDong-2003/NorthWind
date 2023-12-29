@@ -24,7 +24,7 @@ namespace NorthWind.Web.Controllers
             var productResponse = await _productService.GetProductPage(page, pageSize);
             if (productResponse != null)
             {
-
+                
                 ViewData["productlist"] = productResponse;
                 return View();
             }

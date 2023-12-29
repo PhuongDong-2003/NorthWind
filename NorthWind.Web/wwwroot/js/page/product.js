@@ -79,7 +79,7 @@ let ProductPage = (() => {
                     UnitsInStock: unitsInStock,
                     UnitsOnOrder: unitsOnOrder,
                     ReorderLevel: reorderLevel,
-                    Discontinued: discontinued
+                    Discontinued: discontinued  
 
                 }
 
@@ -94,6 +94,7 @@ let ProductPage = (() => {
 
             },
             remove: function (e) {
+                
                 // var grid = $("#grid").data("kendoGrid");
                 // var dataItem = grid.dataItem(e.container);
                 // var productID = dataItem.productID;
@@ -109,7 +110,6 @@ let ProductPage = (() => {
                 });
 
             }
-
 
         }).data("kendoGrid");
     }

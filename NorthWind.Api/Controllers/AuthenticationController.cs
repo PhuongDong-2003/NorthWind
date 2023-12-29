@@ -16,19 +16,20 @@ namespace NorthWind.Api.Controllers
     [Route("api/[controller]")]
     public class AuthenticationController : ControllerBase
     {
-
-
+        
         private readonly IConfiguration _configuration;
+        
+        private readonly ILogger<AuthenticationController> logger;
 
-        public AuthenticationController(IConfiguration configuration)
+        public AuthenticationController(IConfiguration configuration, ILogger<AuthenticationController> logger)
         {
+            this.logger = logger;
             _configuration = configuration;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] Users users)
         {
-           
             if (users == null)
             {
                 return BadRequest("Invalid user data");
@@ -40,6 +41,8 @@ namespace NorthWind.Api.Controllers
                 var token = GenerateToken(user.Role);
                 return Ok(new { token });
             }
+            using var scope = Serilog.Context.LogContext.PushProperty("Data", users, true);
+            logger.LogCritical("User dang nhap loi");
 
             return Unauthorized();
         }
@@ -60,7 +63,7 @@ namespace NorthWind.Api.Controllers
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:ValidIssuer"],
                 audience: _configuration["Jwt:ValidAudience"],
-                claims: new List<Claim> { new Claim(ClaimTypes.Role, role) },
+                claims: new List<Claim> { new Claim(ClaimTypes.Role, role), new Claim(ClaimTypes.Name, role) },
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpiresInMinutes"])),
                 signingCredentials: creds
             );

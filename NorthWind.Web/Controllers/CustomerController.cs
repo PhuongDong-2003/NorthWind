@@ -14,8 +14,10 @@ namespace NorthWind.Web.Controllers
     public class CustomerController : Controller
     {
         private readonly CustomerService _customerService;
-        public CustomerController(CustomerService customerService)
+        private readonly ILogger<CustomerController> logger;
+        public CustomerController(CustomerService customerService, ILogger<CustomerController> logger)
         {
+            this.logger = logger;
             _customerService = customerService;
 
         }
@@ -27,11 +29,12 @@ namespace NorthWind.Web.Controllers
             {
 
                 ViewData["customerlist"] = customerResponse;
+                logger.LogInformation("Load Custmers successfully");
                 return View();
             }
             else
             {
-
+                logger.LogError("Load Custmers fail");
                 return View("Error");
             }
 
@@ -42,6 +45,7 @@ namespace NorthWind.Web.Controllers
 
             var customer = await _customerService.GetCustomerByID(CustomerID);
             ViewData["customer"] = customer;
+            logger.LogInformation("Find Customer with CustomerId {customerId} successfully", CustomerID);
             int page = 1;
             int pageSize = 5;
             await CustomerList(page, pageSize);
@@ -59,12 +63,13 @@ namespace NorthWind.Web.Controllers
                 int page = 1;
                 int pageSize = 5;
                 await CustomerList(page, pageSize);
+                logger.LogInformation("Load Custmers successfully");
 
             }
 
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro: {ex.Message} ");
+               logger.LogError("Load Customers fail {erro}", ex.Message);
 
             }
 
@@ -78,13 +83,15 @@ namespace NorthWind.Web.Controllers
             try
             {
                 await _customerService.UpdateCustomer(customer);
+                logger.LogInformation("Update Customer successfully {customerId}", customer.CustomerID);
 
 
             }
 
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro: {ex.Message} ");
+                logger.LogError("Update Customer fail {erro}", ex.Message);
+                
 
             }
             await CustomerList();
@@ -96,15 +103,18 @@ namespace NorthWind.Web.Controllers
         public async Task<IActionResult> Delete(string CustomerID)
         {
 
+
             if (CustomerID != null)
             {
                 await _customerService.DeleteCustomer(CustomerID);
+                logger.LogInformation("Delete Customer successfully {customerId}", CustomerID);
                 return RedirectToAction("CustomerList");
 
             }
             else
             {
-                Console.WriteLine("Delete fail");
+                logger.LogError("Delete Customer fail {customerId}", CustomerID);
+             
             }
             return View("CustomerList");
         }

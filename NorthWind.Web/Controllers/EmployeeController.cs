@@ -13,7 +13,7 @@ using NorthWind.Web.Models;
 using NorthWind.Web.Service;
 namespace NorthWind.Web.Controllers
 {
-    public class UserController : Controller
+    public class EmployeeController : Controller
     {
 
         // ví dụ về Di và scope, transient,..
@@ -26,10 +26,12 @@ namespace NorthWind.Web.Controllers
         //     _apiUrlsConfiguration = apiUrlsOptions.Value;
         //     print.WriteLine("asdasd");
         // }
+        private readonly ILogger<EmployeeController> logger;
 
         private readonly EmployeeService _employeeService;
-        public UserController(EmployeeService employeeService)
+        public EmployeeController(EmployeeService employeeService, ILogger<EmployeeController> logger)
         {
+            this.logger = logger;
             _employeeService = employeeService;
 
         }
@@ -40,11 +42,13 @@ namespace NorthWind.Web.Controllers
             {
 
                 ViewData["employee"] = employeeResponse;
+                logger.LogInformation("Load Users successfully");
                 return View();
             }
             else
             {
 
+                logger.LogInformation("Load Users fail");
                 return View("Error");
             }
         }
@@ -67,7 +71,7 @@ namespace NorthWind.Web.Controllers
                     employee.Photo = photoData;
 
                     await _employeeService.InsertEmployee(employee);
-
+                    logger.LogInformation("Create User successfully");
                     return RedirectToAction("UserForm");
                 }
             }
@@ -76,7 +80,8 @@ namespace NorthWind.Web.Controllers
 
                 if (ex is OutOfMemoryException)
                 {
-                    Console.WriteLine($"Erro: {ex.Message} ");
+                    logger.LogError("Out of memory {Erro}", ex.Message);
+                    
                 }
             }
 
@@ -138,12 +143,14 @@ namespace NorthWind.Web.Controllers
                 }
 
                 await _employeeService.UpdateEmployee(employee);
+                logger.LogInformation("Update User successfully");
 
             }
 
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Lỗi: {ex.Message}");
+                logger.LogError("Update User fail {erro}", ex.Message);
+                // ModelState.AddModelError("", $"Lỗi: {ex.Message}");
             }
 
             return RedirectToAction("UserForm");
@@ -157,17 +164,20 @@ namespace NorthWind.Web.Controllers
             if (EmployeeId > 0)
             {
                 await _employeeService.DeleteEmployee(EmployeeId);
+                logger.LogInformation("Delete User successfully");
                 return RedirectToAction("UserForm");
 
             }
             else
             {
-                Console.WriteLine("Delete fail");
+                logger.LogError("Delete User fail");
+                
             }
             return View("UserForm");
         }
 
-        //Userlist
+
+        //USER LIST
         public async Task<IActionResult> Userlist(int page = 1, int pageSize = 5)
         {
 

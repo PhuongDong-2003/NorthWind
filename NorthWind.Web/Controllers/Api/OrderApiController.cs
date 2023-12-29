@@ -23,9 +23,20 @@ namespace NorthWind.Web.Controllers.Api
 
         public async Task<JsonResult>  GetByPage()
         {
-     
+
             var orderResponse = await _orderService.GetOrder();
-            return Json(orderResponse);
+            if(orderResponse !=null)
+            {
+                _logger.LogInformation("Load Orders");
+                return Json(orderResponse);
+
+            }
+            else
+            {
+                _logger.LogError("Load Orders fail");
+                return Json(new { message = "Load Prouducts failed" } );
+            }
+
         
         }
 
@@ -33,6 +44,7 @@ namespace NorthWind.Web.Controllers.Api
         public async Task  Create([FromBody] Order order)
         {
             await _orderService.InsertOrder(order);
+             _logger.LogInformation("Create Order");
         }
   
 

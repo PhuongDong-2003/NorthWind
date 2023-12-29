@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NorthWind.Api.Repository;
 using NorthWind.Core.Entity;
+using Serilog;
+using Serilog.Core;
 
 namespace NorthWind.Api.Controllers
 {   [Authorize(Roles = "web")]
@@ -14,9 +16,11 @@ namespace NorthWind.Api.Controllers
     public class CustomerController : ControllerBase
     {
          private readonly ICustomerRepository _customerRepository;
+        private readonly ILogger<CustomerController> _logger;
 
-        public CustomerController(ICustomerRepository customerRepository)
+        public CustomerController(ICustomerRepository customerRepository, ILogger<CustomerController> logger)
         {
+            _logger = logger;
             _customerRepository = customerRepository;
         }
 
@@ -26,7 +30,10 @@ namespace NorthWind.Api.Controllers
         {
             try
             {
+                
                 var customer = _customerRepository.GetCustomer();
+                _logger.LogInformation("Get All Customer");
+                
                 return Ok(customer);
             }
             catch (Exception e)
@@ -48,7 +55,7 @@ namespace NorthWind.Api.Controllers
             return Ok(customer);
         }
 
-                [HttpPost]
+        [HttpPost]
         public IActionResult Create(Customer customer)
         {
 

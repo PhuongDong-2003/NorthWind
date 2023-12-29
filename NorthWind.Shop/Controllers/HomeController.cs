@@ -14,9 +14,11 @@ namespace NorthWind.Shop.Controllers
     public class HomeController : Controller
     {
         private readonly ProductService _productService;
+        private readonly ILogger<HomeController> logger;
 
-        public HomeController(ProductService productService)
+        public HomeController(ProductService productService, ILogger<HomeController> logger)
         {
+            this.logger = logger;
             _productService = productService;
         }
         public static bool status = true;
@@ -37,6 +39,7 @@ namespace NorthWind.Shop.Controllers
             if (productResponse != null)
             {
                 ViewData["productlist"] = productResponse;
+                logger.LogInformation("Load list products successfull");
                 ViewData["st"] = status;
                 string message = TempData["messAddCart"] as string;
                 if (!string.IsNullOrEmpty(message))
@@ -73,11 +76,12 @@ namespace NorthWind.Shop.Controllers
             {
                 var product = await _productService.GetByName(productName);
                 ViewData["product"] = product;
+                logger.LogInformation("Find product successfull");
 
             }
             else
             {
-                Console.WriteLine("Không nhận được ID");
+                logger.LogWarning("Not find Product {prductName}", productName);
             }
             return View("Index");
 

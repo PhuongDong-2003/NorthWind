@@ -23,9 +23,11 @@ namespace NorthWind.Shop.Controllers
 
         private readonly OrderService _orderService;
      
+        private readonly ILogger<CartController> logger;
 
-        public CartController(CartService cartService, CustomerService customerService, OrderService orderService)
+        public CartController(CartService cartService, CustomerService customerService, OrderService orderService, ILogger<CartController> logger)
         {
+            this.logger = logger;
             _cartService = cartService;
             _customerService = customerService;
             _orderService = orderService;
@@ -68,6 +70,9 @@ namespace NorthWind.Shop.Controllers
                     Quantity = 1,
                 };
             }
+           
+            logger.LogInformation("User {User} add Cart to Product {productName}", User.Identity.Name, response.ProductName);
+            
             SaveCartToCookie(cart);
             return Json(new { success = true });
         }
@@ -110,6 +115,8 @@ namespace NorthWind.Shop.Controllers
                     cart.Remove(productId);
                 }
 
+                logger.LogInformation("User {User} update Product {ProductId} in Cart", User.Identity.Name, productId);
+
                 SaveCartToCookie(cart);
             }
 
@@ -125,6 +132,7 @@ namespace NorthWind.Shop.Controllers
             {
                 cart.Remove(productId);
                 SaveCartToCookie(cart);
+                logger.LogInformation("User {User} delete Product {ProductId} in Cart", User.Identity.Name, productId);
             }
 
             return RedirectToAction("Cart", "Cart");
@@ -176,6 +184,7 @@ namespace NorthWind.Shop.Controllers
                 }
 
                 await _orderService.InsertOrder(order);
+                logger.LogInformation("User {User} Order ", User.Identity.Name);
                 Clear();
 
                 return Redirect("Cart");

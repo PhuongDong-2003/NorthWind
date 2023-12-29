@@ -2,6 +2,24 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using NorthWind.Shop.Models;
 using NorthWind.Shop.Service;
 using NorthWind.Web.Service;
+using Serilog;
+using Serilog.Filters;
+using Serilog.Formatting.Compact;
+
+Serilog.Log.Logger = new LoggerConfiguration()
+    .Enrich.WithProperty("Application", "Northwind.Shop")
+    .Filter.ByExcluding(le => Matching.FromSource("System")(le))
+    .Filter.ByIncludingOnly(le => {
+        if (Matching.FromSource("Microsoft")(le))
+        {
+            return false;
+        }
+        return true;
+    })
+    .WriteTo.Console(
+        outputTemplate: "{Application} | {Timestamp:HH:mm:ss} | {Level} | {SourceContext} | {Message:lj} {NewLine}{Exception}")
+    .WriteTo.File(new CompactJsonFormatter(),"log.txt")
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -15,6 +33,12 @@ builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<OrderDetailsService>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+
+builder.Services.AddLogging(l =>
+{
+    l.ClearProviders();
+    l.AddSerilog();
+});
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
     options.ExpireTimeSpan = TimeSpan.FromMinutes(20);

@@ -18,9 +18,11 @@ namespace NorthWind.Shop.Controllers
     public class AccountController : Controller
     {
         private readonly CustomerService _customerService;
+        private readonly ILogger<AccountController> logger;
 
-        public AccountController(CustomerService customerService)
+        public AccountController(CustomerService customerService, ILogger<AccountController> logger)
         {
+            this.logger = logger;
             _customerService = customerService;
         }
 
@@ -63,11 +65,14 @@ namespace NorthWind.Shop.Controllers
 
 
                     ViewData["ValidateMessage"] = "Đăng Nhập thành công.";
+                    logger.LogInformation("User {UserName} login successfully", validAccount.CustomerID);
+                    
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     ViewData["ValidateMessage"] = "Tên đăng nhập hoặc mật khẩu không đúng.";
+                    logger.LogInformation("User {UserName} login failed", customer.CustomerID);
                 }
 
             }

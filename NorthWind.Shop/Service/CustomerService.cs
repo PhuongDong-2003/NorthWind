@@ -45,12 +45,8 @@ namespace NorthWind.Web.Service
             var httpClientToken = await GetAuthorizedHttpClientAsync();
             string apiBaseUrl = _apiUrlsConfiguration.CustomerApiUrl;
             var response = await httpClientToken.GetFromJsonAsync<IEnumerable<Customer>>(apiBaseUrl);
-            if (response == null)
-            {
+            _ = response ?? throw new Exception("Không thử lấy danh sách nhân viên từ api");
 
-                throw new Exception("Không thử lấy danh sách nhân viên từ api");
-
-            }
 
             return response;
         }

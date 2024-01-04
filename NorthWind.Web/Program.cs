@@ -9,13 +9,13 @@ using Serilog.Formatting.Compact;
 Serilog.Log.Logger = new LoggerConfiguration()
     .Enrich.WithProperty("Application", "Northwind.Web")
     .Filter.ByExcluding(le => Matching.FromSource("System")(le))
-    .Filter.ByIncludingOnly(le => {
-        if (Matching.FromSource("Microsoft")(le))
-        {
-            return false;
-        }
-        return true;
-    })
+    // .Filter.ByIncludingOnly(le => {
+    //     if (Matching.FromSource("Microsoft")(le))
+    //     {
+    //         return false;
+    //     }
+    //     return true;
+    // })
     .WriteTo.Console(
         outputTemplate: "{Application} | {Timestamp:HH:mm:ss} | {Level} | {SourceContext} | {Message:lj}{NewLine}{Exception}")
     .WriteTo.File(new CompactJsonFormatter(),"log.txt")

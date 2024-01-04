@@ -153,7 +153,7 @@ namespace NorthWind.Shop.Controllers
 
                 Dictionary<int, CartItem> cart = GetCartFromCookie();
 
-                Order order = new Order
+                Order order = new Order 
                 {
                     CustomerID = customer.CustomerID,
                     EmployeeID = null,
